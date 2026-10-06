@@ -16,30 +16,56 @@
   // ── Runway Scrollytelling: Sticky Pinned Stage with GSAP Line Fill & Cumulative Activation ──
   function initRunwayScrollytelling() {
     const container = document.getElementById('workflow-scrolly-container');
+    const lineTrack = document.querySelector('.runway-line-track');
     const lineFill = document.querySelector('.runway-line-fill');
     const stepCols = document.querySelectorAll('.runway-step-col');
-    const dots = document.querySelectorAll('.runway-marker-dot');
+    const stepDots = document.querySelectorAll('.runway-markers-row .runway-marker-dot');
+    const endDot = document.querySelector('.runway-marker-dot-end');
 
     if (!container || !lineFill || stepCols.length === 0) return;
 
-    // Cumulative thresholds:
-    // Step 1: active always (threshold 0)
-    // Step 2: activates as line reaches Step 2 (~0.28)
-    // Step 3: activates as line reaches Step 3 (~0.61)
-    // Step 4: activates as line reaches Step 4 (~0.92)
-    const thresholds = [0, 0.28, 0.61, 0.92];
+    let dotFractions = [0, 0.266, 0.532, 0.798];
+
+    function calculateDotFractions() {
+      if (!lineTrack || stepDots.length === 0) return;
+      const trackRect = lineTrack.getBoundingClientRect();
+      const trackLeft = trackRect.left;
+      const trackWidth = trackRect.width;
+      if (trackWidth <= 0) return;
+
+      dotFractions = Array.from(stepDots).map((dot) => {
+        const dotRect = dot.getBoundingClientRect();
+        const dotCenter = dotRect.left + dotRect.width / 2;
+        return Math.max(0, Math.min(1, (dotCenter - trackLeft) / trackWidth));
+      });
+    }
 
     function updateSteps(progress) {
+      // Step 1: active always (threshold 0)
+      // Step 2: activates as line reaches Dot 2
+      // Step 3: activates as line reaches Dot 3
+      // Step 4: activates as line reaches Dot 4; line then continues through Step 4's bar to 1.0
+      const t1 = 0;
+      const t2 = (dotFractions[1] || 0.266) - 0.015;
+      const t3 = (dotFractions[2] || 0.532) - 0.015;
+      const t4 = (dotFractions[3] || 0.798) - 0.015;
+      const thresholds = [t1, t2, t3, t4];
+
       stepCols.forEach((col, idx) => {
         const shouldBeActive = progress >= thresholds[idx];
         col.classList.toggle('is-active', shouldBeActive);
         col.classList.toggle('is-dimmed', !shouldBeActive);
       });
 
-      dots.forEach((dot, idx) => {
+      stepDots.forEach((dot, idx) => {
         const shouldBeActive = progress >= thresholds[idx];
         dot.classList.toggle('is-active', shouldBeActive);
       });
+
+      if (endDot) {
+        const isEndActive = progress >= 0.97;
+        endDot.classList.toggle('is-active', isEndActive);
+      }
     }
 
     function handleScroll() {
@@ -54,7 +80,8 @@
       // Clamp progress between 0 and 1
       const progress = Math.max(0, Math.min(1, scrolled / totalDist));
 
-      // GSAP smooth line fill animation
+      // GSAP smooth line fill animation: runs smoothly through Step 1 -> 2 -> 3 -> 4,
+      // and completes the full bar of Step 4 before unpinning.
       if (window.gsap) {
         window.gsap.to(lineFill, {
           scaleX: progress,
@@ -69,8 +96,13 @@
       updateSteps(progress);
     }
 
+    calculateDotFractions();
+
     window.addEventListener('scroll', handleScroll, { passive: true });
-    window.addEventListener('resize', handleScroll, { passive: true });
+    window.addEventListener('resize', () => {
+      calculateDotFractions();
+      handleScroll();
+    }, { passive: true });
 
     // Initial setup on page load
     handleScroll();

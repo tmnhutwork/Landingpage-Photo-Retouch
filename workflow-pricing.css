@@ -25,7 +25,7 @@
 /* ── Workflow Scrollytelling Pinned Stage ──────────────────────────── */
 .workflow-scrolly-container {
   width: 100%;
-  height: 280vh;
+  height: 320vh;
   position: relative;
 }
 
@@ -355,7 +355,7 @@
 .runway-line-track {
   position: absolute;
   left: 17px;
-  width: calc(75% + 27px);
+  width: calc(100% - 34px);
   height: 2px;
   background: #E8E8E8;
   border-radius: 9999px;
@@ -365,7 +365,7 @@
   position: absolute;
   left: 17px;
   height: 2px;
-  width: calc(75% + 27px);
+  width: calc(100% - 34px);
   background: #111111;
   border-radius: 9999px;
   transform-origin: left;
@@ -400,6 +400,13 @@
 .runway-marker-dot.is-active {
   background: #111111;
   box-shadow: 0 0 0 3px #FFFFFF, 0 1px 4px rgba(0, 0, 0, 0.15);
+}
+
+.runway-marker-dot-end {
+  position: absolute;
+  right: 13px;
+  top: 6px;
+  z-index: 3;
 }
 
 .runway-step-col:hover .runway-marker-dot.is-active {
@@ -538,33 +545,33 @@
   line-height: 1;
 }
 
-/* Filled Vibrant Colors for Client and Nesso (Clean Flat, No Shadow or Glow) */
+/* Filled Minimal Black Labels for Client and Nesso (Clean Luxury Monochrome) */
 .role-badge-client {
-  background: #2563EB;
+  background: #111111;
   color: #FFFFFF;
   box-shadow: none;
 }
 
 .role-badge-nesso {
-  background: #EA580C;
+  background: #111111;
   color: #FFFFFF;
   box-shadow: none;
 }
 
 .role-action-title {
   font-size: 11px;
-  font-weight: 600;
+  font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.05em;
-  color: #64748B;
+  color: #111111;
 }
 
 .runway-role-card.is-client .role-action-title {
-  color: #1E40AF;
+  color: #111111;
 }
 
 .runway-role-card.is-nesso .role-action-title {
-  color: #C2410C;
+  color: #111111;
 }
 
 .runway-role-desc {
