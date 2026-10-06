@@ -247,13 +247,28 @@
   display: block;
 }
 
+/* ── Workflow Clean Headline (Matching "Who we worked with.") ──────── */
+.workflow-header-wrap {
+  text-align: center;
+  margin-bottom: 56px;
+}
+
+.workflow-clean-headline {
+  font-family: var(--font-sans, 'Plus Jakarta Sans', sans-serif);
+  font-size: clamp(2.6rem, 4.2vw, 58px);
+  font-weight: 500;
+  line-height: 1.08;
+  letter-spacing: -0.035em;
+  color: #111111;
+  margin: 0;
+}
+
 .runway-workflow-card {
   background: #FFFFFF;
   border-radius: 24px;
   border: 1px solid rgba(0, 0, 0, 0.08);
   padding: 48px 52px 52px;
-  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.02);
-  transition: box-shadow 0.25s ease;
+  box-shadow: none;
 }
 
 .runway-card-header {
