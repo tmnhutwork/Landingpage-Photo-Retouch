@@ -563,197 +563,201 @@
 
     <!-- ==================== SECTION WORKFLOW (HOW WE COLLABORATE) ==================== -->
     <section class="section-workflow" id="workflow">
-      <div class="workflow-container">
-        
-        <!-- Header: Clean Minimal Headline Matching "Who we worked with." -->
-        <div class="workflow-header-wrap">
-          <h2 class="workflow-clean-headline">How we collaborate</h2>
-        </div>
-
-        <!-- WORKFLOW: RUNWAY COMPACT TIMELINE -->
-        <div class="workflow-view-stepper" id="workflow-stepper-view">
-          <div class="runway-workflow-card">
+      <div class="workflow-scrolly-container" id="workflow-scrolly-container">
+        <div class="workflow-sticky-stage" id="workflow-sticky-stage">
+          <div class="workflow-container">
             
-            <!-- Card Header: Title + CTA -->
-            <div class="runway-card-header">
-              <h3 class="runway-card-title">Studio workflow calibrated for scale &amp; precision</h3>
-              <a href="#trial" class="runway-card-btn">
-                <span>Start 3 Free Test Images</span>
-                <svg class="icon-arrow" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-                  <line x1="7" y1="17" x2="17" y2="7"></line>
-                  <polyline points="7 7 17 7 17 17"></polyline>
-                </svg>
-              </a>
+            <!-- Header: Clean Minimal Headline Matching "Who we worked with." -->
+            <div class="workflow-header-wrap">
+              <h2 class="workflow-clean-headline">How we collaborate</h2>
             </div>
 
-            <!-- Horizontal Timeline Track from Step 1 to Step 4 -->
-            <div class="runway-timeline-bar" aria-hidden="true">
-              <div class="runway-line-track"></div>
-              <div class="runway-line-fill"></div>
-              <div class="runway-markers-row">
-                <div class="runway-marker-col">
-                  <span class="runway-marker-dot"></span>
-                </div>
-                <div class="runway-marker-col">
-                  <span class="runway-marker-dot"></span>
-                </div>
-                <div class="runway-marker-col">
-                  <span class="runway-marker-dot"></span>
-                </div>
-                <div class="runway-marker-col">
-                  <span class="runway-marker-dot"></span>
-                </div>
-              </div>
-            </div>
-
-            <!-- 4 Steps Columns Grid -->
-            <div class="runway-steps-grid">
-              
-              <!-- Step 01 -->
-              <div class="runway-step-col">
-                <div class="runway-step-pill">
-                  <span class="runway-pill-num">01</span>
-                  <span class="runway-pill-label">Ingest</span>
-                </div>
-                <h4 class="runway-step-headline">Upload &amp; Brief</h4>
+            <!-- WORKFLOW: RUNWAY COMPACT TIMELINE -->
+            <div class="workflow-view-stepper" id="workflow-stepper-view">
+              <div class="runway-workflow-card">
                 
-                <div class="runway-roles-container">
-                  <div class="runway-role-card is-client">
-                    <div class="runway-role-header">
-                      <span class="role-badge role-badge-client">CLIENT</span>
-                      <span class="role-action-title">What you provide</span>
-                    </div>
-                    <p class="runway-role-desc">RAW/TIFF source files, style moodboard, and specific crop/color targets.</p>
-                  </div>
+                <!-- Card Header: Title + CTA -->
+                <div class="runway-card-header">
+                  <h3 class="runway-card-title">Studio workflow calibrated for scale &amp; precision</h3>
+                  <a href="#trial" class="runway-card-btn">
+                    <span>Start 3 Free Test Images</span>
+                    <svg class="icon-arrow" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                      <line x1="7" y1="17" x2="17" y2="7"></line>
+                      <polyline points="7 7 17 7 17 17"></polyline>
+                    </svg>
+                  </a>
+                </div>
 
-                  <div class="runway-role-card is-nesso">
-                    <div class="runway-role-header">
-                      <span class="role-badge role-badge-nesso">NESSO</span>
-                      <span class="role-action-title">What we deliver</span>
+                <!-- Horizontal Timeline Track from Step 1 to Step 4 -->
+                <div class="runway-timeline-bar" aria-hidden="true">
+                  <div class="runway-line-track"></div>
+                  <div class="runway-line-fill"></div>
+                  <div class="runway-markers-row">
+                    <div class="runway-marker-col">
+                      <span class="runway-marker-dot is-active"></span>
                     </div>
-                    <p class="runway-role-desc">Color profile calibration, sample test approval, and delivery schedule.</p>
+                    <div class="runway-marker-col">
+                      <span class="runway-marker-dot"></span>
+                    </div>
+                    <div class="runway-marker-col">
+                      <span class="runway-marker-dot"></span>
+                    </div>
+                    <div class="runway-marker-col">
+                      <span class="runway-marker-dot"></span>
+                    </div>
                   </div>
                 </div>
 
-                <div class="runway-step-sla">
-                  <svg class="sla-clock-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <circle cx="12" cy="12" r="10"></circle>
-                    <polyline points="12 6 12 12 16 14"></polyline>
-                  </svg>
-                  <span>2 – 4h SLA</span>
+                <!-- 4 Steps Columns Grid -->
+                <div class="runway-steps-grid">
+                  
+                  <!-- Step 01 (Initial Active) -->
+                  <div class="runway-step-col is-active">
+                    <div class="runway-step-pill">
+                      <span class="runway-pill-num">01</span>
+                      <span class="runway-pill-label">Ingest</span>
+                    </div>
+                    <h4 class="runway-step-headline">Upload &amp; Brief</h4>
+                    
+                    <div class="runway-roles-container">
+                      <div class="runway-role-card is-client">
+                        <div class="runway-role-header">
+                          <span class="role-badge role-badge-client">CLIENT</span>
+                          <span class="role-action-title">What you provide</span>
+                        </div>
+                        <p class="runway-role-desc">RAW/TIFF source files, style moodboard, and specific crop/color targets.</p>
+                      </div>
+
+                      <div class="runway-role-card is-nesso">
+                        <div class="runway-role-header">
+                          <span class="role-badge role-badge-nesso">NESSO</span>
+                          <span class="role-action-title">What we deliver</span>
+                        </div>
+                        <p class="runway-role-desc">Color profile calibration, sample test approval, and delivery schedule.</p>
+                      </div>
+                    </div>
+
+                    <div class="runway-step-sla">
+                      <svg class="sla-clock-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <polyline points="12 6 12 12 16 14"></polyline>
+                      </svg>
+                      <span>2 – 4h SLA</span>
+                    </div>
+                  </div>
+
+                  <!-- Step 02 (Dimmed until line reaches) -->
+                  <div class="runway-step-col is-dimmed">
+                    <div class="runway-step-pill">
+                      <span class="runway-pill-num">02</span>
+                      <span class="runway-pill-label">Retouch</span>
+                    </div>
+                    <h4 class="runway-step-headline">Precision Retouch</h4>
+                    
+                    <div class="runway-roles-container">
+                      <div class="runway-role-card is-client">
+                        <div class="runway-role-header">
+                          <span class="role-badge role-badge-client">CLIENT</span>
+                          <span class="role-action-title">What you provide</span>
+                        </div>
+                        <p class="runway-role-desc">Live oversight via dashboard or Slack, and priority rush order requests.</p>
+                      </div>
+
+                      <div class="runway-role-card is-nesso">
+                        <div class="runway-role-header">
+                          <span class="role-badge role-badge-nesso">NESSO</span>
+                          <span class="role-action-title">What we deliver</span>
+                        </div>
+                        <p class="runway-role-desc">16-bit non-destructive layers, skin pores, volume, and jewelry polish.</p>
+                      </div>
+                    </div>
+
+                    <div class="runway-step-sla">
+                      <svg class="sla-clock-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <polyline points="12 6 12 12 16 14"></polyline>
+                      </svg>
+                      <span>12 – 24h Turnaround</span>
+                    </div>
+                  </div>
+
+                  <!-- Step 03 (Dimmed until line reaches) -->
+                  <div class="runway-step-col is-dimmed">
+                    <div class="runway-step-pill">
+                      <span class="runway-pill-num">03</span>
+                      <span class="runway-pill-label">Review</span>
+                    </div>
+                    <h4 class="runway-step-headline">Proof &amp; Refine</h4>
+                    
+                    <div class="runway-roles-container">
+                      <div class="runway-role-card is-client">
+                        <div class="runway-role-header">
+                          <span class="role-badge role-badge-client">CLIENT</span>
+                          <span class="role-action-title">What you provide</span>
+                        </div>
+                        <p class="runway-role-desc">Direct canvas markup comments and review feedback from your team.</p>
+                      </div>
+
+                      <div class="runway-role-card is-nesso">
+                        <div class="runway-role-header">
+                          <span class="role-badge role-badge-nesso">NESSO</span>
+                          <span class="role-action-title">What we deliver</span>
+                        </div>
+                        <p class="runway-role-desc">Fast 2 – 4h turnaround per revision with unlimited approved rounds.</p>
+                      </div>
+                    </div>
+
+                    <div class="runway-step-sla">
+                      <svg class="sla-clock-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <polyline points="12 6 12 12 16 14"></polyline>
+                      </svg>
+                      <span>2 – 4h Iterations</span>
+                    </div>
+                  </div>
+
+                  <!-- Step 04 (Dimmed until line reaches) -->
+                  <div class="runway-step-col is-dimmed">
+                    <div class="runway-step-pill">
+                      <span class="runway-pill-num">04</span>
+                      <span class="runway-pill-label">Delivery</span>
+                    </div>
+                    <h4 class="runway-step-headline">Master Handoff</h4>
+                    
+                    <div class="runway-roles-container">
+                      <div class="runway-role-card is-client">
+                        <div class="runway-role-header">
+                          <span class="role-badge role-badge-client">CLIENT</span>
+                          <span class="role-action-title">What you provide</span>
+                        </div>
+                        <p class="runway-role-desc">Final batch sign-off and instant high-speed download to your cloud.</p>
+                      </div>
+
+                      <div class="runway-role-card is-nesso">
+                        <div class="runway-role-header">
+                          <span class="role-badge role-badge-nesso">NESSO</span>
+                          <span class="role-action-title">What we deliver</span>
+                        </div>
+                        <p class="runway-role-desc">16-bit layered PSDs, 300 DPI CMYK TIFFs, WebP files, and 90-day archive.</p>
+                      </div>
+                    </div>
+
+                    <div class="runway-step-sla">
+                      <svg class="sla-clock-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <polyline points="12 6 12 12 16 14"></polyline>
+                      </svg>
+                      <span>Instant Cloud Access</span>
+                    </div>
+                  </div>
+
                 </div>
+
               </div>
-
-              <!-- Step 02 -->
-              <div class="runway-step-col">
-                <div class="runway-step-pill">
-                  <span class="runway-pill-num">02</span>
-                  <span class="runway-pill-label">Retouch</span>
-                </div>
-                <h4 class="runway-step-headline">Precision Retouch</h4>
-                
-                <div class="runway-roles-container">
-                  <div class="runway-role-card is-client">
-                    <div class="runway-role-header">
-                      <span class="role-badge role-badge-client">CLIENT</span>
-                      <span class="role-action-title">What you provide</span>
-                    </div>
-                    <p class="runway-role-desc">Live oversight via dashboard or Slack, and priority rush order requests.</p>
-                  </div>
-
-                  <div class="runway-role-card is-nesso">
-                    <div class="runway-role-header">
-                      <span class="role-badge role-badge-nesso">NESSO</span>
-                      <span class="role-action-title">What we deliver</span>
-                    </div>
-                    <p class="runway-role-desc">16-bit non-destructive layers, skin pores, volume, and jewelry polish.</p>
-                  </div>
-                </div>
-
-                <div class="runway-step-sla">
-                  <svg class="sla-clock-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <circle cx="12" cy="12" r="10"></circle>
-                    <polyline points="12 6 12 12 16 14"></polyline>
-                  </svg>
-                  <span>12 – 24h Turnaround</span>
-                </div>
-              </div>
-
-              <!-- Step 03 -->
-              <div class="runway-step-col">
-                <div class="runway-step-pill">
-                  <span class="runway-pill-num">03</span>
-                  <span class="runway-pill-label">Review</span>
-                </div>
-                <h4 class="runway-step-headline">Proof &amp; Refine</h4>
-                
-                <div class="runway-roles-container">
-                  <div class="runway-role-card is-client">
-                    <div class="runway-role-header">
-                      <span class="role-badge role-badge-client">CLIENT</span>
-                      <span class="role-action-title">What you provide</span>
-                    </div>
-                    <p class="runway-role-desc">Direct canvas markup comments and review feedback from your team.</p>
-                  </div>
-
-                  <div class="runway-role-card is-nesso">
-                    <div class="runway-role-header">
-                      <span class="role-badge role-badge-nesso">NESSO</span>
-                      <span class="role-action-title">What we deliver</span>
-                    </div>
-                    <p class="runway-role-desc">Fast 2 – 4h turnaround per revision with unlimited approved rounds.</p>
-                  </div>
-                </div>
-
-                <div class="runway-step-sla">
-                  <svg class="sla-clock-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <circle cx="12" cy="12" r="10"></circle>
-                    <polyline points="12 6 12 12 16 14"></polyline>
-                  </svg>
-                  <span>2 – 4h Iterations</span>
-                </div>
-              </div>
-
-              <!-- Step 04 -->
-              <div class="runway-step-col">
-                <div class="runway-step-pill">
-                  <span class="runway-pill-num">04</span>
-                  <span class="runway-pill-label">Delivery</span>
-                </div>
-                <h4 class="runway-step-headline">Master Handoff</h4>
-                
-                <div class="runway-roles-container">
-                  <div class="runway-role-card is-client">
-                    <div class="runway-role-header">
-                      <span class="role-badge role-badge-client">CLIENT</span>
-                      <span class="role-action-title">What you provide</span>
-                    </div>
-                    <p class="runway-role-desc">Final batch sign-off and instant high-speed download to your cloud.</p>
-                  </div>
-
-                  <div class="runway-role-card is-nesso">
-                    <div class="runway-role-header">
-                      <span class="role-badge role-badge-nesso">NESSO</span>
-                      <span class="role-action-title">What we deliver</span>
-                    </div>
-                    <p class="runway-role-desc">16-bit layered PSDs, 300 DPI CMYK TIFFs, WebP files, and 90-day archive.</p>
-                  </div>
-                </div>
-
-                <div class="runway-step-sla">
-                  <svg class="sla-clock-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <circle cx="12" cy="12" r="10"></circle>
-                    <polyline points="12 6 12 12 16 14"></polyline>
-                  </svg>
-                  <span>Instant Cloud Access</span>
-                </div>
-              </div>
-
             </div>
 
           </div>
         </div>
-
       </div>
     </section>
 

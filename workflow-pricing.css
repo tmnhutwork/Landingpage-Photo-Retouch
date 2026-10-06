@@ -4,7 +4,15 @@
    ========================================================================== */
 
 /* ── Section Shared Wrappers ───────────────────────────────────────── */
-.section-workflow,
+.section-workflow {
+  position: relative;
+  width: 100%;
+  background-color: var(--bg-cream, #FBFBFB);
+  color: var(--color-brown, #2B2017);
+  padding: 0;
+  border-top: 1px solid rgba(0, 0, 0, 0.06);
+}
+
 .section-pricing {
   position: relative;
   width: 100%;
@@ -12,6 +20,26 @@
   color: var(--color-brown, #2B2017);
   padding: 120px 48px;
   border-top: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+/* ── Workflow Scrollytelling Pinned Stage ──────────────────────────── */
+.workflow-scrolly-container {
+  width: 100%;
+  height: 280vh;
+  position: relative;
+}
+
+.workflow-sticky-stage {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  padding: 0 48px;
+  box-sizing: border-box;
 }
 
 .workflow-container,
@@ -250,12 +278,12 @@
 /* ── Workflow Clean Headline (Matching "Who we worked with.") ──────── */
 .workflow-header-wrap {
   text-align: center;
-  margin-bottom: 56px;
+  margin-bottom: 36px;
 }
 
 .workflow-clean-headline {
   font-family: var(--font-sans, 'Plus Jakarta Sans', sans-serif);
-  font-size: clamp(2.6rem, 4.2vw, 58px);
+  font-size: clamp(2.4rem, 4vw, 54px);
   font-weight: 500;
   line-height: 1.08;
   letter-spacing: -0.035em;
@@ -267,7 +295,7 @@
   background: #FFFFFF;
   border-radius: 24px;
   border: 1px solid rgba(0, 0, 0, 0.08);
-  padding: 48px 52px 52px;
+  padding: 40px 46px 44px;
   box-shadow: none;
 }
 
@@ -341,16 +369,8 @@
   background: #111111;
   border-radius: 9999px;
   transform-origin: left;
-  animation: runwayLineDraw 1.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-}
-
-@keyframes runwayLineDraw {
-  0% {
-    transform: scaleX(0);
-  }
-  100% {
-    transform: scaleX(1);
-  }
+  transform: scaleX(0);
+  will-change: transform;
 }
 
 .runway-markers-row {
@@ -371,13 +391,18 @@
 .runway-marker-dot {
   width: 8px;
   height: 8px;
-  background: #111111;
+  background: #D8D8D8;
   border-radius: 2px;
   box-shadow: 0 0 0 3px #FFFFFF;
-  transition: transform 0.2s ease, background-color 0.2s ease;
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.25s ease, box-shadow 0.25s ease;
 }
 
-.runway-step-col:hover .runway-marker-dot {
+.runway-marker-dot.is-active {
+  background: #111111;
+  box-shadow: 0 0 0 3px #FFFFFF, 0 1px 4px rgba(0, 0, 0, 0.15);
+}
+
+.runway-step-col:hover .runway-marker-dot.is-active {
   transform: scale(1.3);
   background: #000000;
   box-shadow: 0 0 0 4px #FFFFFF, 0 2px 6px rgba(0, 0, 0, 0.18);
@@ -393,6 +418,17 @@
 .runway-step-col {
   display: flex;
   flex-direction: column;
+  transition: opacity 0.4s cubic-bezier(0.16, 1, 0.3, 1), transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.runway-step-col.is-dimmed {
+  opacity: 0.28;
+  transform: translateY(3px);
+}
+
+.runway-step-col.is-active {
+  opacity: 1;
+  transform: translateY(0);
 }
 
 /* Split Pill Badge (Image 2 Match: Separate 01 Box + Label Box) */
@@ -990,8 +1026,31 @@
   }
 }
 
+@media (max-width: 900px) {
+  .section-workflow {
+    padding: 80px 20px;
+  }
+  .workflow-scrolly-container {
+    height: auto !important;
+  }
+  .workflow-sticky-stage {
+    position: relative !important;
+    height: auto !important;
+    padding: 0 !important;
+  }
+  .runway-line-fill {
+    transform: scaleX(1) !important;
+  }
+  .runway-step-col.is-dimmed {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+  .runway-marker-dot {
+    background: #111111 !important;
+  }
+}
+
 @media (max-width: 768px) {
-  .section-workflow,
   .section-pricing {
     padding: 80px 20px;
   }

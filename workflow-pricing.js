@@ -8,30 +8,72 @@
   'use strict';
 
   document.addEventListener('DOMContentLoaded', () => {
-    initRunwayAnimation();
+    initRunwayScrollytelling();
     initPricingSwitcher();
     initBillingToggle();
   });
 
-  // ── Runway Timeline: Trigger line draw on scroll into view ──
-  function initRunwayAnimation() {
-    const timeline = document.querySelector('.runway-timeline-bar');
+  // ── Runway Scrollytelling: Sticky Pinned Stage with GSAP Line Fill & Cumulative Activation ──
+  function initRunwayScrollytelling() {
+    const container = document.getElementById('workflow-scrolly-container');
     const lineFill = document.querySelector('.runway-line-fill');
-    if (!timeline || !lineFill) return;
+    const stepCols = document.querySelectorAll('.runway-step-col');
+    const dots = document.querySelectorAll('.runway-marker-dot');
 
-    if ('IntersectionObserver' in window) {
-      const observer = new IntersectionObserver((entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            lineFill.style.animation = 'none';
-            void lineFill.offsetWidth;
-            lineFill.style.animation = 'runwayLineDraw 1.4s cubic-bezier(0.16, 1, 0.3, 1) forwards';
-            observer.unobserve(entry.target);
-          }
-        });
-      }, { threshold: 0.25 });
-      observer.observe(timeline);
+    if (!container || !lineFill || stepCols.length === 0) return;
+
+    // Cumulative thresholds:
+    // Step 1: active always (threshold 0)
+    // Step 2: activates as line reaches Step 2 (~0.28)
+    // Step 3: activates as line reaches Step 3 (~0.61)
+    // Step 4: activates as line reaches Step 4 (~0.92)
+    const thresholds = [0, 0.28, 0.61, 0.92];
+
+    function updateSteps(progress) {
+      stepCols.forEach((col, idx) => {
+        const shouldBeActive = progress >= thresholds[idx];
+        col.classList.toggle('is-active', shouldBeActive);
+        col.classList.toggle('is-dimmed', !shouldBeActive);
+      });
+
+      dots.forEach((dot, idx) => {
+        const shouldBeActive = progress >= thresholds[idx];
+        dot.classList.toggle('is-active', shouldBeActive);
+      });
     }
+
+    function handleScroll() {
+      if (window.innerWidth <= 900) return;
+
+      const rect = container.getBoundingClientRect();
+      const winHeight = window.innerHeight;
+      const totalDist = rect.height - winHeight;
+      if (totalDist <= 0) return;
+
+      const scrolled = -rect.top;
+      // Clamp progress between 0 and 1
+      const progress = Math.max(0, Math.min(1, scrolled / totalDist));
+
+      // GSAP smooth line fill animation
+      if (window.gsap) {
+        window.gsap.to(lineFill, {
+          scaleX: progress,
+          duration: 0.22,
+          ease: 'power2.out',
+          overwrite: 'auto'
+        });
+      } else {
+        lineFill.style.transform = `scaleX(${progress})`;
+      }
+
+      updateSteps(progress);
+    }
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    window.addEventListener('resize', handleScroll, { passive: true });
+
+    // Initial setup on page load
+    handleScroll();
   }
 
   // ── Pricing Switcher: Elevated Cards (Option A) vs Editorial Columns (Option B) ──
