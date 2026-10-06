@@ -1,0 +1,518 @@
+/* =====================================================================
+   COSMOS.SO HERO — ORBITAL GALAXY REVOLUTION SYSTEM
+   Measured · Inward Facing · Continuous Orbit · No Card Hover
+   ===================================================================== */
+
+/* ── Reset & Base Tokens ───────────────────────────────────────────── */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  --bg: #FBFBFB;
+  --surface: #FFFFFF;
+  --ink: #111111;
+  --muted: #7E7C85;
+  --border-subtle: rgba(0, 0, 0, 0.07);
+  --card-w: 77px;
+  --card-h: 106px;
+  --card-radius: 12px;
+  --sans: 'Plus Jakarta Sans', sans-serif;
+}
+
+@media (max-width: 900px) {
+  :root {
+    --card-w: 68px;
+    --card-h: 94px;
+    --card-radius: 10px;
+  }
+}
+
+html, body {
+  width: 100%;
+  min-height: 100%;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--sans);
+  overflow-x: clip;
+  scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+button, input, select, textarea {
+  font-family: var(--sans);
+}
+
+/* ── Header ────────────────────────────────────────────────────────── */
+.header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 58px;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 34px;
+  background: rgba(245, 245, 243, 0.84);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.03);
+}
+
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: 26px;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  color: var(--ink);
+  text-decoration: none;
+  transition: transform 0.25s ease;
+}
+.logo:hover {
+  transform: rotate(30deg);
+}
+
+.nav {
+  display: flex;
+  gap: 22px;
+}
+.nav-link {
+  font-size: 13.5px;
+  font-weight: 500;
+  color: var(--muted);
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+.nav-link:hover,
+.nav-link.active {
+  color: var(--ink);
+}
+
+/* Search Pill */
+.search-wrapper {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+}
+.search-pill {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  padding: 6px 14px;
+  width: 310px;
+  background: #FFFFFF;
+  border: 1px solid var(--border-subtle);
+  border-radius: 9999px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.02);
+  transition: all 0.25s ease;
+}
+.search-pill:hover {
+  width: 335px;
+  border-color: rgba(0, 0, 0, 0.16);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+}
+.search-pill svg {
+  flex-shrink: 0;
+  color: #97959E;
+}
+.search-text {
+  flex: 1;
+  font-size: 12.5px;
+  color: var(--muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.rainbow-dot {
+  width: 11px;
+  height: 11px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  background: conic-gradient(from 0deg, #FF453A, #FF9F0A, #FFD60A, #30D158, #0A84FF, #BF5AF2, #FF453A);
+}
+
+/* Header Right */
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+}
+.link-login {
+  font-size: 13.5px;
+  font-weight: 500;
+  color: var(--muted);
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+.link-login:hover {
+  color: var(--ink);
+}
+.btn-signup {
+  padding: 7px 18px;
+  border-radius: 9999px;
+  background: var(--ink);
+  color: #FFFFFF;
+  font-size: 13px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: background 0.2s ease, transform 0.2s ease;
+}
+.btn-signup:hover {
+  background: #2A2A30;
+  transform: translateY(-1px);
+}
+
+/* ── Hero Container ────────────────────────────────────────────────── */
+.hero {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  min-height: 680px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  background: var(--bg);
+  user-select: none;
+}
+
+/* ── Floating Cards Stage (Circular Spiral System v13) ─────────────── */
+.stage {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 5;
+  overflow: hidden;
+}
+
+.spiral-svg {
+  display: none !important;
+}
+
+.spiral-svg path {
+  display: none !important;
+}
+
+.center-guide {
+  display: none !important;
+}
+
+.card {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: var(--card-w);
+  height: var(--card-h);
+  border-radius: var(--card-radius);
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.82);
+  box-shadow: none;
+  transform-origin: 50% 50%;
+  will-change: transform, opacity, filter, left, top;
+  z-index: 5;
+  background: #E8E6E3;
+  pointer-events: none;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
+.card .media {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
+.card::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.18), rgba(255, 255, 255, 0) 26%, rgba(0, 0, 0, 0.06) 100%);
+  pointer-events: none;
+}
+
+/* ── Spiral Debug Controls (Hidden) ────────────────────────────────── */
+.prototype-controls {
+  display: none !important;
+}
+
+/* ── Center Content ────────────────────────────────────────────────── */
+.center {
+  position: relative;
+  z-index: 200;
+  text-align: center;
+  pointer-events: none;
+  max-width: 780px;
+  padding: 0 20px;
+  transform: translateY(-6px);
+}
+
+/* Cosmos.so Ethereal Diffused Solid Mask & Background Blur Cloud */
+.center-glow {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: min(680px, 90vw);
+  height: 310px;
+  border-radius: 50%;
+  background: radial-gradient(
+    ellipse 62% 58% at 50% 50%,
+    #FBFBFB 0%,
+    #FBFBFB 48%,
+    rgba(251, 251, 251, 0.96) 68%,
+    rgba(251, 251, 251, 0.40) 86%,
+    rgba(251, 251, 251, 0) 100%
+  );
+  filter: blur(18px);
+  -webkit-filter: blur(18px);
+  pointer-events: none;
+  z-index: 1;
+}
+
+.center-glow::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: min(550px, 84vw);
+  height: 190px;
+  border-radius: 50%;
+  background: var(--bg);
+  filter: blur(12px);
+  -webkit-filter: blur(12px);
+}
+
+@media (max-width: 900px) {
+  .center-glow {
+    width: min(420px, 90vw);
+    height: 240px;
+    filter: blur(14px);
+    -webkit-filter: blur(14px);
+  }
+  .center-glow::before {
+    width: min(340px, 82vw);
+    height: 140px;
+    filter: blur(10px);
+    -webkit-filter: blur(10px);
+  }
+}
+
+.title {
+  position: relative;
+  z-index: 2;
+  font-size: clamp(2.1rem, 3.5vw, 3.25rem);
+  font-weight: 500;
+  letter-spacing: -0.03em;
+  line-height: 1.18;
+  color: var(--ink);
+  margin-bottom: 24px;
+}
+
+.serif-italic {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-style: italic;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+}
+
+.cta-row {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: auto; /* CTAs remain clickable */
+  margin-top: 8px;
+}
+
+/* Nesso CTA: Get A Free Trial Test & Explore Our Work */
+.btn-trial-main {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 28px;
+  background-color: #111111;
+  color: #FFFFFF;
+  border-radius: 9999px;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  text-decoration: none;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+  cursor: pointer;
+}
+.btn-trial-main:hover {
+  background-color: #222222;
+  transform: translateY(-1.5px);
+  box-shadow: 0 5px 16px rgba(0, 0, 0, 0.16);
+}
+.btn-trial-main:hover .icon-arrow {
+  transform: translate(2px, -2px);
+}
+
+.btn-explore {
+  display: inline-flex;
+  flex-direction: column;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  color: #111111;
+  text-decoration: none;
+  cursor: pointer;
+  padding: 4px 0;
+  transition: color 0.2s ease, opacity 0.2s ease;
+}
+.btn-explore:hover {
+  opacity: 0.75;
+}
+.btn-explore-line {
+  display: block;
+  width: 100%;
+  height: 1.5px;
+  background-color: #111111;
+  margin-top: 4px;
+  transition: transform 0.2s ease, opacity 0.2s ease;
+}
+.btn-explore:hover .btn-explore-line {
+  transform: scaleX(1.08);
+}
+.btn-outline:hover {
+  background: #FFFFFF;
+  border-color: rgba(0, 0, 0, 0.18);
+  transform: translateY(-1.5px);
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.06);
+}
+
+/* ── Scroll Indicator (Reference A Chevron above Platter Card) ─────── */
+.scroll-indicator {
+  position: absolute;
+  bottom: 84px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 40;
+  color: #787680;
+  opacity: 0.75;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  transition: opacity 0.2s, transform 0.2s;
+  animation: subtle-bounce 2.6s ease-in-out infinite;
+}
+.scroll-indicator:hover {
+  opacity: 1;
+  color: var(--ink);
+}
+@keyframes subtle-bounce {
+  0%, 100% { transform: translate(-50%, 0); }
+  50% { transform: translate(-50%, 4px); }
+}
+
+/* ── Continuation Section (Natural Scroll & Transition) ────────────── */
+.explore-section {
+  position: relative;
+  z-index: 30;
+  background: #FFFFFF;
+  padding: 96px 48px 120px;
+  border-top: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.explore-header {
+  max-width: 800px;
+  margin: 0 auto 56px;
+  text-align: center;
+}
+
+.explore-title {
+  font-size: clamp(2.2rem, 3.8vw, 3.2rem);
+  font-weight: 500;
+  letter-spacing: -0.03em;
+  line-height: 1.15;
+  color: var(--ink);
+  margin-bottom: 14px;
+}
+
+.explore-subtitle {
+  font-size: 16px;
+  color: var(--muted);
+  font-weight: 400;
+  line-height: 1.6;
+}
+
+.explore-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 28px;
+  max-width: 1280px;
+  margin: 0 auto;
+}
+
+.grid-card {
+  position: relative;
+  border-radius: 20px;
+  overflow: hidden;
+  background: var(--bg);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
+  transition: transform 0.35s ease, box-shadow 0.35s ease;
+}
+.grid-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.08);
+}
+.grid-card img {
+  width: 100%;
+  height: 320px;
+  object-fit: cover;
+  display: block;
+}
+.grid-card-meta {
+  padding: 20px 22px;
+  background: #FFFFFF;
+}
+.grid-tag {
+  display: inline-block;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 6px;
+}
+.grid-card-meta h3 {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--ink);
+}
+
+/* ── Responsive Adaptations ────────────────────────────────────────── */
+@media (max-width: 1024px) {
+  .search-wrapper { display: none; }
+}
+
+@media (max-width: 768px) {
+  .header { padding: 0 18px; }
+  .nav { display: none; }
+  .title { font-size: 2.1rem; line-height: 1.2; margin-bottom: 20px; }
+  .center-glow { width: 92vw; height: 250px; }
+  .cta-row { gap: 16px; flex-wrap: wrap; }
+  .card.card-ghost { display: none; }
+  .explore-section { padding: 64px 20px 80px; }
+}

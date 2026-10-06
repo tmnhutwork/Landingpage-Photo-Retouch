@@ -1,0 +1,452 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Nesso – Circular Spiral Hero v13</title>
+<style>
+  :root{
+    --bg:#f6f5f2;
+    --ink:#101010;
+    --card-w:56px;
+    --card-h:76px;
+    --card-radius:14px;
+  }
+
+  *{box-sizing:border-box}
+  html,body{
+    margin:0;
+    background:var(--bg);
+    color:var(--ink);
+    font-family:Inter,Arial,sans-serif;
+  }
+  body{min-height:100vh}
+
+  .hero{
+    position:relative;
+    height:100vh;
+    min-height:720px;
+    overflow:hidden;
+    background:
+      radial-gradient(circle at 50% 50%,
+        rgba(255,255,255,.98) 0 14%,
+        rgba(255,255,255,.86) 22%,
+        rgba(255,255,255,.32) 40%,
+        rgba(246,245,242,0) 62%),
+      var(--bg);
+  }
+
+  .topbar{
+    position:absolute;
+    inset:0 0 auto 0;
+    height:62px;
+    padding:0 28px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    z-index:60;
+    border-bottom:1px solid rgba(0,0,0,.06);
+    background:rgba(246,245,242,.78);
+    backdrop-filter:blur(8px);
+  }
+
+  .logo{font-size:20px;font-weight:800;letter-spacing:-.03em}
+  .nav{display:flex;gap:24px;font-size:13px;color:#555}
+  .top-cta{
+    height:36px;padding:0 17px;border:0;border-radius:999px;
+    background:#111;color:#fff;font-size:12px;font-weight:700;
+  }
+
+  .scene{
+    position:absolute;
+    inset:62px 0 0;
+    z-index:5;
+    pointer-events:none;
+  }
+
+  .spiral-svg{
+    position:absolute;
+    inset:0;
+    width:100%;
+    height:100%;
+    z-index:1;
+    opacity:.42;
+    pointer-events:none;
+  }
+  .spiral-svg path{
+    fill:none;
+    stroke:#796cff;
+    stroke-width:1.2;
+    stroke-dasharray:5 9;
+    opacity:.30;
+  }
+
+  .center-guide{
+    position:absolute;
+    left:50%;
+    top:50%;
+    width:12px;
+    height:12px;
+    margin-left:-6px;
+    margin-top:-6px;
+    border-radius:50%;
+    background:#796cff;
+    opacity:.25;
+    z-index:2;
+    pointer-events:none;
+  }
+
+  .card{
+    position:absolute;
+    left:0;
+    top:0;
+    width:var(--card-w);
+    height:var(--card-h);
+    border-radius:var(--card-radius);
+    overflow:hidden;
+    border:1px solid rgba(255,255,255,.82);
+    box-shadow:0 9px 22px rgba(16,16,16,.10);
+    transform-origin:50% 50%;
+    will-change:transform,opacity,filter,left,top;
+    z-index:5;
+    background:#ddd;
+  }
+
+  .media{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    display:block;
+    /* image stays in the same orientation as the card because it lives inside the card */
+  }
+
+  .card::after{
+    content:"";
+    position:absolute;
+    inset:0;
+    background:
+      linear-gradient(180deg,rgba(255,255,255,.18),rgba(255,255,255,0) 26%,rgba(0,0,0,.06) 100%);
+    pointer-events:none;
+  }
+
+  .hero-copy{
+    position:absolute;
+    left:50%;
+    top:51%;
+    width:min(720px,78vw);
+    transform:translate(-50%,-50%);
+    text-align:center;
+    z-index:30;
+  }
+
+  h1{
+    margin:0;
+    font-size:clamp(50px,5vw,84px);
+    line-height:.96;
+    letter-spacing:-.055em;
+    font-weight:500;
+  }
+
+  .actions{
+    margin-top:30px;
+    display:flex;
+    justify-content:center;
+    gap:12px;
+  }
+  .actions button{
+    height:46px;
+    padding:0 24px;
+    border-radius:999px;
+    border:1px solid rgba(0,0,0,.12);
+    font-size:14px;
+    font-weight:700;
+  }
+  .actions .primary{background:#111;color:#fff}
+  .actions .secondary{background:#fff;color:#111}
+
+  .prototype-controls{
+    position:absolute;
+    left:22px;
+    bottom:18px;
+    z-index:70;
+    display:flex;
+    align-items:center;
+    gap:8px;
+    flex-wrap:wrap;
+  }
+  .prototype-controls button,
+  .prototype-controls span{
+    min-height:34px;
+    padding:0 12px;
+    display:flex;
+    align-items:center;
+    border-radius:999px;
+    border:1px solid rgba(0,0,0,.07);
+    background:rgba(255,255,255,.78);
+    backdrop-filter:blur(8px);
+    color:#64615d;
+    font-size:11px;
+  }
+  .prototype-controls button{
+    cursor:pointer;
+    color:#111;
+  }
+
+  @media (max-width:900px){
+    :root{
+      --card-w:50px;
+      --card-h:68px;
+      --card-radius:12px;
+    }
+    .nav{display:none}
+    .prototype-controls{display:none}
+  }
+</style>
+</head>
+<body>
+
+<section class="hero" id="hero">
+  <div class="topbar">
+    <div class="logo">nesso.</div>
+    <div class="nav">
+      <span>Selected Work</span>
+      <span>Services</span>
+      <span>Contact</span>
+    </div>
+    <button class="top-cta">Get a Free Trial Test ↗</button>
+  </div>
+
+  <div class="scene" id="scene">
+    <svg class="spiral-svg" id="spiralSvg" aria-hidden="true">
+      <path id="spiralPath"></path>
+    </svg>
+    <div class="center-guide"></div>
+  </div>
+
+  <div class="hero-copy">
+    <h1>Your space<br>for inspiration</h1>
+    <div class="actions">
+      <button class="primary">Sign up</button>
+      <button class="secondary">Get the app</button>
+    </div>
+  </div>
+
+  <div class="prototype-controls">
+    <button id="togglePath">Hide spiral guide</button>
+    <span>v13 · animated · images rotate with cards · cards remain locked to path</span>
+  </div>
+</section>
+
+<script>
+(() => {
+  const hero = document.getElementById('hero');
+  const scene = document.getElementById('scene');
+  const pathEl = document.getElementById('spiralPath');
+  const toggle = document.getElementById('togglePath');
+  const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  const CARD_COUNT = 48;
+  const TURNS = 4.25;
+  const INNER_SAFE = 300;
+  const OUTER_EXTRA = 120;
+
+  const OUTER_SCALE = 1.08;
+  const INNER_SCALE = 0.92;
+
+  // Slower overall motion, but clearly visible
+  const FLOW_SPEED = 0.028;
+  const RESET_TAIL = 0.16;
+
+  const cards = [];
+
+  function svgData(index){
+    const palettes = [
+      ["#7dc6ff","#1d5fbf","#eaf7ff"],
+      ["#f7d9c2","#ba7448","#fff2ea"],
+      ["#d9eac7","#67855d","#f6fff2"],
+      ["#f0d7ef","#8a66a0","#fff4ff"],
+      ["#f4e2b1","#ad843a","#fff7df"],
+      ["#d8e7eb","#4c7384","#f4fcff"],
+      ["#f0d4dc","#ae6887","#fff4f8"],
+      ["#e7ddd2","#876b55","#fcf8f4"]
+    ];
+    const p = palettes[index % palettes.length];
+    const dark = p[1], mid = p[0], light = p[2];
+    const label = String(index + 1).padStart(2,"0");
+
+    const svg = `
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 112 152">
+        <defs>
+          <linearGradient id="g" x1="0" x2="1" y1="0" y2="1">
+            <stop offset="0%" stop-color="${light}"/>
+            <stop offset="100%" stop-color="${mid}"/>
+          </linearGradient>
+        </defs>
+        <rect width="112" height="152" rx="14" fill="url(#g)"/>
+        <rect x="9" y="9" width="94" height="134" rx="10" fill="rgba(255,255,255,.18)"/>
+        <rect x="18" y="20" width="76" height="52" rx="8" fill="${dark}" opacity=".18"/>
+        <circle cx="36" cy="46" r="16" fill="${dark}" opacity=".40"/>
+        <rect x="54" y="35" width="26" height="9" rx="4.5" fill="${dark}" opacity=".55"/>
+        <rect x="54" y="50" width="34" height="7" rx="3.5" fill="${dark}" opacity=".28"/>
+        <path d="M18 98 C36 82, 54 80, 94 94 L94 126 L18 126 Z" fill="${dark}" opacity=".28"/>
+        <rect x="18" y="108" width="48" height="9" rx="4.5" fill="${dark}" opacity=".32"/>
+        <text x="88" y="128" text-anchor="end" font-family="Inter, Arial, sans-serif" font-size="11" font-weight="700" fill="${dark}" opacity=".7">${label}</text>
+      </svg>
+    `;
+    return "data:image/svg+xml;charset=UTF-8," + encodeURIComponent(svg);
+  }
+
+  for(let i=0;i<CARD_COUNT;i++){
+    const el = document.createElement('div');
+    el.className = 'card';
+
+    const img = document.createElement('img');
+    img.className = 'media';
+    img.alt = "";
+    img.src = svgData(i);
+
+    el.appendChild(img);
+    scene.appendChild(el);
+    cards.push({el,index:i});
+  }
+
+  toggle.addEventListener('click',()=>{
+    const visible = pathEl.style.opacity !== '0';
+    pathEl.style.opacity = visible ? '0' : '.30';
+    document.querySelector('.center-guide').style.opacity = visible ? '0' : '.25';
+    toggle.textContent = visible ? 'Show spiral guide' : 'Hide spiral guide';
+  });
+
+  const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
+  const lerp=(a,b,t)=>a+(b-a)*t;
+
+  function spiralPoint(u, outerR, innerR){
+    const r = lerp(outerR, innerR, u);
+    const theta = -Math.PI*.58 + u*(Math.PI*2*TURNS);
+    return {
+      u,r,theta,
+      x:Math.cos(theta)*r,
+      y:Math.sin(theta)*r
+    };
+  }
+
+  function buildLookup(outerR, innerR){
+    const samples = 2600;
+    const pts = [];
+    let totalLen = 0;
+    let prev = null;
+
+    for(let i=0;i<=samples;i++){
+      const u = i/samples;
+      const p = spiralPoint(u, outerR, innerR);
+
+      if(prev){
+        totalLen += Math.hypot(p.x-prev.x,p.y-prev.y);
+      }
+
+      pts.push({
+        u: p.u,
+        x: p.x,
+        y: p.y,
+        theta: p.theta,
+        len: totalLen
+      });
+      prev = p;
+    }
+    return {pts,totalLen};
+  }
+
+  function sampleByArc(lookup, t){
+    t = clamp(t,0,1);
+    const target = t * lookup.totalLen;
+    const pts = lookup.pts;
+
+    let lo = 0, hi = pts.length - 1;
+    while(lo < hi){
+      const mid = (lo + hi) >> 1;
+      if(pts[mid].len < target) lo = mid + 1;
+      else hi = mid;
+    }
+
+    const b = pts[lo];
+    const a = pts[Math.max(0, lo - 1)];
+    const span = Math.max(0.0001, b.len - a.len);
+    const k = clamp((target - a.len)/span,0,1);
+
+    return {
+      u: lerp(a.u,b.u,k),
+      x: lerp(a.x,b.x,k),
+      y: lerp(a.y,b.y,k)
+    };
+  }
+
+  function buildGuide(cx,cy,outerR,innerR){
+    const steps = 720;
+    let d = "";
+    for(let i=0;i<=steps;i++){
+      const p = spiralPoint(i/steps, outerR, innerR);
+      const x = cx + p.x;
+      const y = cy + p.y;
+      d += (i===0 ? "M" : "L") + x.toFixed(2) + " " + y.toFixed(2) + " ";
+    }
+    pathEl.setAttribute("d", d);
+  }
+
+  function render(ms){
+    const rect = scene.getBoundingClientRect();
+    const w = rect.width;
+    const h = rect.height;
+    const cx = w/2;
+    const cy = h/2;
+
+    const outerR = Math.hypot(w/2,h/2) + OUTER_EXTRA;
+    const innerR = Math.max(250, Math.min(INNER_SAFE, w*0.18));
+
+    buildGuide(cx,cy,outerR,innerR);
+    const lookup = buildLookup(outerR, innerR);
+
+    const step = 1 / (CARD_COUNT - 1);
+    const timeOffset = reduceMotion ? 0 : (ms/1000) * FLOW_SPEED;
+    const cycle = 1 + RESET_TAIL;
+
+    cards.forEach((item,i)=>{
+      let t = i * step + timeOffset;
+      t = ((t % cycle) + cycle) % cycle;
+
+      if(t > 1){
+        item.el.style.opacity = "0";
+        return;
+      }
+
+      const p = sampleByArc(lookup, t);
+
+      const x = cx + p.x;
+      const y = cy + p.y;
+
+      // bottom short edge points to center
+      const angleToCenter = Math.atan2(cy - y, cx - x) * 180 / Math.PI;
+      const rotation = angleToCenter - 90;
+      const scale = lerp(OUTER_SCALE, INNER_SCALE, p.u);
+
+      const fadeIn = clamp(t/0.04,0,1);
+      const fadeOut = clamp((1-t)/0.09,0,1);
+      const opacity = Math.min(fadeIn, fadeOut);
+      const blur = lerp(0, 0.7, p.u);
+
+      item.el.style.left = x + "px";
+      item.el.style.top = y + "px";
+      item.el.style.opacity = opacity.toFixed(3);
+      item.el.style.filter = `blur(${blur.toFixed(2)}px)`;
+      item.el.style.transform =
+        `translate(-50%,-50%) rotate(${rotation.toFixed(2)}deg) scale(${scale.toFixed(3)})`;
+      item.el.style.zIndex = String(Math.round(100 - p.u*35));
+    });
+
+    requestAnimationFrame(render);
+  }
+
+  requestAnimationFrame(render);
+})();
+</script>
+</body>
+</html>

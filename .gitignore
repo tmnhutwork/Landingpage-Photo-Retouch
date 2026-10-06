@@ -1,0 +1,17 @@
+# Dependencies
+node_modules/
+
+# OS & Environment
+.DS_Store
+Thumbs.db
+*.log
+
+# Temporary screen recordings & skill zip extract
+*.mp4
+ui-ux-pro-max-skill-main/
+
+# Temporary root test screenshots
+/*.png
+
+# Local credentials and MCP configs
+**/mcp_config.json
