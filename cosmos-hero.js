@@ -240,10 +240,10 @@
     updateGeometry();
     window.addEventListener('resize', updateGeometry, { passive: true });
 
-    // Ultra-smooth, non-jerky clockwise scroll velocity physics with extended glide duration
+    // Calibrated scroll velocity physics: MAX = 0.025, impulse +35%, pleasant smooth glide (~0.85s)
     let currentScrollVelocity = 0;
     let targetScrollVelocity = 0;
-    const MAX_SCROLL_VELOCITY = 0.042; // responsive, pleasant top speed (~9x ambient)
+    const MAX_SCROLL_VELOCITY = 0.025; // user-specified top speed
 
     window.addEventListener('wheel', (e) => {
       const scrollY = window.scrollY || window.pageYOffset || document.documentElement.scrollTop || 0;
@@ -253,9 +253,9 @@
         return;
       }
 
-      // Smooth impulse scaled by delta
+      // Smooth impulse (+35% responsiveness per user request)
       const delta = Math.abs(e.deltaY);
-      const impulse = Math.min(0.015, delta * 0.000085);
+      const impulse = Math.min(0.0057, delta * 0.000038);
       targetScrollVelocity = Math.min(MAX_SCROLL_VELOCITY, targetScrollVelocity + impulse);
     }, { passive: true });
 
@@ -265,9 +265,9 @@
       const deltaY = Math.abs(currentY - lastScrollY);
       lastScrollY = currentY;
 
-      // When scrolling down OR scrolling back up to the top, apply smooth velocity
+      // When scrolling down OR scrolling back up to the top, apply smooth velocity (+35%)
       if (currentY < window.innerHeight * 1.3 && deltaY > 0) {
-        const impulse = Math.min(0.016, deltaY * 0.000095);
+        const impulse = Math.min(0.0061, deltaY * 0.000043);
         targetScrollVelocity = Math.min(MAX_SCROLL_VELOCITY, targetScrollVelocity + impulse);
       }
     }, { passive: true });
@@ -285,12 +285,12 @@
       const dt = Math.min(0.1, (timestamp - lastTimestamp) / 1000);
       lastTimestamp = timestamp;
 
-      // Continuous low-pass filter: decay target velocity smoothly with extended coasting duration (~1.8 - 2.2 seconds)
-      const decay = Math.pow(0.968, dt * 60);
+      // Pleasant smooth glide decay: settles in ~0.85s so users feel the distinction without dizziness
+      const decay = Math.pow(0.942, dt * 60);
       targetScrollVelocity *= decay;
 
-      // Exponential ease-to-target: eliminates any stepped sawtooth/jerking completely
-      const ease = 1 - Math.exp(-8 * dt);
+      // Smooth ease-to-target
+      const ease = 1 - Math.exp(-10 * dt);
       currentScrollVelocity += (targetScrollVelocity - currentScrollVelocity) * ease;
 
       if (!reduceMotion) {
@@ -325,12 +325,16 @@
         const opacity = Math.min(fadeIn, fadeOut);
         
         // Ethereal depth-of-field: cards smoothly blur as they approach the center aura
-        const innerProgress = clamp((p.u - 0.82) / 0.18, 0, 1);
-        const blur = Math.pow(innerProgress, 2.0) * 2.2;
+        const innerProgress = clamp((p.u - 0.58) / 0.42, 0, 1);
+        const blur = Math.pow(innerProgress, 1.6) * 12.0;
+
+        // Cards smoothly dissolve as they reach the innermost turns behind the blurred color patch
+        const coreFade = clamp(1 - (p.u - 0.78) / 0.22, 0, 1);
+        const finalOpacity = Math.min(opacity, coreFade);
 
         item.el.style.left = x + 'px';
         item.el.style.top = y + 'px';
-        item.el.style.opacity = opacity.toFixed(3);
+        item.el.style.opacity = finalOpacity.toFixed(3);
         item.el.style.filter = blur > 0.08 ? `blur(${blur.toFixed(2)}px)` : 'none';
         item.el.style.transform = `translate(-50%,-50%) rotate(${rotation.toFixed(2)}deg) scale(${scale.toFixed(3)})`;
         item.el.style.zIndex = String(Math.round(100 - p.u * 35));
