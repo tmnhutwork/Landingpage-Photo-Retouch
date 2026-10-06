@@ -8,40 +8,30 @@
   'use strict';
 
   document.addEventListener('DOMContentLoaded', () => {
-    initWorkflowSwitcher();
+    initRunwayAnimation();
     initPricingSwitcher();
     initBillingToggle();
   });
 
-  // ── Workflow Switcher: Matrix (Option 1) vs Stepper (Option 2) ──
-  function initWorkflowSwitcher() {
-    const btnMatrix = document.getElementById('switch-wf-matrix');
-    const btnStepper = document.getElementById('switch-wf-stepper');
-    const viewMatrix = document.getElementById('workflow-matrix-view');
-    const viewStepper = document.getElementById('workflow-stepper-view');
+  // ── Runway Timeline: Trigger line draw on scroll into view ──
+  function initRunwayAnimation() {
+    const timeline = document.querySelector('.runway-timeline-bar');
+    const lineFill = document.querySelector('.runway-line-fill');
+    if (!timeline || !lineFill) return;
 
-    if (!btnMatrix || !btnStepper || !viewMatrix || !viewStepper) return;
-
-    btnMatrix.addEventListener('click', () => {
-      btnMatrix.classList.add('is-active');
-      btnStepper.classList.remove('is-active');
-      viewMatrix.style.display = 'grid';
-      viewStepper.style.display = 'none';
-    });
-
-    btnStepper.addEventListener('click', () => {
-      btnStepper.classList.add('is-active');
-      btnMatrix.classList.remove('is-active');
-      viewStepper.style.display = 'block';
-      viewMatrix.style.display = 'none';
-
-      const lineFill = viewStepper.querySelector('.runway-line-fill');
-      if (lineFill) {
-        lineFill.style.animation = 'none';
-        void lineFill.offsetWidth;
-        lineFill.style.animation = '';
-      }
-    });
+    if ('IntersectionObserver' in window) {
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            lineFill.style.animation = 'none';
+            void lineFill.offsetWidth;
+            lineFill.style.animation = 'runwayLineDraw 1.4s cubic-bezier(0.16, 1, 0.3, 1) forwards';
+            observer.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.25 });
+      observer.observe(timeline);
+    }
   }
 
   // ── Pricing Switcher: Elevated Cards (Option A) vs Editorial Columns (Option B) ──

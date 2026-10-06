@@ -244,7 +244,7 @@
    WORKFLOW — HƯỚNG 2: RUNWAY COMPACT TIMELINE (Mobbin Reference 1:1)
    ========================================================================== */
 .workflow-view-stepper {
-  display: none; /* toggled via JS */
+  display: block;
 }
 
 .runway-workflow-card {
@@ -487,17 +487,17 @@
   line-height: 1;
 }
 
-/* Filled Vibrant Colors for Client and Nesso */
+/* Filled Vibrant Colors for Client and Nesso (Clean Flat, No Shadow or Glow) */
 .role-badge-client {
   background: #2563EB;
   color: #FFFFFF;
-  box-shadow: 0 1.5px 4px rgba(37, 99, 235, 0.28);
+  box-shadow: none;
 }
 
 .role-badge-nesso {
   background: #EA580C;
   color: #FFFFFF;
-  box-shadow: 0 1.5px 4px rgba(234, 88, 12, 0.28);
+  box-shadow: none;
 }
 
 .role-action-title {
