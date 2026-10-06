@@ -440,30 +440,31 @@
   line-height: 1.3;
 }
 
-/* Two-Sided Roles Container: Client vs Nesso */
+/* Two-Sided Roles Container: Client vs Nesso (Unboxed, Airy, Equal Height) */
 .runway-roles-container {
   display: flex;
   flex-direction: column;
-  gap: 10px;
-  margin-bottom: 20px;
+  gap: 18px;
+  margin-bottom: 24px;
   flex: 1;
 }
 
 .runway-role-card {
-  border-radius: 10px;
-  padding: 12px 14px;
-  border: 1px solid rgba(0, 0, 0, 0.05);
-  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+  background: transparent;
+  border: none;
+  border-radius: 0;
+  padding: 0;
+  box-shadow: none;
+  display: flex;
+  flex-direction: column;
 }
 
 .runway-role-card.is-client {
-  background: #FAFAFA;
-  border-left: 3px solid #888888;
+  min-height: 68px;
 }
 
 .runway-role-card.is-nesso {
-  background: #F6F6F8;
-  border-left: 3px solid #111111;
+  min-height: 68px;
 }
 
 .runway-role-header {
@@ -474,47 +475,52 @@
 }
 
 .role-badge {
-  display: inline-block;
-  font-size: 9px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 9.5px;
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.06em;
-  padding: 2px 6px;
+  padding: 3px 7px;
   border-radius: 4px;
-  line-height: 1.2;
+  line-height: 1;
 }
 
+/* Filled Vibrant Colors for Client and Nesso */
 .role-badge-client {
-  background: #E8E8E8;
-  color: #555555;
+  background: #2563EB;
+  color: #FFFFFF;
+  box-shadow: 0 1.5px 4px rgba(37, 99, 235, 0.28);
 }
 
 .role-badge-nesso {
-  background: #111111;
+  background: #EA580C;
   color: #FFFFFF;
+  box-shadow: 0 1.5px 4px rgba(234, 88, 12, 0.28);
 }
 
 .role-action-title {
-  font-size: 10.5px;
+  font-size: 11px;
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.05em;
-  color: #777777;
+  color: #64748B;
+}
+
+.runway-role-card.is-client .role-action-title {
+  color: #1E40AF;
 }
 
 .runway-role-card.is-nesso .role-action-title {
-  color: #222222;
+  color: #C2410C;
 }
 
 .runway-role-desc {
-  font-size: 12.5px;
-  color: #444444;
+  font-size: 13px;
+  color: #475569;
   line-height: 1.5;
   margin: 0;
-}
-
-.runway-role-card.is-nesso .runway-role-desc {
-  color: #1A1A1A;
 }
 
 /* Bottom SLA Badge */
@@ -523,11 +529,11 @@
   align-items: center;
   gap: 6px;
   font-size: 12.5px;
-  color: #666666;
+  color: #64748B;
   font-weight: 600;
   margin-top: auto;
   padding-top: 14px;
-  border-top: 1px dashed rgba(0, 0, 0, 0.08);
+  border-top: 1px solid rgba(0, 0, 0, 0.07);
 }
 
 .sla-clock-icon {
