@@ -29,7 +29,7 @@
   background: #FFFFFF;
   padding: 80px 24px 90px;
   position: relative;
-  overflow: visible;
+  overflow: hidden;
   border-top: 1px solid rgba(0, 0, 0, 0.06);
 }
 
@@ -104,9 +104,10 @@
   border-radius: 8px;
   overflow: hidden;
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
-  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.25s ease;
   position: relative;
   background: #FAFAFA;
+  will-change: transform;
+  cursor: default;
 }
 
 .d4-cell-media img {
@@ -114,12 +115,7 @@
   height: 100%;
   object-fit: cover;
   display: block;
-}
-
-.d4-cell-media:hover {
-  transform: scale(1.08);
-  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.14);
-  z-index: 10;
+  pointer-events: none;
 }
 
 /* Transparent Hand-drawn Line-art Illustration */
@@ -175,6 +171,20 @@
   justify-content: center;
   gap: 10px;
   flex-wrap: wrap;
+}
+
+.d4-actions-row .btn-trial-main {
+  transition: background-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.d4-actions-row .btn-trial-main:hover {
+  transform: none !important;
+  background-color: #242424;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.16);
+}
+
+.d4-actions-row .btn-trial-main:hover .icon-arrow {
+  transform: none !important;
 }
 
 /* ==========================================================================

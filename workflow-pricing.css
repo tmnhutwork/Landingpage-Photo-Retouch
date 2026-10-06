@@ -334,12 +334,7 @@
 
 .runway-card-btn:hover {
   background: #2A2A30;
-  transform: translateY(-1.5px);
   box-shadow: 0 5px 16px rgba(0, 0, 0, 0.16);
-}
-
-.runway-card-btn:hover .icon-arrow {
-  transform: translate(2px, -2px);
 }
 
 /* Timeline Horizontal Line Running from Step 1 to Step 4 */
@@ -827,7 +822,6 @@
 .price-card-cta:hover {
   background: #282828;
   border-color: #282828;
-  transform: translateY(-1px);
   box-shadow: 0 6px 18px rgba(0, 0, 0, 0.15);
 }
 

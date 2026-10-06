@@ -7,8 +7,12 @@
 
   document.addEventListener('DOMContentLoaded', () => {
     initFAQAccordion();
+    initCTAPerspectiveTilt();
   });
 
+  /* ==========================================================================
+     1. FAQ ACCORDION INTERACTION
+     ========================================================================== */
   function initFAQAccordion() {
     const items = document.querySelectorAll('.d4-faq-card');
 
@@ -46,4 +50,128 @@
       });
     });
   }
+
+  /* ==========================================================================
+     2. CTA CURSOR-DRIVEN GENTLE MAGNETIC ATTRACTION (GSAP)
+     Only photo elements (.d4-cell-media) gently float/attract towards cursor.
+     All other elements (grid canvas, dots, sketches, headline, button) stay 100% static.
+     WordPress Compatible | Pure Vanilla JS + GSAP Core | Zero Dependencies
+     ========================================================================== */
+  function initCTAPerspectiveTilt() {
+    // Safety check: GSAP availability & Accessibility checks
+    if (typeof gsap === 'undefined') {
+      console.warn('[NESSO CTA Magnet] GSAP not detected. Effect disabled.');
+      return;
+    }
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    if (window.matchMedia('(hover: none)').matches) return;
+
+    const section = document.getElementById('d4-cta');
+    if (!section) return;
+
+    // Target ONLY the photo image cards (.d4-cell-media)
+    const photoElements = section.querySelectorAll('.d4-cell-media');
+    if (!photoElements.length) return;
+
+    // Configuration dials for gentle, subtle magnetic pull
+    const CONFIG = {
+      magneticRadius: 300,    // Pixel radius around cursor where gentle attraction begins
+      magneticPull: 12,       // Gentle suction force: max 12px pull towards cursor
+      parallaxDriftX: 3,      // Very subtle ambient drift X (3px max)
+      parallaxDriftY: 2,      // Very subtle ambient drift Y (2px max)
+      lerpDuration: 0.55,     // Interpolation smoothing duration (silky 60-120fps)
+      ease: 'power2.out'
+    };
+
+    // Prepare photo items with individual quickTo setters (pure 2D floating)
+    const items = Array.from(photoElements).map(el => {
+      return {
+        el,
+        relX: 0,
+        relY: 0,
+        quickX: gsap.quickTo(el, 'x', { duration: CONFIG.lerpDuration, ease: CONFIG.ease }),
+        quickY: gsap.quickTo(el, 'y', { duration: CONFIG.lerpDuration, ease: CONFIG.ease })
+      };
+    });
+
+    let sectionRect = section.getBoundingClientRect();
+
+    // Cache relative item center positions to completely eliminate DOM reads during mousemove
+    function updateMetrics() {
+      sectionRect = section.getBoundingClientRect();
+      items.forEach(item => {
+        const currentTransform = item.el.style.transform;
+        const currentTransition = item.el.style.transition;
+        item.el.style.transition = 'none';
+        item.el.style.transform = 'none';
+
+        const itemRect = item.el.getBoundingClientRect();
+        item.relX = (itemRect.left - sectionRect.left) + itemRect.width / 2;
+        item.relY = (itemRect.top - sectionRect.top) + itemRect.height / 2;
+
+        item.el.style.transform = currentTransform;
+        item.el.style.transition = currentTransition;
+      });
+    }
+
+    updateMetrics();
+    window.addEventListener('resize', updateMetrics, { passive: true });
+    window.addEventListener('scroll', () => {
+      sectionRect = section.getBoundingClientRect();
+    }, { passive: true });
+
+    // Handle mouse movement across the CTA Section
+    section.addEventListener('mousemove', (e) => {
+      const mouseRelX = e.clientX - sectionRect.left;
+      const mouseRelY = e.clientY - sectionRect.top;
+
+      // Normalized coordinates from center [-0.5, 0.5]
+      const normX = (mouseRelX / sectionRect.width) - 0.5;
+      const normY = (mouseRelY / sectionRect.height) - 0.5;
+
+      items.forEach(item => {
+        const dx = mouseRelX - item.relX;
+        const dy = mouseRelY - item.relY;
+        const dist = Math.hypot(dx, dy);
+
+        // Subtle ambient drift
+        const driftX = normX * CONFIG.parallaxDriftX;
+        const driftY = normY * CONFIG.parallaxDriftY;
+
+        // Gentle localized magnetic pull when cursor is nearby
+        let pullX = 0;
+        let pullY = 0;
+        if (dist < CONFIG.magneticRadius) {
+          const proximity = Math.pow(1 - (dist / CONFIG.magneticRadius), 1.8);
+          const force = proximity * CONFIG.magneticPull;
+          pullX = (dx / (dist || 1)) * force;
+          pullY = (dy / (dist || 1)) * force;
+        }
+
+        const totalX = driftX + pullX;
+        const totalY = driftY + pullY;
+
+        item.quickX(totalX);
+        item.quickY(totalY);
+      });
+    });
+
+    // Handle cursor leaving the section: smooth glide back to (0, 0)
+    section.addEventListener('mouseleave', () => {
+      items.forEach(item => {
+        gsap.to(item.el, {
+          x: 0,
+          y: 0,
+          duration: 0.65,
+          ease: 'power2.out',
+          overwrite: 'auto'
+        });
+      });
+    });
+
+    section.addEventListener('mouseenter', () => {
+      sectionRect = section.getBoundingClientRect();
+    });
+  }
 })();
+

@@ -181,12 +181,11 @@ textarea {
   font-size: 13px;
   font-weight: 600;
   text-decoration: none;
-  transition: background 0.2s ease, transform 0.2s ease;
+  transition: background 0.2s ease;
 }
 
 .btn-signup:hover {
   background: #2A2A30;
-  transform: translateY(-1px);
 }
 
 /* ── Hero Container ────────────────────────────────────────────────── */
@@ -382,18 +381,13 @@ textarea {
   text-transform: uppercase;
   text-decoration: none;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-  transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: background-color 0.22s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.22s ease;
   cursor: pointer;
 }
 
 .btn-trial-main:hover {
   background-color: #222222;
-  transform: translateY(-1.5px);
   box-shadow: 0 5px 16px rgba(0, 0, 0, 0.16);
-}
-
-.btn-trial-main:hover .icon-arrow {
-  transform: translate(2px, -2px);
 }
 
 .btn-explore {
@@ -430,7 +424,6 @@ textarea {
 .btn-outline:hover {
   background: #FFFFFF;
   border-color: rgba(0, 0, 0, 0.18);
-  transform: translateY(-1.5px);
   box-shadow: 0 3px 10px rgba(0, 0, 0, 0.06);
 }
 
