@@ -214,18 +214,28 @@ function switchServiceAccordion(targetItem) {
       }
 
       if (content) {
-        const animElements = [
-          content.querySelector('.service-number'),
-          content.querySelector('.service-title'),
-          content.querySelector('.service-description'),
-          zoomCard,
-          ctaRow
-        ].filter(Boolean);
+        const chars = content.querySelectorAll('.cosmos-char');
+        if (chars.length > 0) {
+          gsap.fromTo(chars,
+            { opacity: 0, filter: 'blur(7px)' },
+            { opacity: 1, filter: 'blur(0px)', duration: 0.45, stagger: 0.009, ease: 'power2.out', clearProps: 'filter' }
+          );
+          if (zoomCard) gsap.fromTo(zoomCard, { opacity: 0 }, { opacity: 1, duration: 0.4, delay: 0.18 });
+          if (ctaRow) gsap.fromTo(ctaRow, { opacity: 0 }, { opacity: 1, duration: 0.4, delay: 0.25 });
+        } else {
+          const animElements = [
+            content.querySelector('.service-number'),
+            content.querySelector('.service-title'),
+            content.querySelector('.service-description'),
+            zoomCard,
+            ctaRow
+          ].filter(Boolean);
 
-        gsap.fromTo(animElements,
-          { opacity: 0, y: 12 },
-          { opacity: 1, y: 0, stagger: 0.05, duration: 0.38, ease: 'power2.out' }
-        );
+          gsap.fromTo(animElements,
+            { opacity: 0, y: 12 },
+            { opacity: 1, y: 0, stagger: 0.05, duration: 0.38, ease: 'power2.out' }
+          );
+        }
       }
 
       initAllServiceSliders();
