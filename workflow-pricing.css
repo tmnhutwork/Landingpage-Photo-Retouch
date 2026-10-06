@@ -63,7 +63,7 @@
   line-height: 1.2;
   color: #111111;
   margin-top: 12px;
-  margin-bottom: 16px;
+  margin-bottom: 0;
 }
 
 .section-subtext {
@@ -679,69 +679,64 @@
 
 .price-card {
   background: #FFFFFF;
-  border-radius: 22px;
-  border: 1px solid rgba(0, 0, 0, 0.08);
-  padding: 44px 36px;
+  border-radius: 20px;
+  border: 1px solid rgba(0, 0, 0, 0.09);
+  padding: 0;
+  overflow: hidden;
   display: flex;
   flex-direction: column;
   position: relative;
-  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.02);
-  transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+  box-shadow: none;
+  min-height: 610px;
 }
 
-.price-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.07);
+/* Pangram-style Colored Header Banners (3 Colors) */
+.price-card-banner {
+  padding: 13px 28px;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  min-height: 44px;
 }
 
-/* Highlighted Pro Plan Card */
-.price-card.is-highlighted {
-  border: 2px solid #111111;
-  box-shadow: 0 12px 36px rgba(0, 0, 0, 0.08);
-}
-
-.price-card-popular-pill {
-  position: absolute;
-  top: -13px;
-  left: 50%;
-  transform: translateX(-50%);
-  background: #111111;
+.price-card-banner.banner-simple {
+  background: #4A2411;
   color: #FFFFFF;
-  font-size: 11px;
-  font-weight: 700;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  padding: 5px 16px;
-  border-radius: 9999px;
-  white-space: nowrap;
 }
 
-.price-card-plan-name {
-  font-size: 14px;
-  font-weight: 700;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: #777777;
-  margin-bottom: 8px;
+.price-card-banner.banner-medium {
+  background: #BAE6FD;
+  color: #0C4A6E;
 }
 
-.price-card.is-highlighted .price-card-plan-name {
-  color: #111111;
+.price-card-banner.banner-premium {
+  background: #EDE9FE;
+  color: #581C87;
 }
 
-.price-card-desc {
-  font-size: 14px;
-  color: #666666;
-  min-height: 42px;
-  margin-bottom: 24px;
-  line-height: 1.5;
+/* Card Body Layout */
+.price-card-body {
+  padding: 30px 28px 20px;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
 }
 
 .price-figure-wrap {
   display: flex;
   align-items: baseline;
   gap: 6px;
-  margin-bottom: 12px;
+  margin-bottom: 8px;
+}
+
+.price-from {
+  font-size: 14px;
+  color: #777777;
+  font-weight: 500;
 }
 
 .price-currency {
@@ -752,9 +747,9 @@
 
 .price-amount {
   font-family: var(--font-sans, 'Plus Jakarta Sans', sans-serif);
-  font-size: 52px;
+  font-size: 38px;
   font-weight: 700;
-  letter-spacing: -0.04em;
+  letter-spacing: -0.03em;
   color: #111111;
   line-height: 1;
 }
@@ -764,18 +759,49 @@
   color: #777777;
 }
 
-.price-turnaround-badge {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  font-size: 12px;
-  font-weight: 600;
-  color: #111111;
-  background: #F4F4F4;
-  padding: 6px 12px;
-  border-radius: 9999px;
-  margin-bottom: 28px;
-  align-self: flex-start;
+.price-card-desc {
+  font-size: 13.5px;
+  color: #666666;
+  min-height: 42px;
+  margin: 0 0 20px 0;
+  line-height: 1.5;
+}
+
+/* Dashed Divider Line */
+.price-card-divider {
+  width: 100%;
+  height: 0;
+  border: none;
+  border-top: 1.5px dashed rgba(0, 0, 0, 0.12);
+  margin: 0 0 22px 0;
+}
+
+.price-features-list {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 36px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 13px;
+  flex: 1;
+}
+
+.price-features-list li {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  font-size: 13.5px;
+  color: #333333;
+  line-height: 1.45;
+}
+
+.price-check-icon,
+.price-bullet-icon {
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+  margin-top: 2px;
+  color: #16A34A;
 }
 
 .price-card-cta {
@@ -784,74 +810,34 @@
   justify-content: center;
   gap: 8px;
   width: 100%;
-  padding: 15px 24px;
+  padding: 14px 24px;
   border-radius: 9999px;
-  font-size: 13.5px;
+  font-size: 14px;
   font-weight: 600;
   letter-spacing: 0.02em;
   text-decoration: none;
   cursor: pointer;
   transition: all 0.22s ease;
-  margin-bottom: 32px;
-}
-
-.btn-plan-outline {
-  background: transparent;
-  color: #111111;
-  border: 1px solid rgba(0, 0, 0, 0.2);
-}
-
-.btn-plan-outline:hover {
-  background: #F8F8F8;
-  border-color: #111111;
-}
-
-.btn-plan-solid {
   background: #111111;
   color: #FFFFFF;
   border: 1px solid #111111;
-  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.12);
+  margin-bottom: 8px;
 }
 
-.btn-plan-solid:hover {
-  background: #252525;
+.price-card-cta:hover {
+  background: #282828;
+  border-color: #282828;
   transform: translateY(-1px);
-  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.18);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.15);
 }
 
-.price-features-title {
+.price-currency-note {
   font-size: 12px;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
   color: #888888;
-  margin-bottom: 16px;
-}
-
-.price-features-list {
-  list-style: none;
-  padding: 0;
+  font-style: italic;
+  text-align: center;
   margin: 0;
-  display: flex;
-  flex-direction: column;
-  gap: 14px;
-  flex: 1;
-}
-
-.price-features-list li {
-  display: flex;
-  align-items: flex-start;
-  gap: 12px;
-  font-size: 14px;
-  color: #333333;
-  line-height: 1.45;
-}
-
-.price-check-icon {
-  width: 18px;
-  height: 18px;
-  flex-shrink: 0;
-  margin-top: 1px;
+  line-height: 1.2;
 }
 
 /* ==========================================================================

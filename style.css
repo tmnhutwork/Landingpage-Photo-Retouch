@@ -72,15 +72,11 @@ button, input, select, textarea {
 .eyebrow-group {
   display: inline-flex;
   align-items: center;
-  gap: 10px;
   margin-bottom: 8px;
 }
 
 .eyebrow-bar {
-  width: 18px;
-  height: 2px;
-  background-color: var(--color-orange);
-  display: inline-block;
+  display: none !important;
 }
 
 .eyebrow-text {

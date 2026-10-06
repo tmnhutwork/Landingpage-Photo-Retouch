@@ -277,99 +277,27 @@
       }
     }
 
-    // ── SECTION: THE APPROACH (FULL CONTENT CLUSTER LETTER WAVE BLUR - SPATIAL X WAVEFRONT) ──
+    // ── SECTION: THE APPROACH (FADE IN FROM BELOW TOGETHER) ──
     const approachSection = document.getElementById('approach');
     if (approachSection) {
       const approachLeft = approachSection.querySelector('.approach-left');
-      const appEyebrow = approachSection.querySelector('.eyebrow-text');
-      const appBar = approachSection.querySelector('.eyebrow-bar');
-      const appHeadline = approachSection.querySelector('.approach-headline');
-      const appSubline = approachSection.querySelector('.approach-subline');
-      const appCta = approachSection.querySelector('.btn-watch-overview span');
-      const appIcon = approachSection.querySelector('.play-icon-svg');
-      const videoCard = approachSection.querySelector('.video-preview-wrapper');
+      const approachRight = approachSection.querySelector('.approach-right') || approachSection.querySelector('.video-preview-wrapper');
 
-      // ── STAGE 1: Eyebrow & Main Headline appear FIRST with letter wave blur ──
-      if (appBar) {
+      const approachBlocks = [approachLeft, approachRight].filter(Boolean);
+      if (approachBlocks.length > 0) {
         gsap.fromTo(
-          appBar,
-          { opacity: 0, scaleX: 0 },
+          approachBlocks,
+          { y: 35, opacity: 0 },
           {
-            scrollTrigger: { trigger: approachSection, start: 'top 85%', once: true },
-            opacity: 1,
-            scaleX: 1,
-            duration: 0.45,
-            ease: 'power2.out'
-          }
-        );
-      }
-
-      if (appEyebrow) {
-        animateCharCluster(splitElementIntoChars(appEyebrow), {
-          trigger: approachSection,
-          delay: 0.0,
-          stagger: 0.011,
-          duration: 0.45,
-          blur: '6px'
-        });
-      }
-
-      if (appHeadline) {
-        animateCharCluster(splitElementIntoChars(appHeadline), {
-          trigger: approachSection,
-          delay: 0.08,
-          stagger: 0.012,
-          duration: 0.5,
-          blur: '8px'
-        });
-      }
-
-      // ── STAGE 2: Subline text appears SECOND after headline ──
-      if (appSubline) {
-        animateCharCluster(splitElementIntoChars(appSubline), {
-          trigger: approachSection,
-          delay: 0.55,
-          stagger: 0.007,
-          duration: 0.45,
-          blur: '6px'
-        });
-      }
-
-      // ── STAGE 3: Watch Video button (icon + text) appears THIRD after subline ──
-      if (appCta) {
-        animateCharCluster(splitElementIntoChars(appCta), {
-          trigger: approachSection,
-          delay: 0.88,
-          stagger: 0.012,
-          duration: 0.45,
-          blur: '6px'
-        });
-      }
-
-      if (appIcon) {
-        gsap.fromTo(
-          appIcon,
-          { opacity: 0 },
-          {
-            scrollTrigger: { trigger: approachSection, start: 'top 85%', once: true },
-            opacity: 1,
-            duration: 0.35,
-            delay: 0.88,
-            ease: 'power2.out'
-          }
-        );
-      }
-
-      if (videoCard) {
-        gsap.fromTo(
-          videoCard,
-          { y: 40, opacity: 0, scale: 0.97 },
-          {
-            scrollTrigger: { trigger: videoCard, start: 'top 85%', once: true },
+            scrollTrigger: {
+              trigger: approachSection,
+              start: 'top 82%',
+              once: true
+            },
             y: 0,
             opacity: 1,
-            scale: 1,
             duration: 0.95,
+            stagger: 0.1,
             ease: 'power3.out',
             clearProps: 'transform'
           }
@@ -377,12 +305,13 @@
       }
     }
 
-    // ── SECTION: OUR SERVICES (ALL 3 SERVICES CONTENT CLUSTERS) ──
+    // ── SECTION: OUR SERVICES (LABEL & HEADLINE LETTER WAVE, 3 SERVICES FADE IN FROM BELOW) ──
     const servicesSection = document.getElementById('services');
     if (servicesSection) {
       const eyebrowText = servicesSection.querySelector('.services-header-group .eyebrow-text');
       const eyebrowBar = servicesSection.querySelector('.services-header-group .eyebrow-bar');
 
+      // 1. Label bar & text: Letter blur wave
       if (eyebrowBar) {
         gsap.fromTo(
           eyebrowBar,
@@ -406,128 +335,60 @@
           blur: '6px'
         });
       }
+      // Note: Headline (.services-main-title) is animated with letter blur wave in initCosmosHeadlines()
 
-      // Pre-split all 3 services' texts so expanded & collapsed states are always ready
-      for (let s = 1; s <= 3; s++) {
-        const item = document.getElementById(`service-item-${s}`);
-        if (!item) continue;
-
-        // Expanded content targets
-        const expContent = item.querySelector('.service-model-content');
-        if (expContent) {
-          splitElementIntoChars(expContent.querySelector('.service-number'));
-          splitElementIntoChars(expContent.querySelector('.service-title'));
-          splitElementIntoChars(expContent.querySelector('.service-description'));
-          splitElementIntoChars(expContent.querySelector('.zoom-tag-text'));
-          splitElementIntoChars(expContent.querySelector('.btn-trial-main span'));
-          splitElementIntoChars(expContent.querySelector('.btn-explore span'));
-        }
-
-        // Collapsed row targets
-        const collRow = item.querySelector('.service-collapsed-row');
-        if (collRow) {
-          splitElementIntoChars(collRow.querySelector('.service-number'));
-          splitElementIntoChars(collRow.querySelector('.service-simple-title'));
-        }
-      }
-
-      // ── Service 01 (Initially Expanded on scroll) ──
-      const service1Visual = servicesSection.querySelector('#service-slider-1');
-      if (service1Visual) {
+      // 2. The 3 services below: Fade in from below as normal
+      // Service 01 (Expanded View)
+      const s1Visual = servicesSection.querySelector('#service-slider-1');
+      const s1Content = servicesSection.querySelector('#service-item-1 .service-model-content');
+      if (s1Visual || s1Content) {
         gsap.fromTo(
-          service1Visual,
-          { y: 35, opacity: 0, scale: 0.98 },
+          [s1Visual, s1Content].filter(Boolean),
+          { y: 35, opacity: 0 },
           {
             scrollTrigger: { trigger: '#service-item-1', start: 'top 80%', once: true },
             y: 0,
             opacity: 1,
-            scale: 1,
             duration: 0.9,
+            stagger: 0.1,
             ease: 'power3.out',
             clearProps: 'transform'
           }
         );
       }
 
-      const s1Num = servicesSection.querySelector('#service-item-1 .service-model-content .service-number .cosmos-char');
-      const s1Title = servicesSection.querySelectorAll('#service-item-1 .service-model-content .service-title .cosmos-char');
-      const s1Desc = servicesSection.querySelectorAll('#service-item-1 .service-model-content .service-description .cosmos-char');
-      const s1ZoomTag = servicesSection.querySelectorAll('#service-item-1 .service-model-content .zoom-tag-text .cosmos-char');
-      const s1ZoomThumb = servicesSection.querySelector('#service-item-1 .service-model-content .zoom-preview-thumb');
-      const s1BtnTrial = servicesSection.querySelectorAll('#service-item-1 .service-model-content .btn-trial-main .cosmos-char');
-      const s1BtnExp = servicesSection.querySelectorAll('#service-item-1 .service-model-content .btn-explore .cosmos-char');
-
-      if (s1ZoomThumb) {
+      // Service 02 (Collapsed Row)
+      const s2Row = servicesSection.querySelector('#service-item-2 .service-collapsed-row');
+      if (s2Row) {
         gsap.fromTo(
-          s1ZoomThumb,
-          { opacity: 0 },
+          s2Row,
+          { y: 30, opacity: 0 },
           {
-            scrollTrigger: { trigger: '#service-item-1', start: 'top 80%', once: true },
+            scrollTrigger: { trigger: '#service-item-2', start: 'top 85%', once: true },
+            y: 0,
             opacity: 1,
-            duration: 0.5,
-            delay: 0.35,
-            ease: 'power2.out'
+            duration: 0.8,
+            ease: 'power3.out',
+            clearProps: 'transform'
           }
         );
       }
 
-      animateCharCluster(s1Num, { trigger: '#service-item-1', start: 'top 80%', delay: 0.0, stagger: 0.011, duration: 0.45 });
-      animateCharCluster(s1Title, { trigger: '#service-item-1', start: 'top 80%', delay: 0.08, stagger: 0.012, duration: 0.5, blur: '8px' });
-      animateCharCluster(s1Desc, { trigger: '#service-item-1', start: 'top 80%', delay: 0.22, stagger: 0.007, duration: 0.45 });
-      animateCharCluster(s1ZoomTag, { trigger: '#service-item-1', start: 'top 80%', delay: 0.35, stagger: 0.011, duration: 0.45 });
-      animateCharCluster(s1BtnTrial, { trigger: '#service-item-1', start: 'top 80%', delay: 0.45, stagger: 0.011, duration: 0.45 });
-      animateCharCluster(s1BtnExp, { trigger: '#service-item-1', start: 'top 80%', delay: 0.48, stagger: 0.011, duration: 0.45 });
-
-      // ── Service 02 (Collapsed Row on scroll) ──
-      const s2Row = servicesSection.querySelector('#service-item-2 .service-collapsed-row');
-      if (s2Row) {
-        const s2Thumb = s2Row.querySelector('.simple-thumb-card');
-        const s2Chars = s2Row.querySelectorAll('.cosmos-char');
-        if (s2Thumb) {
-          gsap.fromTo(
-            s2Thumb,
-            { opacity: 0 },
-            {
-              scrollTrigger: { trigger: '#service-item-2', start: 'top 85%', once: true },
-              opacity: 1,
-              duration: 0.55,
-              ease: 'power2.out'
-            }
-          );
-        }
-        animateCharCluster(s2Chars, {
-          trigger: '#service-item-2',
-          start: 'top 85%',
-          delay: 0.05,
-          stagger: 0.011,
-          duration: 0.48
-        });
-      }
-
-      // ── Service 03 (Collapsed Row on scroll) ──
+      // Service 03 (Collapsed Row)
       const s3Row = servicesSection.querySelector('#service-item-3 .service-collapsed-row');
       if (s3Row) {
-        const s3Thumb = s3Row.querySelector('.simple-thumb-card');
-        const s3Chars = s3Row.querySelectorAll('.cosmos-char');
-        if (s3Thumb) {
-          gsap.fromTo(
-            s3Thumb,
-            { opacity: 0 },
-            {
-              scrollTrigger: { trigger: '#service-item-3', start: 'top 85%', once: true },
-              opacity: 1,
-              duration: 0.55,
-              ease: 'power2.out'
-            }
-          );
-        }
-        animateCharCluster(s3Chars, {
-          trigger: '#service-item-3',
-          start: 'top 85%',
-          delay: 0.05,
-          stagger: 0.011,
-          duration: 0.48
-        });
+        gsap.fromTo(
+          s3Row,
+          { y: 30, opacity: 0 },
+          {
+            scrollTrigger: { trigger: '#service-item-3', start: 'top 85%', once: true },
+            y: 0,
+            opacity: 1,
+            duration: 0.8,
+            ease: 'power3.out',
+            clearProps: 'transform'
+          }
+        );
       }
     }
 
@@ -643,18 +504,16 @@
       if (priceCards.length > 0) {
         gsap.fromTo(
           priceCards,
-          { y: 40, opacity: 0, scale: 0.98 },
+          { y: 35, opacity: 0 },
           {
             scrollTrigger: {
               trigger: '.pricing-view-elevated',
-              start: 'top 80%',
+              start: 'top 82%',
               once: true
             },
             y: 0,
             opacity: 1,
-            scale: 1,
-            duration: 1.0,
-            stagger: 0.12,
+            duration: 0.85,
             ease: 'power3.out',
             clearProps: 'transform'
           }
