@@ -1,0 +1,900 @@
+/* ==========================================================================
+   NESSO — WORKFLOW & PRICING SECTIONS
+   Design: Modern Minimalist, Luxury Editorial, 100% Responsive
+   ========================================================================== */
+
+/* ── Section Shared Wrappers ───────────────────────────────────────── */
+.section-workflow,
+.section-pricing {
+  position: relative;
+  width: 100%;
+  background-color: var(--bg-cream, #FBFBFB);
+  color: var(--color-brown, #2B2017);
+  padding: 120px 48px;
+  border-top: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+.workflow-container,
+.pricing-container {
+  max-width: 1320px;
+  margin: 0 auto;
+}
+
+/* ── Section Header & Option Switcher ──────────────────────────────── */
+.section-header-wrap {
+  text-align: center;
+  max-width: 780px;
+  margin: 0 auto 56px;
+}
+
+.section-headline {
+  font-family: var(--font-sans, 'Plus Jakarta Sans', sans-serif);
+  font-size: clamp(2.2rem, 3.6vw, 3.1rem);
+  font-weight: 500;
+  letter-spacing: -0.03em;
+  line-height: 1.2;
+  color: #111111;
+  margin-top: 12px;
+  margin-bottom: 16px;
+}
+
+.section-subtext {
+  font-size: 16px;
+  color: #686868;
+  line-height: 1.6;
+  max-width: 620px;
+  margin: 0 auto 28px;
+}
+
+/* Interactive Design Option Switcher (Pill Toggle) */
+.design-option-switcher {
+  display: inline-flex;
+  align-items: center;
+  background: #EFEFEF;
+  padding: 4px;
+  border-radius: 9999px;
+  margin-top: 8px;
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.switcher-label {
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: #888888;
+  padding: 0 14px;
+}
+
+.switcher-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 18px;
+  border-radius: 9999px;
+  border: none;
+  background: transparent;
+  color: #555555;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.22s ease;
+}
+
+.switcher-btn.is-active {
+  background: #FFFFFF;
+  color: #111111;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.switcher-badge {
+  display: inline-block;
+  font-size: 10px;
+  font-weight: 700;
+  padding: 2px 7px;
+  border-radius: 9999px;
+  background: #F0F0F0;
+  color: #666666;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.switcher-btn.is-active .switcher-badge {
+  background: #111111;
+  color: #FFFFFF;
+}
+
+/* ==========================================================================
+   WORKFLOW — HƯỚNG 1: TWO-SIDED MATRIX CARDS (Đối chiếu trực quan)
+   ========================================================================== */
+.workflow-view-matrix {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 24px;
+}
+
+.matrix-card {
+  background: #FFFFFF;
+  border-radius: 20px;
+  border: 1px solid rgba(0, 0, 0, 0.07);
+  padding: 32px 36px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.02);
+  transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+}
+
+.matrix-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.06);
+  border-color: rgba(0, 0, 0, 0.15);
+}
+
+.matrix-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+  padding-bottom: 20px;
+  margin-bottom: 24px;
+}
+
+.matrix-step-num {
+  font-family: var(--font-sans, 'Plus Jakarta Sans', sans-serif);
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  color: #999999;
+}
+
+.matrix-sla-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  border-radius: 9999px;
+  background: #F5F5F7;
+  color: #222222;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+
+.matrix-sla-badge .icon-clock {
+  width: 14px;
+  height: 14px;
+  stroke: #111111;
+}
+
+.matrix-card-title {
+  font-size: 20px;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  color: #111111;
+  margin-bottom: 24px;
+}
+
+.matrix-columns-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
+.matrix-col {
+  background: #FBFBFB;
+  border-radius: 14px;
+  padding: 20px;
+  border: 1px solid rgba(0, 0, 0, 0.04);
+}
+
+.matrix-col-client {
+  border-left: 3px solid #888888;
+}
+
+.matrix-col-nesso {
+  border-left: 3px solid #111111;
+  background: #F7F7F7;
+}
+
+.matrix-col-tag {
+  display: inline-block;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: #777777;
+  margin-bottom: 12px;
+}
+
+.matrix-col-nesso .matrix-col-tag {
+  color: #111111;
+}
+
+.matrix-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.matrix-list li {
+  position: relative;
+  padding-left: 18px;
+  font-size: 13.5px;
+  line-height: 1.5;
+  color: #444444;
+}
+
+.matrix-list li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 7px;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background-color: #CCCCCC;
+}
+
+.matrix-col-nesso .matrix-list li::before {
+  background-color: #111111;
+}
+
+/* ==========================================================================
+   WORKFLOW — HƯỚNG 2: RUNWAY COMPACT TIMELINE (Mobbin Reference 1:1)
+   ========================================================================== */
+.workflow-view-stepper {
+  display: none; /* toggled via JS */
+}
+
+.runway-workflow-card {
+  background: #FFFFFF;
+  border-radius: 24px;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  padding: 48px 52px 52px;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.02);
+  transition: box-shadow 0.25s ease;
+}
+
+.runway-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  margin-bottom: 44px;
+}
+
+.runway-card-title {
+  font-family: var(--font-sans, 'Plus Jakarta Sans', sans-serif);
+  font-size: 24px;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  color: #111111;
+}
+
+.runway-card-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 11px 22px;
+  border-radius: 9999px;
+  background: #111111;
+  color: #FFFFFF;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  text-decoration: none;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.runway-card-btn:hover {
+  background: #2A2A30;
+  transform: translateY(-1.5px);
+  box-shadow: 0 5px 16px rgba(0, 0, 0, 0.16);
+}
+
+.runway-card-btn:hover .icon-arrow {
+  transform: translate(2px, -2px);
+}
+
+/* Timeline Horizontal Line Running from Step 1 to Step 4 */
+.runway-timeline-bar {
+  position: relative;
+  width: 100%;
+  height: 20px;
+  margin-bottom: 24px;
+  display: flex;
+  align-items: center;
+}
+
+.runway-line-track {
+  position: absolute;
+  left: 0;
+  width: calc(75% + 27px + 4px);
+  height: 2px;
+  background: #E8E8E8;
+  border-radius: 9999px;
+}
+
+.runway-line-fill {
+  position: absolute;
+  left: 0;
+  height: 2px;
+  width: calc(75% + 27px + 4px);
+  background: #111111;
+  border-radius: 9999px;
+  transform-origin: left;
+  animation: runwayLineDraw 1.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes runwayLineDraw {
+  0% {
+    transform: scaleX(0);
+  }
+  100% {
+    transform: scaleX(1);
+  }
+}
+
+.runway-markers-row {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 36px;
+}
+
+.runway-marker-col {
+  display: flex;
+  align-items: center;
+}
+
+.runway-marker-dot {
+  width: 8px;
+  height: 8px;
+  background: #111111;
+  border-radius: 2px;
+  box-shadow: 0 0 0 3px #FFFFFF;
+}
+
+/* 4 Steps Columns Grid */
+.runway-steps-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 36px;
+}
+
+.runway-step-col {
+  display: flex;
+  flex-direction: column;
+}
+
+.runway-step-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  align-self: flex-start;
+  padding: 4px 10px;
+  border-radius: 6px;
+  border: 1px solid #E2E2E2;
+  background: #FFFFFF;
+  margin-bottom: 16px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.02);
+  transition: border-color 0.2s ease, background-color 0.2s ease;
+}
+
+.runway-step-col:hover .runway-step-pill {
+  border-color: #111111;
+}
+
+.runway-pill-num {
+  font-size: 12.5px;
+  font-weight: 700;
+  color: #777777;
+}
+
+.runway-pill-label {
+  font-size: 13px;
+  font-weight: 600;
+  color: #111111;
+}
+
+.runway-step-headline {
+  font-family: var(--font-sans, 'Plus Jakarta Sans', sans-serif);
+  font-size: 16px;
+  font-weight: 600;
+  color: #111111;
+  letter-spacing: -0.01em;
+  margin-bottom: 8px;
+  line-height: 1.35;
+}
+
+.runway-step-desc {
+  font-size: 13.5px;
+  color: #666666;
+  line-height: 1.55;
+  margin-bottom: 24px;
+  flex: 1;
+}
+
+.runway-step-sla {
+  font-size: 13px;
+  color: #888888;
+  font-weight: 500;
+  margin-top: auto;
+}
+
+/* ==========================================================================
+   PRICING — SHARED PILL CONTROLS (BILLING TOGGLE)
+   ========================================================================== */
+.pricing-billing-toggle-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  margin-bottom: 48px;
+}
+
+.billing-mode-btn {
+  background: transparent;
+  border: none;
+  font-size: 14px;
+  font-weight: 600;
+  color: #777777;
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+
+.billing-mode-btn.is-active {
+  color: #111111;
+}
+
+.billing-switch {
+  position: relative;
+  width: 52px;
+  height: 28px;
+  border-radius: 9999px;
+  background: #E5E5E5;
+  cursor: pointer;
+  transition: background-color 0.22s ease;
+}
+
+.billing-switch.is-active {
+  background: #111111;
+}
+
+.billing-slider {
+  position: absolute;
+  top: 3px;
+  left: 4px;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: #FFFFFF;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
+  transition: transform 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.billing-switch.is-active .billing-slider {
+  transform: translateX(22px);
+}
+
+.billing-save-tag {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  padding: 3px 8px;
+  border-radius: 9999px;
+  background: rgba(255, 128, 0, 0.12);
+  color: #D36100;
+}
+
+/* ==========================================================================
+   PRICING — HƯỚNG A: CLEAN ELEVATED CARDS (Card viền vi tế, giữa nổi bật)
+   ========================================================================== */
+.pricing-view-elevated {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 28px;
+  align-items: stretch;
+}
+
+.price-card {
+  background: #FFFFFF;
+  border-radius: 22px;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  padding: 44px 36px;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.02);
+  transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+}
+
+.price-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.07);
+}
+
+/* Highlighted Pro Plan Card */
+.price-card.is-highlighted {
+  border: 2px solid #111111;
+  box-shadow: 0 12px 36px rgba(0, 0, 0, 0.08);
+}
+
+.price-card-popular-pill {
+  position: absolute;
+  top: -13px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #111111;
+  color: #FFFFFF;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 5px 16px;
+  border-radius: 9999px;
+  white-space: nowrap;
+}
+
+.price-card-plan-name {
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #777777;
+  margin-bottom: 8px;
+}
+
+.price-card.is-highlighted .price-card-plan-name {
+  color: #111111;
+}
+
+.price-card-desc {
+  font-size: 14px;
+  color: #666666;
+  min-height: 42px;
+  margin-bottom: 24px;
+  line-height: 1.5;
+}
+
+.price-figure-wrap {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+  margin-bottom: 12px;
+}
+
+.price-currency {
+  font-size: 26px;
+  font-weight: 500;
+  color: #111111;
+}
+
+.price-amount {
+  font-family: var(--font-sans, 'Plus Jakarta Sans', sans-serif);
+  font-size: 52px;
+  font-weight: 700;
+  letter-spacing: -0.04em;
+  color: #111111;
+  line-height: 1;
+}
+
+.price-unit {
+  font-size: 14px;
+  color: #777777;
+}
+
+.price-turnaround-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  font-weight: 600;
+  color: #111111;
+  background: #F4F4F4;
+  padding: 6px 12px;
+  border-radius: 9999px;
+  margin-bottom: 28px;
+  align-self: flex-start;
+}
+
+.price-card-cta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  padding: 15px 24px;
+  border-radius: 9999px;
+  font-size: 13.5px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  text-decoration: none;
+  cursor: pointer;
+  transition: all 0.22s ease;
+  margin-bottom: 32px;
+}
+
+.btn-plan-outline {
+  background: transparent;
+  color: #111111;
+  border: 1px solid rgba(0, 0, 0, 0.2);
+}
+
+.btn-plan-outline:hover {
+  background: #F8F8F8;
+  border-color: #111111;
+}
+
+.btn-plan-solid {
+  background: #111111;
+  color: #FFFFFF;
+  border: 1px solid #111111;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.12);
+}
+
+.btn-plan-solid:hover {
+  background: #252525;
+  transform: translateY(-1px);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.18);
+}
+
+.price-features-title {
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #888888;
+  margin-bottom: 16px;
+}
+
+.price-features-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  flex: 1;
+}
+
+.price-features-list li {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  font-size: 14px;
+  color: #333333;
+  line-height: 1.45;
+}
+
+.price-check-icon {
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+
+/* ==========================================================================
+   PRICING — HƯỚNG B: LUXURY EDITORIAL COLUMNS (Kẻ chỉ mảnh kiểu Tạp chí)
+   ========================================================================== */
+.pricing-view-editorial {
+  display: none; /* toggled via JS */
+  background: #FFFFFF;
+  border-radius: 24px;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  overflow: hidden;
+  box-shadow: 0 6px 28px rgba(0, 0, 0, 0.03);
+}
+
+.editorial-columns-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  divide-x: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+.editorial-col {
+  padding: 56px 44px;
+  display: flex;
+  flex-direction: column;
+  border-right: 1px solid rgba(0, 0, 0, 0.08);
+  transition: background-color 0.25s ease;
+}
+
+.editorial-col:last-child {
+  border-right: none;
+}
+
+.editorial-col:hover {
+  background-color: #FAFAFA;
+}
+
+.editorial-col.is-pro-highlight {
+  background-color: #FAF9F7;
+}
+
+.editorial-plan-serif-title {
+  font-family: var(--font-serif, 'Playfair Display', Georgia, serif);
+  font-size: 28px;
+  font-weight: 500;
+  color: #111111;
+  letter-spacing: -0.01em;
+  margin-bottom: 8px;
+}
+
+.editorial-subtitle {
+  font-size: 13.5px;
+  color: #777777;
+  line-height: 1.5;
+  margin-bottom: 28px;
+  min-height: 42px;
+}
+
+.editorial-price-line {
+  font-family: var(--font-sans, 'Plus Jakarta Sans', sans-serif);
+  font-size: 42px;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  color: #111111;
+  margin-bottom: 6px;
+}
+
+.editorial-price-sub {
+  font-size: 13px;
+  color: #888888;
+  margin-bottom: 32px;
+}
+
+.editorial-divider {
+  width: 100%;
+  height: 1px;
+  background: rgba(0, 0, 0, 0.08);
+  margin-bottom: 28px;
+}
+
+.editorial-feature-group {
+  margin-bottom: 36px;
+  flex: 1;
+}
+
+.editorial-feature-group ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.editorial-feature-group li {
+  font-size: 13.5px;
+  color: #444444;
+  line-height: 1.5;
+  position: relative;
+  padding-left: 20px;
+}
+
+.editorial-feature-group li::before {
+  content: "—";
+  position: absolute;
+  left: 0;
+  color: #999999;
+}
+
+/* ── Free Trial Guarantee Note ─────────────────────────────────────── */
+.pricing-guarantee-note {
+  margin-top: 48px;
+  text-align: center;
+  background: #FFFFFF;
+  border-radius: 16px;
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  padding: 24px 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+}
+
+.guarantee-icon {
+  width: 24px;
+  height: 24px;
+  stroke: #111111;
+  flex-shrink: 0;
+}
+
+.guarantee-text {
+  font-size: 14.5px;
+  color: #444444;
+  line-height: 1.5;
+}
+
+.guarantee-text strong {
+  color: #111111;
+  font-weight: 600;
+}
+
+/* ── Responsive Queries ────────────────────────────────────────────── */
+@media (max-width: 1080px) {
+  .workflow-view-matrix {
+    grid-template-columns: 1fr;
+  }
+
+  .runway-workflow-card {
+    padding: 36px 32px;
+  }
+
+  .runway-steps-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 32px;
+  }
+
+  .runway-markers-row {
+    grid-template-columns: 1fr 1fr;
+    gap: 32px;
+  }
+
+  .pricing-view-elevated {
+    grid-template-columns: 1fr;
+    gap: 36px;
+    max-width: 520px;
+    margin: 0 auto;
+  }
+
+  .editorial-columns-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .editorial-col {
+    border-right: none;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+  }
+
+  .editorial-col:last-child {
+    border-bottom: none;
+  }
+}
+
+@media (max-width: 768px) {
+  .section-workflow,
+  .section-pricing {
+    padding: 80px 20px;
+  }
+
+  .matrix-card {
+    padding: 24px 20px;
+  }
+
+  .matrix-columns-row {
+    grid-template-columns: 1fr;
+  }
+
+  .runway-workflow-card {
+    padding: 28px 20px;
+  }
+
+  .runway-card-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+  }
+
+  .runway-timeline-bar {
+    display: none;
+  }
+
+  .runway-steps-grid {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+
+  .pricing-guarantee-note {
+    flex-direction: column;
+    text-align: center;
+    padding: 20px;
+  }
+}

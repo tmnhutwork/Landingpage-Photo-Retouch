@@ -13,6 +13,7 @@
   
   <link rel="stylesheet" href="cosmos-hero.css?v=cosmos.ref17">
   <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="workflow-pricing.css?v=1.0">
 </head>
 <body>
 
@@ -27,6 +28,8 @@
         <a href="#services" class="hdr-link">Services</a>
         <a href="#approach" class="hdr-link">The Approach</a>
         <a href="#who-we-worked-with" class="hdr-link">Who We Support</a>
+        <a href="#workflow" class="hdr-link">Workflow</a>
+        <a href="#pricing" class="hdr-link">Pricing</a>
       </nav>
       
       <a href="#trial" class="btn-trial-header">
@@ -557,6 +560,613 @@
         </div>
       </div>
     </section>
+
+    <!-- ==================== SECTION WORKFLOW (HOW WE COLLABORATE) ==================== -->
+    <section class="section-workflow" id="workflow">
+      <div class="workflow-container">
+        
+        <!-- Header & Interactive Option Switcher -->
+        <div class="section-header-wrap">
+          <div class="eyebrow-group">
+            <span class="eyebrow-bar"></span>
+            <span class="eyebrow-text">HOW WE COLLABORATE</span>
+          </div>
+          <h2 class="section-headline">
+            A considered process,<br>
+            <span class="serif-italic">guaranteed turnaround.</span>
+          </h2>
+          <p class="section-subtext">
+            Transparent two-sided responsibilities at every step. You always know what to provide, what we deliver, and exact turnaround times.
+          </p>
+
+          <!-- Interactive Direction Switcher (For User to Compare & Choose) -->
+          <div class="design-option-switcher" role="tablist" aria-label="Workflow Design Directions">
+            <span class="switcher-label">Preview Design:</span>
+            <button type="button" class="switcher-btn is-active" id="switch-wf-matrix" role="tab" aria-selected="true">
+              <span>Hướng 1: Two-Sided Matrix</span>
+              <span class="switcher-badge">Recommended</span>
+            </button>
+            <button type="button" class="switcher-btn" id="switch-wf-stepper" role="tab" aria-selected="false">
+              <span>Hướng 2: Runway Timeline</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- HƯỚNG 1: TWO-SIDED MATRIX CARDS (ACTIVE BY DEFAULT) -->
+        <div class="workflow-view-matrix" id="workflow-matrix-view">
+          
+          <!-- Step 01 -->
+          <div class="matrix-card">
+            <div class="matrix-card-header">
+              <span class="matrix-step-num">STEP 01</span>
+              <div class="matrix-sla-badge">
+                <svg class="icon-clock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <circle cx="12" cy="12" r="10"></circle>
+                  <polyline points="12 6 12 12 16 14"></polyline>
+                </svg>
+                <span>2 – 4h SLA</span>
+              </div>
+            </div>
+            <h3 class="matrix-card-title">Ingest &amp; Creative Calibration</h3>
+            
+            <div class="matrix-columns-row">
+              <div class="matrix-col matrix-col-client">
+                <span class="matrix-col-tag">YOU PROVIDE</span>
+                <ul class="matrix-list">
+                  <li>RAW / TIFF / DNG source images via high-speed link.</li>
+                  <li>Art direction moodboard, style guide, or color references.</li>
+                  <li>Specific crop ratios, background hex, and delivery notes.</li>
+                </ul>
+              </div>
+              <div class="matrix-col matrix-col-nesso">
+                <span class="matrix-col-tag">NESSO DELIVERS</span>
+                <ul class="matrix-list">
+                  <li>Color profile verification (AdobeRGB / ProPhoto / sRGB).</li>
+                  <li>1 – 2 calibrated sample tests for your immediate sign-off.</li>
+                  <li>Production timeline confirmation &amp; dedicated lead assignment.</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+
+          <!-- Step 02 -->
+          <div class="matrix-card">
+            <div class="matrix-card-header">
+              <span class="matrix-step-num">STEP 02</span>
+              <div class="matrix-sla-badge">
+                <svg class="icon-clock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <circle cx="12" cy="12" r="10"></circle>
+                  <polyline points="12 6 12 12 16 14"></polyline>
+                </svg>
+                <span>12 – 24h Turnaround</span>
+              </div>
+            </div>
+            <h3 class="matrix-card-title">Non-Destructive Retouching</h3>
+            
+            <div class="matrix-columns-row">
+              <div class="matrix-col matrix-col-client">
+                <span class="matrix-col-tag">YOU PROVIDE</span>
+                <ul class="matrix-list">
+                  <li>Live oversight via client dashboard or private Slack channel.</li>
+                  <li>Priority re-ordering or rush requests if campaign deadlines change.</li>
+                  <li>Peace of mind while our specialized artists craft each frame.</li>
+                </ul>
+              </div>
+              <div class="matrix-col matrix-col-nesso">
+                <span class="matrix-col-tag">NESSO DELIVERS</span>
+                <ul class="matrix-list">
+                  <li>Frequency separation preserving 100% natural skin pore texture.</li>
+                  <li>Mannequin elimination, 3D volume &amp; fabric drape reconstruction.</li>
+                  <li>Precious metal mirror polish, reflection control &amp; unified tone.</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+
+          <!-- Step 03 -->
+          <div class="matrix-card">
+            <div class="matrix-card-header">
+              <span class="matrix-step-num">STEP 03</span>
+              <div class="matrix-sla-badge">
+                <svg class="icon-clock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <circle cx="12" cy="12" r="10"></circle>
+                  <polyline points="12 6 12 12 16 14"></polyline>
+                </svg>
+                <span>Fast 2 – 4h Iterations</span>
+              </div>
+            </div>
+            <h3 class="matrix-card-title">Collaborative Review &amp; Refine</h3>
+            
+            <div class="matrix-columns-row">
+              <div class="matrix-col matrix-col-client">
+                <span class="matrix-col-tag">YOU PROVIDE</span>
+                <ul class="matrix-list">
+                  <li>Review high-resolution online proofing gallery.</li>
+                  <li>Drop visual mark-up pins and comments directly onto the canvas.</li>
+                  <li>Consolidated feedback round from your creative team.</li>
+                </ul>
+              </div>
+              <div class="matrix-col matrix-col-nesso">
+                <span class="matrix-col-tag">NESSO DELIVERS</span>
+                <ul class="matrix-list">
+                  <li>Direct retoucher adjustments addressing every pin point.</li>
+                  <li>Pixel-level before/after comparison slider previews.</li>
+                  <li>Unlimited revision rounds until 100% satisfaction is met.</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+
+          <!-- Step 04 -->
+          <div class="matrix-card">
+            <div class="matrix-card-header">
+              <span class="matrix-step-num">STEP 04</span>
+              <div class="matrix-sla-badge">
+                <svg class="icon-clock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <circle cx="12" cy="12" r="10"></circle>
+                  <polyline points="12 6 12 12 16 14"></polyline>
+                </svg>
+                <span>Instant Access</span>
+              </div>
+            </div>
+            <h3 class="matrix-card-title">Final Master Delivery</h3>
+            
+            <div class="matrix-columns-row">
+              <div class="matrix-col matrix-col-client">
+                <span class="matrix-col-tag">YOU PROVIDE</span>
+                <ul class="matrix-list">
+                  <li>Final approval and project sign-off.</li>
+                  <li>Direct download via secure enterprise cloud link.</li>
+                  <li>Feedback rating to continuously refine your studio style guide.</li>
+                </ul>
+              </div>
+              <div class="matrix-col matrix-col-nesso">
+                <span class="matrix-col-tag">NESSO DELIVERS</span>
+                <ul class="matrix-list">
+                  <li>Full 16-bit Master PSDs with organized non-destructive layers.</li>
+                  <li>Print-ready 300 DPI CMYK TIFFs + web-optimized WebP/sRGB assets.</li>
+                  <li>90-day secure cloud archive with instant re-download guarantee.</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- HƯỚNG 2: RUNWAY COMPACT TIMELINE (Mobbin Reference 1:1) -->
+        <div class="workflow-view-stepper" id="workflow-stepper-view">
+          <div class="runway-workflow-card">
+            
+            <!-- Card Header: Title + CTA -->
+            <div class="runway-card-header">
+              <h3 class="runway-card-title">Studio workflow calibrated for scale &amp; precision</h3>
+              <a href="#trial" class="runway-card-btn">
+                <span>Start 3 Free Test Images</span>
+                <svg class="icon-arrow" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                  <line x1="7" y1="17" x2="17" y2="7"></line>
+                  <polyline points="7 7 17 7 17 17"></polyline>
+                </svg>
+              </a>
+            </div>
+
+            <!-- Horizontal Timeline Track from Step 1 to Step 4 -->
+            <div class="runway-timeline-bar" aria-hidden="true">
+              <div class="runway-line-track"></div>
+              <div class="runway-line-fill"></div>
+              <div class="runway-markers-row">
+                <div class="runway-marker-col">
+                  <span class="runway-marker-dot"></span>
+                </div>
+                <div class="runway-marker-col">
+                  <span class="runway-marker-dot"></span>
+                </div>
+                <div class="runway-marker-col">
+                  <span class="runway-marker-dot"></span>
+                </div>
+                <div class="runway-marker-col">
+                  <span class="runway-marker-dot"></span>
+                </div>
+              </div>
+            </div>
+
+            <!-- 4 Steps Columns Grid -->
+            <div class="runway-steps-grid">
+              
+              <!-- Step 01 -->
+              <div class="runway-step-col">
+                <div class="runway-step-pill">
+                  <span class="runway-pill-num">01</span>
+                  <span class="runway-pill-label">Ingest</span>
+                </div>
+                <h4 class="runway-step-headline">Upload &amp; Creative Brief</h4>
+                <p class="runway-step-desc">
+                  Direct RAW/TIFF transfer with automated color-profile checks, moodboard extraction, and exact framing guidelines.
+                </p>
+                <div class="runway-step-sla">2 – 4h SLA</div>
+              </div>
+
+              <!-- Step 02 -->
+              <div class="runway-step-col">
+                <div class="runway-step-pill">
+                  <span class="runway-pill-num">02</span>
+                  <span class="runway-pill-label">Retouch</span>
+                </div>
+                <h4 class="runway-step-headline">Non-Destructive Retouching</h4>
+                <p class="runway-step-desc">
+                  Senior artists execute 16-bit frequency separation, natural skin pores, fabric drape reconstruction, and precious tone matching.
+                </p>
+                <div class="runway-step-sla">12 – 24h turnaround</div>
+              </div>
+
+              <!-- Step 03 -->
+              <div class="runway-step-col">
+                <div class="runway-step-pill">
+                  <span class="runway-pill-num">03</span>
+                  <span class="runway-pill-label">Review</span>
+                </div>
+                <h4 class="runway-step-headline">Collaborative Proofing</h4>
+                <p class="runway-step-desc">
+                  Interactive canvas review with pinpoint markup comments. Fast iterations until every single pixel meets your standards.
+                </p>
+                <div class="runway-step-sla">2 – 4h per round</div>
+              </div>
+
+              <!-- Step 04 -->
+              <div class="runway-step-col">
+                <div class="runway-step-pill">
+                  <span class="runway-pill-num">04</span>
+                  <span class="runway-pill-label">Delivery</span>
+                </div>
+                <h4 class="runway-step-headline">Master Multi-Format Export</h4>
+                <p class="runway-step-desc">
+                  Final batch sign-off with instant cloud download of 16-bit layered PSDs, 300 DPI CMYK TIFFs, and 90-day archive.
+                </p>
+                <div class="runway-step-sla">Instant cloud access</div>
+              </div>
+
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ==================== SECTION PRICING (3 COLUMNS) ==================== -->
+    <section class="section-pricing" id="pricing">
+      <div class="pricing-container">
+        
+        <!-- Header & Interactive Option Switcher -->
+        <div class="section-header-wrap">
+          <div class="eyebrow-group">
+            <span class="eyebrow-bar"></span>
+            <span class="eyebrow-text">TRANSPARENT PRICING</span>
+          </div>
+          <h2 class="section-headline">
+            Scalable studio plans,<br>
+            <span class="serif-italic">predictable production costs.</span>
+          </h2>
+          <p class="section-subtext">
+            Start with 3 free test images to evaluate our quality on your actual RAW files before committing. No setup fees, pause or cancel anytime.
+          </p>
+
+          <!-- Interactive Direction Switcher (For User to Compare & Choose) -->
+          <div class="design-option-switcher" role="tablist" aria-label="Pricing Design Directions">
+            <span class="switcher-label">Preview Design:</span>
+            <button type="button" class="switcher-btn is-active" id="switch-price-elevated" role="tab" aria-selected="true">
+              <span>Hướng A: Elevated Cards</span>
+              <span class="switcher-badge">Recommended</span>
+            </button>
+            <button type="button" class="switcher-btn" id="switch-price-editorial" role="tab" aria-selected="false">
+              <span>Hướng B: Editorial Columns</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Billing Cycle Toggle (Per Image vs Monthly Retainer) -->
+        <div class="pricing-billing-toggle-wrap">
+          <button type="button" class="billing-mode-btn is-active" id="btn-per-image">Per Image (On-Demand)</button>
+          <div class="billing-switch" id="billing-switch" role="switch" aria-checked="false" aria-label="Toggle Billing Mode">
+            <div class="billing-slider"></div>
+          </div>
+          <button type="button" class="billing-mode-btn" id="btn-monthly">
+            Monthly Retainer
+            <span class="billing-save-tag">Save 20%</span>
+          </button>
+        </div>
+
+        <!-- HƯỚNG A: CLEAN ELEVATED CARDS (ACTIVE BY DEFAULT) -->
+        <div class="pricing-view-elevated" id="pricing-elevated-view">
+          
+          <!-- Plan 1: Essential / E-Commerce -->
+          <div class="price-card">
+            <span class="price-card-plan-name">ESSENTIAL / E-COMM</span>
+            <p class="price-card-desc">For high-volume retail, marketplace catalogues, and consistent digital store displays.</p>
+            
+            <div class="price-figure-wrap">
+              <span class="price-currency">$</span>
+              <span class="price-amount dynamic-price-amount" data-per-image="1.50" data-monthly="450">1.50</span>
+              <span class="price-unit dynamic-price-unit" data-per-image-unit="/ image" data-monthly-unit="/ month (300 imgs)">/ image</span>
+            </div>
+            
+            <div class="price-turnaround-badge">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="10"></circle>
+                <polyline points="12 6 12 12 16 14"></polyline>
+              </svg>
+              <span>24 – 48h Turnaround</span>
+            </div>
+
+            <a href="#trial" class="price-card-cta btn-plan-outline">
+              <span>Start With 3 Free Images</span>
+              <svg class="icon-arrow" viewBox="0 0 16 16" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M4 12L12 4M12 4H6M12 4V10"/>
+              </svg>
+            </a>
+
+            <span class="price-features-title">PLAN INCLUDES:</span>
+            <ul class="price-features-list">
+              <li>
+                <svg class="price-check-icon" viewBox="0 0 20 20" fill="none">
+                  <circle cx="10" cy="10" r="9" fill="#111111" fill-opacity="0.08"/>
+                  <path d="M6 10L9 13L14 7" stroke="#111111" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                <span>Hand-drawn clipping path &amp; clean alpha cutout</span>
+              </li>
+              <li>
+                <svg class="price-check-icon" viewBox="0 0 20 20" fill="none">
+                  <circle cx="10" cy="10" r="9" fill="#111111" fill-opacity="0.08"/>
+                  <path d="M6 10L9 13L14 7" stroke="#111111" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                <span>Ghost mannequin neck-joint &amp; symmetry alignment</span>
+              </li>
+              <li>
+                <svg class="price-check-icon" viewBox="0 0 20 20" fill="none">
+                  <circle cx="10" cy="10" r="9" fill="#111111" fill-opacity="0.08"/>
+                  <path d="M6 10L9 13L14 7" stroke="#111111" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                <span>Dust, lint, scratch, and unwanted tag removal</span>
+              </li>
+              <li>
+                <svg class="price-check-icon" viewBox="0 0 20 20" fill="none">
+                  <circle cx="10" cy="10" r="9" fill="#111111" fill-opacity="0.08"/>
+                  <path d="M6 10L9 13L14 7" stroke="#111111" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                <span>Shopify / Amazon / Farfetch standard color grading</span>
+              </li>
+              <li>
+                <svg class="price-check-icon" viewBox="0 0 20 20" fill="none">
+                  <circle cx="10" cy="10" r="9" fill="#111111" fill-opacity="0.08"/>
+                  <path d="M6 10L9 13L14 7" stroke="#111111" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                <span>High-res JPG, WebP + sRGB TIFF deliverables</span>
+              </li>
+            </ul>
+          </div>
+
+          <!-- Plan 2: Pro Editorial (HIGHLIGHTED) -->
+          <div class="price-card is-highlighted">
+            <div class="price-card-popular-pill">MOST POPULAR · EDITORIAL CHOICE</div>
+            <span class="price-card-plan-name">PRO EDITORIAL</span>
+            <p class="price-card-desc">For fashion lookbooks, campaigns, beauty advertising, jewelry, and luxury commercial imagery.</p>
+            
+            <div class="price-figure-wrap">
+              <span class="price-currency">$</span>
+              <span class="price-amount dynamic-price-amount" data-per-image="4.50" data-monthly="1,200">4.50</span>
+              <span class="price-unit dynamic-price-unit" data-per-image-unit="/ image" data-monthly-unit="/ month (300 pro imgs)">/ image</span>
+            </div>
+            
+            <div class="price-turnaround-badge" style="background: #111111; color: #FFFFFF;">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="2">
+                <circle cx="12" cy="12" r="10"></circle>
+                <polyline points="12 6 12 12 16 14"></polyline>
+              </svg>
+              <span>24h Priority SLA</span>
+            </div>
+
+            <a href="#trial" class="price-card-cta btn-plan-solid">
+              <span>Get A Free Trial Test</span>
+              <svg class="icon-arrow" viewBox="0 0 16 16" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M4 12L12 4M12 4H6M12 4V10"/>
+              </svg>
+            </a>
+
+            <span class="price-features-title">EVERYTHING IN ESSENTIAL, PLUS:</span>
+            <ul class="price-features-list">
+              <li>
+                <svg class="price-check-icon" viewBox="0 0 20 20" fill="none">
+                  <circle cx="10" cy="10" r="9" fill="#111111"/>
+                  <path d="M6 10L9 13L14 7" stroke="#FFFFFF" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                <span><strong>High-end frequency separation</strong> (100% natural pore texture)</span>
+              </li>
+              <li>
+                <svg class="price-check-icon" viewBox="0 0 20 20" fill="none">
+                  <circle cx="10" cy="10" r="9" fill="#111111"/>
+                  <path d="M6 10L9 13L14 7" stroke="#FFFFFF" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                <span>Fabric weave restoration &amp; collar structure enhancement</span>
+              </li>
+              <li>
+                <svg class="price-check-icon" viewBox="0 0 20 20" fill="none">
+                  <circle cx="10" cy="10" r="9" fill="#111111"/>
+                  <path d="M6 10L9 13L14 7" stroke="#FFFFFF" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                <span>Precious jewelry macro polish &amp; diamond facet sparkle</span>
+              </li>
+              <li>
+                <svg class="price-check-icon" viewBox="0 0 20 20" fill="none">
+                  <circle cx="10" cy="10" r="9" fill="#111111"/>
+                  <path d="M6 10L9 13L14 7" stroke="#FFFFFF" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                <span>Master 16-bit layered PSD + Print-ready 300 DPI CMYK</span>
+              </li>
+              <li>
+                <svg class="price-check-icon" viewBox="0 0 20 20" fill="none">
+                  <circle cx="10" cy="10" r="9" fill="#111111"/>
+                  <path d="M6 10L9 13L14 7" stroke="#FFFFFF" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                <span>Unlimited revision rounds until 100% approved</span>
+              </li>
+            </ul>
+          </div>
+
+          <!-- Plan 3: Studio Retainer / Enterprise -->
+          <div class="price-card">
+            <span class="price-card-plan-name">STUDIO RETAINER</span>
+            <p class="price-card-desc">For creative agencies and international fashion houses requiring dedicated artist capacity.</p>
+            
+            <div class="price-figure-wrap">
+              <span class="price-amount dynamic-price-amount" data-per-image="Custom" data-monthly="2,800">Custom</span>
+              <span class="price-unit dynamic-price-unit" data-per-image-unit="Volume Contract" data-monthly-unit="/ month (Retainer)">Volume Contract</span>
+            </div>
+            
+            <div class="price-turnaround-badge">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="10"></circle>
+                <polyline points="12 6 12 12 16 14"></polyline>
+              </svg>
+              <span>12 – 24h Urgent SLA</span>
+            </div>
+
+            <a href="#trial" class="price-card-cta btn-plan-outline">
+              <span>Talk To Production Lead</span>
+              <svg class="icon-arrow" viewBox="0 0 16 16" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M4 12L12 4M12 4H6M12 4V10"/>
+              </svg>
+            </a>
+
+            <span class="price-features-title">EXCLUSIVE ENTERPRISE BENEFITS:</span>
+            <ul class="price-features-list">
+              <li>
+                <svg class="price-check-icon" viewBox="0 0 20 20" fill="none">
+                  <circle cx="10" cy="10" r="9" fill="#111111" fill-opacity="0.08"/>
+                  <path d="M6 10L9 13L14 7" stroke="#111111" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                <span><strong>Dedicated retoucher team</strong> calibrated to your exact style</span>
+              </li>
+              <li>
+                <svg class="price-check-icon" viewBox="0 0 20 20" fill="none">
+                  <circle cx="10" cy="10" r="9" fill="#111111" fill-opacity="0.08"/>
+                  <path d="M6 10L9 13L14 7" stroke="#111111" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                <span>Custom color pipeline honoring studio camera RAW profiles</span>
+              </li>
+              <li>
+                <svg class="price-check-icon" viewBox="0 0 20 20" fill="none">
+                  <circle cx="10" cy="10" r="9" fill="#111111" fill-opacity="0.08"/>
+                  <path d="M6 10L9 13L14 7" stroke="#111111" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                <span>Direct Slack / Microsoft Teams shared workspace</span>
+              </li>
+              <li>
+                <svg class="price-check-icon" viewBox="0 0 20 20" fill="none">
+                  <circle cx="10" cy="10" r="9" fill="#111111" fill-opacity="0.08"/>
+                  <path d="M6 10L9 13L14 7" stroke="#111111" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                <span>Strict mutual NDA &amp; intellectual property guarantee</span>
+              </li>
+              <li>
+                <svg class="price-check-icon" viewBox="0 0 20 20" fill="none">
+                  <circle cx="10" cy="10" r="9" fill="#111111" fill-opacity="0.08"/>
+                  <path d="M6 10L9 13L14 7" stroke="#111111" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                <span>12-month cloud archive with redundant AWS S3 storage</span>
+              </li>
+            </ul>
+          </div>
+
+        </div>
+
+        <!-- HƯỚNG B: LUXURY EDITORIAL COLUMNS (UNIFIED GRID) -->
+        <div class="pricing-view-editorial" id="pricing-editorial-view">
+          <div class="editorial-columns-grid">
+            
+            <!-- Col 1 -->
+            <div class="editorial-col">
+              <h3 class="editorial-plan-serif-title">Essential</h3>
+              <p class="editorial-subtitle">High-volume catalogue clipping &amp; marketplace clean-up.</p>
+              <div class="editorial-price-line">$1.50</div>
+              <span class="editorial-price-sub">Per image · 24 – 48h turnaround</span>
+              
+              <a href="#trial" class="price-card-cta btn-plan-outline" style="margin-bottom: 28px;">
+                <span>Start Free Trial</span>
+              </a>
+
+              <div class="editorial-divider"></div>
+              <div class="editorial-feature-group">
+                <ul>
+                  <li>Precise pen tool clipping path</li>
+                  <li>Ghost mannequin volume alignment</li>
+                  <li>Surface dust &amp; tag removal</li>
+                  <li>Shopify &amp; Farfetch color standardization</li>
+                  <li>High-res JPG &amp; WebP exports</li>
+                </ul>
+              </div>
+            </div>
+
+            <!-- Col 2: Pro Editorial Highlight -->
+            <div class="editorial-col is-pro-highlight">
+              <h3 class="editorial-plan-serif-title">Pro Editorial</h3>
+              <p class="editorial-subtitle">Beauty lookbooks, campaigns &amp; luxury goods retouching.</p>
+              <div class="editorial-price-line">$4.50</div>
+              <span class="editorial-price-sub">Per image · 24h Priority SLA</span>
+              
+              <a href="#trial" class="price-card-cta btn-plan-solid" style="margin-bottom: 28px;">
+                <span>Get A Free Trial Test</span>
+              </a>
+
+              <div class="editorial-divider"></div>
+              <div class="editorial-feature-group">
+                <ul>
+                  <li><strong>Natural frequency separation</strong> (pore integrity)</li>
+                  <li>Fabric weave &amp; stitch reconstruction</li>
+                  <li>Macro jewelry diamond sparkle &amp; polish</li>
+                  <li>16-bit Master layered PSD + 300 DPI TIFF</li>
+                  <li>Unlimited review iterations</li>
+                </ul>
+              </div>
+            </div>
+
+            <!-- Col 3: Studio Retainer -->
+            <div class="editorial-col">
+              <h3 class="editorial-plan-serif-title">Studio Retainer</h3>
+              <p class="editorial-subtitle">Dedicated artists &amp; priority bandwidth for agencies.</p>
+              <div class="editorial-price-line">Custom</div>
+              <span class="editorial-price-sub">From $2,800/mo · 12h urgent SLA</span>
+              
+              <a href="#trial" class="price-card-cta btn-plan-outline" style="margin-bottom: 28px;">
+                <span>Contact Studio Lead</span>
+              </a>
+
+              <div class="editorial-divider"></div>
+              <div class="editorial-feature-group">
+                <ul>
+                  <li>Dedicated artist team trained on your brand</li>
+                  <li>Studio camera RAW calibrated pipeline</li>
+                  <li>Private Slack / Teams channel</li>
+                  <li>Strict non-disclosure NDA protection</li>
+                  <li>12-month cloud archive backup</li>
+                </ul>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- Free Trial Guarantee Banner -->
+        <div class="pricing-guarantee-note">
+          <svg class="guarantee-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+          </svg>
+          <p class="guarantee-text">
+            <strong>100% Risk-Free Studio Test:</strong> Every client starts with a free 3-image calibration test. Evaluate our precision on your actual RAW files before committing to any order.
+          </p>
+        </div>
+
+      </div>
+    </section>
+
   </main>
 
   <!-- Custom Rotating Circular Cursor Follower for Collapsed Services -->
@@ -579,6 +1189,7 @@
   <!-- Custom Animation File -->
   <script src="assets/js/animations.js"></script>
   <script src="cosmos-hero.js?v=cosmos.ref19"></script>
+  <script src="workflow-pricing.js?v=1.0"></script>
   <script src="script.js"></script>
 </body>
 </html>
