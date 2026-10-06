@@ -1,0 +1,661 @@
+/* ==========================================================================
+   TRIAL MODAL — WISPR FLOW 2-COLUMN STYLE (STUDIO WARM GRAY)
+   Design: Editorial Luxury, 100% Dead-Centered, Responsive, Cloud Link & Direct Upload
+   ========================================================================== */
+
+/* ── Modal Overlay ─────────────────────────────────────────────────── */
+.trial-modal-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 99999;
+  background: rgba(10, 10, 10, 0.65);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.25s ease, visibility 0.25s ease;
+  overflow-y: auto;
+}
+
+.trial-modal-overlay.is-open {
+  opacity: 1;
+  visibility: visible;
+}
+
+/* ── Modal Dialog Shell (Dead-Centered via margin: auto) ───────────── */
+.trial-modal-dialog {
+  position: relative;
+  width: 100%;
+  max-width: 1040px;
+  margin: auto;
+  border-radius: 28px;
+  background: #F4F3F0;
+  color: #111111;
+  box-shadow: 0 25px 70px -10px rgba(0, 0, 0, 0.25), 0 0 0 1px rgba(0, 0, 0, 0.08);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  transform: scale(0.96);
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.trial-modal-overlay.is-open .trial-modal-dialog {
+  transform: scale(1);
+}
+
+/* ── Top Bar Controls: Brand Badge & Close Button ─────────────────── */
+.trial-modal-topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 32px 4px;
+  flex-shrink: 0;
+}
+
+.trial-modal-badge {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: #777777;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.trial-modal-badge .badge-dot {
+  color: #C67D5A;
+  font-size: 8px;
+}
+
+.modal-close-btn {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  background: rgba(0, 0, 0, 0.05);
+  color: #111111;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  flex-shrink: 0;
+}
+
+.modal-close-btn:hover {
+  background: rgba(0, 0, 0, 0.12);
+  color: #000000;
+  transform: rotate(90deg);
+}
+
+/* ── Modal Content Body: 2-Column Grid ────────────────────────────── */
+.trial-modal-body {
+  padding: 10px 32px 30px;
+  display: grid;
+  grid-template-columns: 1fr 1.15fr;
+  gap: 32px;
+  align-items: stretch;
+  overflow-y: auto;
+  flex: 1;
+}
+
+/* Custom Scrollbar for Modal Body */
+.trial-modal-body::-webkit-scrollbar {
+  width: 6px;
+}
+.trial-modal-body::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.16);
+  border-radius: 9999px;
+}
+
+/* ── Left Column: Value Proposition & 3 Steps ─────────────────────── */
+.modal-col-intro {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 6px 0;
+}
+
+.intro-headline {
+  font-family: var(--font-sans, 'Plus Jakarta Sans', sans-serif);
+  font-size: clamp(2rem, 3.2vw, 2.75rem);
+  font-weight: 600;
+  letter-spacing: -0.03em;
+  line-height: 1.15;
+  margin: 0 0 14px 0;
+  color: #111111;
+}
+
+.intro-headline .serif-italic {
+  font-family: var(--font-serif, 'Playfair Display', Georgia, serif);
+  font-style: italic;
+  font-weight: 400;
+  color: #111111;
+}
+
+.intro-subline {
+  font-size: 14.5px;
+  color: #555555;
+  line-height: 1.55;
+  margin: 0 0 24px 0;
+}
+
+/* 3 Numbered Steps */
+.trial-steps-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-bottom: 0;
+}
+
+.trial-step-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 13px;
+}
+
+.step-num {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  font-size: 12px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  margin-top: 2px;
+  background: rgba(0, 0, 0, 0.07);
+  color: #111111;
+}
+
+.step-content h4 {
+  font-size: 14.5px;
+  font-weight: 600;
+  margin: 0 0 3px 0;
+  color: #111111;
+}
+
+.step-content p {
+  font-size: 13px;
+  color: #666666;
+  margin: 0;
+  line-height: 1.45;
+}
+
+/* ── Right Column: Form Card Stage ────────────────────────────────── */
+.modal-card-stage {
+  border-radius: 22px;
+  padding: 22px 24px 20px;
+  display: flex;
+  flex-direction: column;
+  background: #FFFFFF;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.04);
+}
+
+/* Tier Selector Row */
+.tier-selector-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+
+.tier-selector-label {
+  font-size: 11.5px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #666666;
+}
+
+.tier-options-group {
+  display: inline-flex;
+  background: #EFEFEF;
+  padding: 3px;
+  border-radius: 9999px;
+  gap: 3px;
+  border: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+.tier-btn {
+  background: transparent;
+  border: none;
+  color: #666666;
+  font-size: 11px;
+  font-weight: 600;
+  padding: 4px 11px;
+  border-radius: 9999px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.tier-btn.is-active {
+  background: #111111;
+  color: #FFFFFF;
+  font-weight: 700;
+}
+
+/* Form Inputs Grid (2 columns) */
+.trial-form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+
+.trial-field {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.trial-field.col-full {
+  grid-column: span 2;
+}
+
+.trial-field label {
+  font-size: 11.5px;
+  font-weight: 600;
+  color: #333333;
+}
+
+.trial-field input,
+.trial-field textarea {
+  width: 100%;
+  background: #F8F8F7;
+  border: 1px solid rgba(0, 0, 0, 0.12);
+  border-radius: 11px;
+  padding: 9px 12px;
+  color: #111111;
+  font-size: 13px;
+  font-family: inherit;
+  outline: none;
+  transition: border-color 0.2s ease, background 0.2s ease, box-shadow 0.2s ease;
+}
+
+.trial-field input::placeholder,
+.trial-field textarea::placeholder {
+  color: #999999;
+  font-size: 12px;
+}
+
+.trial-field input:focus,
+.trial-field textarea:focus {
+  border-color: #111111;
+  background: #FFFFFF;
+  box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.06);
+}
+
+.trial-field textarea {
+  resize: none;
+  height: 80px;
+  line-height: 1.5;
+}
+
+/* ── Dual-Mode Upload / Cloud Link Tabs ───────────────────────────── */
+.trial-upload-section {
+  margin-top: 4px;
+  margin-bottom: 16px;
+}
+
+.upload-mode-toggle {
+  display: flex;
+  background: #EFEFEF;
+  padding: 3px;
+  border-radius: 9999px;
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  margin-bottom: 10px;
+  gap: 3px;
+}
+
+.upload-mode-tab {
+  flex: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 6px 12px;
+  border-radius: 9999px;
+  border: none;
+  background: transparent;
+  color: #666666;
+  font-size: 11.5px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.upload-mode-tab:hover {
+  color: #111111;
+}
+
+.upload-mode-tab.is-active {
+  background: #FFFFFF;
+  color: #111111;
+  font-weight: 700;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
+}
+
+.upload-mode-panel {
+  display: none;
+  height: 96px;
+}
+
+.upload-mode-panel.is-active {
+  display: block;
+}
+
+/* ── Mode 1: File Dropzone (Exact Equal Height 96px) ──────────────── */
+.trial-dropzone {
+  border: 1.5px dashed rgba(0, 0, 0, 0.22);
+  border-radius: 14px;
+  padding: 12px 14px;
+  text-align: center;
+  background: #FAF9F7;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  position: relative;
+  height: 96px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.trial-dropzone:hover {
+  border-color: #111111;
+  background: #F3F2EE;
+}
+
+.trial-dropzone.dragover {
+  border-color: #111111;
+  background: #EDECE7;
+}
+
+.dropzone-empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+}
+
+.dropzone-icon {
+  width: 20px;
+  height: 20px;
+  stroke: #444444;
+}
+
+.dropzone-title {
+  font-size: 12.5px;
+  font-weight: 600;
+  color: #111111;
+  margin: 0;
+}
+
+.dropzone-sub {
+  font-size: 11px;
+  color: #777777;
+  margin: 0;
+}
+
+/* Selected Files State in Dropzone */
+.dropzone-selected-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  width: 100%;
+}
+
+.dropzone-selected-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.selected-count-badge {
+  background: #111111;
+  color: #FFFFFF;
+  font-size: 10.5px;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: 9999px;
+}
+
+.selected-replace-hint {
+  font-size: 10.5px;
+  color: #777777;
+}
+
+.dropzone-files-chips {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  justify-content: center;
+  max-width: 100%;
+}
+
+.file-chip {
+  background: #FFFFFF;
+  border: 1px solid rgba(0, 0, 0, 0.15);
+  border-radius: 6px;
+  padding: 2px 7px 2px 9px;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 11px;
+  font-weight: 600;
+  color: #111111;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+.file-chip-remove {
+  background: transparent;
+  border: none;
+  color: #888888;
+  font-size: 13px;
+  cursor: pointer;
+  padding: 0 2px;
+  line-height: 1;
+}
+
+.file-chip-remove:hover {
+  color: #EF4444;
+}
+
+/* ── Mode 2: Cloud Storage Link Input (Exact Equal Height 96px) ───── */
+.cloud-link-box {
+  background: #FAF9F7;
+  border: 1.5px solid rgba(0, 0, 0, 0.1);
+  border-radius: 14px;
+  padding: 12px 14px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 8px;
+  height: 96px;
+  box-sizing: border-box;
+}
+
+.cloud-link-input-wrap {
+  display: flex;
+  align-items: center;
+  background: #FFFFFF;
+  border: 1px solid rgba(0, 0, 0, 0.14);
+  border-radius: 10px;
+  padding: 0 12px;
+  transition: all 0.2s ease;
+}
+
+.cloud-link-input-wrap:focus-within {
+  border-color: #111111;
+  box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.06);
+}
+
+.cloud-input-icon {
+  color: #666666;
+  flex-shrink: 0;
+  margin-right: 8px;
+}
+
+.cloud-link-input {
+  border: none !important;
+  background: transparent !important;
+  padding: 9px 0 !important;
+  font-size: 13px !important;
+  color: #111111 !important;
+  box-shadow: none !important;
+  width: 100%;
+  outline: none;
+}
+
+.cloud-link-input::placeholder {
+  color: #999999 !important;
+}
+
+.cloud-link-footer {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.cloud-hint-note {
+  font-size: 11.5px;
+  color: #777777;
+  margin: 0;
+  line-height: 1.4;
+}
+
+/* ── Submit CTA Button & Security Guarantee ───────────────────────── */
+.btn-trial-submit {
+  width: 100%;
+  padding: 13px 20px;
+  border-radius: 9999px;
+  border: none;
+  background: #111111;
+  color: #FFFFFF;
+  font-size: 13.5px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.btn-trial-submit:hover {
+  background: #2B2017;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+}
+
+.modal-intro-guarantee {
+  font-size: 12px;
+  color: #777777;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  margin-top: 24px;
+}
+
+.modal-intro-guarantee svg {
+  stroke: #777777;
+  flex-shrink: 0;
+}
+
+/* Success State Overlay */
+.trial-success-overlay {
+  display: none;
+  text-align: center;
+  padding: 40px 20px;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.trial-success-overlay.is-visible {
+  display: flex;
+}
+
+.success-check-icon {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.08);
+  color: #111111;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 14px;
+}
+
+.success-headline {
+  font-size: 21px;
+  font-weight: 700;
+  color: #111111;
+  margin: 0 0 8px 0;
+}
+
+.success-desc {
+  font-size: 13.5px;
+  color: #666666;
+  max-width: 360px;
+  line-height: 1.5;
+  margin: 0 0 22px 0;
+}
+
+.btn-reset-action {
+  background: #111111;
+  color: #FFFFFF;
+  border: none;
+  border-radius: 9999px;
+  padding: 10px 24px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.btn-reset-action:hover {
+  background: #2B2017;
+}
+
+/* ── Responsive Mobile Breakpoints ────────────────────────────────── */
+@media (max-width: 900px) {
+  .trial-modal-dialog {
+    max-height: 94vh;
+    border-radius: 24px;
+  }
+
+  .trial-modal-body {
+    grid-template-columns: 1fr;
+    gap: 20px;
+    padding: 10px 20px 24px;
+  }
+
+  .trial-modal-topbar {
+    padding: 16px 20px 4px;
+  }
+
+  .intro-headline {
+    font-size: 1.85rem;
+  }
+
+  .trial-steps-list {
+    display: none; /* Keep form immediately accessible on phones */
+  }
+
+  .upload-slots-row {
+    grid-template-columns: 1fr;
+  }
+}

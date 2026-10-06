@@ -534,6 +534,124 @@
         );
       }
     }
+
+    // ── SECTION: CTA (INTERCOM GRID CANVAS: LETTER WAVE BLUR & ENTRANCE) ──
+    const ctaSection = document.getElementById('d4-cta');
+    if (ctaSection) {
+      const ctaHeadline = ctaSection.querySelector('.d4-center-headline');
+      const ctaBtn = ctaSection.querySelector('.d4-actions-row');
+      const ctaMedia = ctaSection.querySelectorAll('.d4-cell-media, .d4-sketch-art');
+      const ctaDots = ctaSection.querySelectorAll('.d4-dot');
+
+      // 1. Blue Dots: Subtle expansion from center
+      if (ctaDots.length > 0) {
+        gsap.fromTo(
+          ctaDots,
+          { opacity: 0, scale: 0 },
+          {
+            scrollTrigger: { trigger: ctaSection, start: 'top 85%', once: true },
+            opacity: 1,
+            scale: 1,
+            duration: 0.45,
+            stagger: {
+              amount: 0.35,
+              from: 'center'
+            },
+            ease: 'power2.out',
+            clearProps: 'transform'
+          }
+        );
+      }
+
+      // 2. Photos & Line-art sketches: Clean blur-to-sharp focus entrance
+      if (ctaMedia.length > 0) {
+        gsap.fromTo(
+          ctaMedia,
+          { opacity: 0, scale: 0.88, filter: 'blur(8px)' },
+          {
+            scrollTrigger: { trigger: ctaSection, start: 'top 82%', once: true },
+            opacity: 1,
+            scale: 1,
+            filter: 'blur(0px)',
+            duration: 0.8,
+            stagger: 0.08,
+            delay: 0.15,
+            ease: 'power3.out',
+            clearProps: 'filter,transform'
+          }
+        );
+      }
+
+      // 3. Center Headline: Signature Cosmos Letter-by-Letter Horizontal Blur Wave
+      if (ctaHeadline) {
+        const ctaChars = splitElementIntoChars(ctaHeadline);
+        animateCharCluster(ctaChars, {
+          trigger: ctaSection,
+          start: 'top 80%',
+          delay: 0.06,
+          duration: 0.52,
+          stagger: 0.012,
+          blur: '8px'
+        });
+      }
+
+      // 4. CTA Button: Lift with subtle blur reveal right as headline finishes
+      if (ctaBtn) {
+        gsap.fromTo(
+          ctaBtn,
+          { y: 24, opacity: 0, filter: 'blur(6px)' },
+          {
+            scrollTrigger: { trigger: ctaSection, start: 'top 80%', once: true },
+            y: 0,
+            opacity: 1,
+            filter: 'blur(0px)',
+            duration: 0.75,
+            delay: 0.42,
+            ease: 'power3.out',
+            clearProps: 'filter,transform'
+          }
+        );
+      }
+    }
+
+    // ── SECTION: FAQ (INTERCOM STYLE ACCORDION: LETTER WAVE BLUR & ENTRANCE) ──
+    const faqSection = document.getElementById('d4-faq');
+    if (faqSection) {
+      const faqHeadline = faqSection.querySelector('.d4-faq-headline');
+      const faqCards = faqSection.querySelectorAll('.d4-faq-card');
+
+      // 1. FAQ Headline: Signature Cosmos Letter-by-Letter Horizontal Blur Wave
+      if (faqHeadline) {
+        const faqChars = splitElementIntoChars(faqHeadline);
+        animateCharCluster(faqChars, {
+          trigger: faqSection,
+          start: 'top 82%',
+          delay: 0.05,
+          duration: 0.52,
+          stagger: 0.013,
+          blur: '8px'
+        });
+      }
+
+      // 2. FAQ Cards: Cascade blur-to-focus entrance
+      if (faqCards.length > 0) {
+        gsap.fromTo(
+          faqCards,
+          { y: 28, opacity: 0, filter: 'blur(6px)' },
+          {
+            scrollTrigger: { trigger: faqSection, start: 'top 80%', once: true },
+            y: 0,
+            opacity: 1,
+            filter: 'blur(0px)',
+            duration: 0.75,
+            stagger: 0.07,
+            delay: 0.28,
+            ease: 'power3.out',
+            clearProps: 'filter,transform'
+          }
+        );
+      }
+    }
   }
 
   // Refresh ScrollTrigger when window resizes

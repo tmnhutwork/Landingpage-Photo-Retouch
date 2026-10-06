@@ -1,0 +1,482 @@
+/* ==========================================================================
+   NESSO — CTA, FAQ & FOOTER SECTIONS
+   Direction: "The Intercom Grid Canvas & Minimal Studio System"
+   ========================================================================== */
+
+/* ── Common Section Badge Pill ── */
+.section-badge-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 4px 12px;
+  border-radius: 9999px;
+  margin-bottom: 16px;
+}
+
+.section-badge-pill .pill-dot {
+  font-size: 8px;
+}
+
+/* ==========================================================================
+   CTA SECTION: "THE INTERCOM GRID CANVAS" (9 COLS × 4 ROWS)
+   ========================================================================== */
+
+.d4-cta-section {
+  background: #FFFFFF;
+  padding: 80px 24px 90px;
+  position: relative;
+  overflow: visible;
+  border-top: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+.d4-cta-container {
+  max-width: 1260px;
+  margin: 0 auto;
+  position: relative;
+}
+
+/* 9 Columns × 4 Rows Grid Canvas — FLAT ON BACKGROUND, NO BORDER, NO SHADOW, NO RADIUS */
+.d4-grid-canvas {
+  display: grid;
+  grid-template-columns: repeat(9, 1fr);
+  grid-template-rows: repeat(4, 135px);
+  gap: 0;
+  position: relative;
+  background: transparent;
+  border: none;
+  border-radius: 0;
+  box-shadow: none;
+  overflow: visible;
+}
+
+/* Each cell in the 9×4 grid */
+.d4-grid-cell {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+}
+
+/* Intercom Blue Dot (Tiny 3px square dot at grid intersections) */
+.d4-dot {
+  position: absolute;
+  width: 3px;
+  height: 3px;
+  background: #0022FF;
+  border-radius: 0;
+  z-index: 5;
+  pointer-events: none;
+}
+
+.d4-dot.tl {
+  top: 0;
+  left: 0;
+  transform: translate(-50%, -50%);
+}
+
+.d4-dot.tr {
+  top: 0;
+  right: 0;
+  transform: translate(50%, -50%);
+}
+
+.d4-dot.bl {
+  bottom: 0;
+  left: 0;
+  transform: translate(-50%, 50%);
+}
+
+.d4-dot.br {
+  bottom: 0;
+  right: 0;
+  transform: translate(50%, 50%);
+}
+
+/* Square Photo in Cell (Intercom style: crisp 104x104 with 8px radius) */
+.d4-cell-media {
+  width: 104px;
+  height: 104px;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.25s ease;
+  position: relative;
+  background: #FAFAFA;
+}
+
+.d4-cell-media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.d4-cell-media:hover {
+  transform: scale(1.08);
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.14);
+  z-index: 10;
+}
+
+/* Transparent Hand-drawn Line-art Illustration */
+.d4-sketch-art {
+  width: 98px;
+  height: 98px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  pointer-events: none;
+}
+
+.d4-sketch-svg {
+  width: 100%;
+  height: 100%;
+}
+
+/* Central Headline & CTA Stage — NO CARD, NO SHAPE, NO BACKGROUND, NO BADGE */
+.d4-center-stage {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 15;
+  text-align: center;
+  max-width: 840px;
+  width: 90%;
+  padding: 0;
+  background: transparent;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  border-radius: 0;
+  border: none;
+  box-shadow: none;
+  pointer-events: auto;
+}
+
+/* 100% SANS-SERIF HEADLINE (NO SERIF, NO ITALIC) */
+.d4-center-headline {
+  font-family: var(--font-sans, 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif);
+  font-size: clamp(2.4rem, 4.4vw, 3.8rem);
+  font-weight: 500;
+  letter-spacing: -0.035em;
+  line-height: 1.14;
+  color: #111111;
+  margin: 0 0 26px;
+}
+
+.d4-actions-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+/* ==========================================================================
+   FAQ SECTION (INTERCOM-STYLE ACCORDION CARDS)
+   ========================================================================== */
+
+.d4-faq-section {
+  background: #FFFFFF;
+  padding: 80px 24px 95px;
+  border-top: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+.d4-faq-container {
+  max-width: 860px;
+  margin: 0 auto;
+}
+
+.d4-faq-header {
+  text-align: center;
+  margin-bottom: 44px;
+}
+
+.d4-faq-headline {
+  font-family: var(--font-sans, 'Plus Jakarta Sans', sans-serif);
+  font-size: clamp(2rem, 3.2vw, 2.6rem);
+  font-weight: 600;
+  letter-spacing: -0.03em;
+  color: #111111;
+  margin: 0;
+}
+
+.d4-faq-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.d4-faq-card {
+  background: #FFFFFF;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  border-radius: 14px;
+  overflow: hidden;
+  box-shadow: none;
+  transition: border-color 0.2s ease;
+}
+
+.d4-faq-card.is-open {
+  border-color: #111111;
+  box-shadow: none;
+}
+
+.d4-faq-question {
+  width: 100%;
+  background: transparent;
+  border: none;
+  text-align: left;
+  padding: 18px 22px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 15.5px;
+  font-weight: 600;
+  color: #111111;
+  line-height: 1.4;
+}
+
+.d4-faq-toggle-icon {
+  width: 28px;
+  height: 28px;
+  min-width: 28px;
+  min-height: 28px;
+  max-width: 28px;
+  max-height: 28px;
+  box-sizing: border-box;
+  aspect-ratio: 1 / 1;
+  border-radius: 50%;
+  background: rgba(0, 87, 255, 0.08);
+  color: #0057FF;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  padding: 0;
+  line-height: 1;
+  transition: background 0.22s ease, color 0.22s ease;
+}
+
+.d4-faq-toggle-icon svg {
+  width: 12px;
+  height: 12px;
+  stroke: currentColor;
+  stroke-width: 2;
+  display: block;
+  flex-shrink: 0;
+  transform-origin: center center;
+  transition: transform 0.28s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.d4-faq-card.is-open .d4-faq-toggle-icon {
+  background: #111111;
+  color: #FFFFFF;
+}
+
+.d4-faq-card.is-open .d4-faq-toggle-icon svg {
+  transform: rotate(45deg);
+}
+
+.d4-faq-answer {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.35s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s ease;
+  opacity: 0;
+}
+
+.d4-faq-card.is-open .d4-faq-answer {
+  opacity: 1;
+}
+
+.d4-faq-answer-inner {
+  padding: 0 22px 20px;
+  font-size: 14px;
+  line-height: 1.6;
+  color: #555555;
+}
+
+/* ==========================================================================
+   FOOTER SECTION (TECH-FORWARD STUDIO FOOTER)
+   ========================================================================== */
+
+.d4-footer-section {
+  background: #FFFFFF;
+  border-top: 1px solid rgba(0, 0, 0, 0.08);
+  padding: 70px 24px 36px;
+}
+
+.d4-footer-container {
+  max-width: 1160px;
+  margin: 0 auto;
+}
+
+.d4-footer-grid {
+  display: grid;
+  grid-template-columns: 1.4fr 1fr 1.35fr 1fr;
+  gap: 40px;
+  margin-bottom: 50px;
+}
+
+.d4-footer-brand .footer-logo-img {
+  width: 120px;
+  margin-bottom: 14px;
+}
+
+.d4-footer-brand p {
+  font-size: 13.5px;
+  line-height: 1.55;
+  color: #666666;
+  max-width: 280px;
+  margin: 0 0 18px;
+}
+
+.d4-tech-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  color: #0057FF;
+  background: rgba(0, 87, 255, 0.08);
+  border: 1px solid rgba(0, 87, 255, 0.2);
+  padding: 4px 10px;
+  border-radius: 9999px;
+}
+
+/* ── Typography & Layout for Condensed Navigation & Contact Columns ── */
+.d4-contact-label {
+  font-size: 13.5px;
+  font-weight: 500;
+  color: #71717A;
+  margin-bottom: 7px;
+  display: block;
+  letter-spacing: -0.01em;
+}
+
+.d4-footer-nav-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.d4-footer-nav-list li a {
+  font-size: 15px;
+  font-weight: 500;
+  color: #111111;
+  text-decoration: none;
+  transition: color 0.2s ease;
+  display: inline-block;
+}
+
+.d4-footer-nav-list li a:hover {
+  color: #0057FF;
+}
+
+.d4-contact-group {
+  margin-bottom: 22px;
+}
+
+.d4-contact-group:last-child {
+  margin-bottom: 0;
+}
+
+.d4-contact-val {
+  font-size: 15px;
+  font-weight: 500;
+  color: #111111;
+  line-height: 1.45;
+  margin: 0;
+}
+
+.d4-contact-link {
+  color: #111111;
+  text-decoration: none;
+  transition: color 0.2s ease;
+  display: inline-block;
+}
+
+.d4-contact-link:hover {
+  color: #0057FF;
+}
+
+.d4-footer-bottom {
+  border-top: 1px solid rgba(0, 0, 0, 0.06);
+  padding-top: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 14px;
+  font-size: 12px;
+  color: #888888;
+}
+
+.d4-legal-links {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.d4-legal-links a {
+  color: #888888;
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.d4-legal-links a:hover {
+  color: #111111;
+}
+
+/* ==========================================================================
+   RESPONSIVE BREAKPOINTS
+   ========================================================================== */
+
+@media (max-width: 1024px) {
+  .d4-grid-canvas {
+    grid-template-columns: repeat(6, 1fr);
+    grid-template-rows: repeat(4, 100px);
+  }
+  .d4-footer-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 30px;
+  }
+}
+
+@media (max-width: 640px) {
+  .d4-grid-canvas {
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: repeat(5, 80px);
+  }
+  .d4-cell-media {
+    width: 48px;
+    height: 48px;
+  }
+  .d4-center-stage {
+    padding: 24px 16px;
+    width: 94%;
+  }
+  .d4-center-headline {
+    font-size: 1.75rem;
+  }
+  .d4-footer-grid {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+  .d4-footer-bottom {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
