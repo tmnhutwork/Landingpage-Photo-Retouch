@@ -70,6 +70,19 @@
   letter-spacing: -0.025em;
   margin: 8px auto 0;
   max-width: 920px;
+  text-wrap: balance;
+}
+
+.br-mobile-only {
+  display: none;
+}
+
+.br-desktop-only {
+  display: inline;
+}
+
+.sp-desktop {
+  display: inline;
 }
 
 .theater-headline .serif-italic {
@@ -691,6 +704,25 @@
 }
 
 @media (max-width: 768px) {
+  .theater-headline {
+    font-size: clamp(23px, 6.4vw, 32px);
+    line-height: 1.24;
+    text-wrap: balance;
+    max-width: 100%;
+  }
+
+  .br-mobile-only {
+    display: inline;
+  }
+
+  .br-desktop-only {
+    display: none;
+  }
+
+  .sp-desktop {
+    display: none;
+  }
+
   .figma-approach-section {
     padding: 44px 0 60px !important;
   }

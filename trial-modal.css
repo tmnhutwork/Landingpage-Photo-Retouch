@@ -129,6 +129,7 @@
   line-height: 1.15;
   margin: 0 0 14px 0;
   color: #111111;
+  text-wrap: balance;
 }
 
 .intro-headline .serif-italic {
@@ -143,6 +144,7 @@
   color: #555555;
   line-height: 1.55;
   margin: 0 0 24px 0;
+  text-wrap: pretty;
 }
 
 /* 3 Numbered Steps */
@@ -179,6 +181,7 @@
   font-weight: 600;
   margin: 0 0 3px 0;
   color: #111111;
+  text-wrap: balance;
 }
 
 .step-content p {
@@ -186,6 +189,7 @@
   color: #666666;
   margin: 0;
   line-height: 1.45;
+  text-wrap: pretty;
 }
 
 /* ── Right Column: Form Card Stage ────────────────────────────────── */

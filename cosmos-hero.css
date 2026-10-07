@@ -396,6 +396,7 @@ textarea {
   line-height: 1.18;
   color: var(--ink);
   margin-bottom: clamp(14px, 2.5vh, 24px);
+  text-wrap: balance;
 }
 
 .serif-italic {

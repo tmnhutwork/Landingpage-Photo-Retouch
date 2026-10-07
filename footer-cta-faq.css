@@ -163,6 +163,7 @@
   line-height: 1.14;
   color: #111111;
   margin: 0 0 26px;
+  text-wrap: balance;
 }
 
 .d4-actions-row {
@@ -216,6 +217,7 @@
   letter-spacing: -0.03em;
   color: #111111;
   margin: 0;
+  text-wrap: balance;
 }
 
 .d4-faq-list {
@@ -260,6 +262,10 @@
   outline: none;
   -webkit-tap-highlight-color: transparent;
   user-select: none;
+}
+
+.d4-faq-question span:first-child {
+  text-wrap: pretty;
 }
 
 .d4-faq-question:focus-visible {
@@ -339,6 +345,7 @@
   transform: translateY(-6px);
   transition: opacity 0.22s ease 0.06s, transform 0.22s ease 0.06s;
   will-change: opacity, transform;
+  text-wrap: pretty;
 }
 
 .d4-faq-card.is-open .d4-faq-answer-text {
@@ -379,6 +386,7 @@
   color: #666666;
   max-width: 280px;
   margin: 0 0 18px;
+  text-wrap: pretty;
 }
 
 .d4-tech-badge {

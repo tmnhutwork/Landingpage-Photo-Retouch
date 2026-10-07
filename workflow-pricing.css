@@ -64,6 +64,7 @@
   color: #111111;
   margin-top: 12px;
   margin-bottom: 0;
+  text-wrap: balance;
 }
 
 .section-subtext {
@@ -72,6 +73,7 @@
   line-height: 1.6;
   max-width: 620px;
   margin: 0 auto 28px;
+  text-wrap: pretty;
 }
 
 /* Interactive Design Option Switcher (Pill Toggle) */
@@ -491,6 +493,7 @@
   letter-spacing: -0.015em;
   margin-bottom: 16px;
   line-height: 1.3;
+  text-wrap: balance;
 }
 
 /* Two-Sided Roles Container: Client vs Nesso (Unboxed, Airy, Equal Height) */
@@ -574,6 +577,7 @@
   color: #475569;
   line-height: 1.5;
   margin: 0;
+  text-wrap: pretty;
 }
 
 /* Bottom SLA Badge */
@@ -760,6 +764,7 @@
   min-height: 42px;
   margin: 0 0 20px 0;
   line-height: 1.5;
+  text-wrap: pretty;
 }
 
 /* Dashed Divider Line */
@@ -788,6 +793,11 @@
   font-size: 13.5px;
   color: #333333;
   line-height: 1.45;
+  text-wrap: pretty;
+}
+
+.price-features-list li span {
+  text-wrap: pretty;
 }
 
 .price-check-icon,

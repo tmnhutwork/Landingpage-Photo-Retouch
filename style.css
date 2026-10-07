@@ -59,6 +59,24 @@ button, input, select, textarea {
   font-family: var(--font-sans);
 }
 
+/* Anti-Orphan & Balanced Typography (Universal System) */
+h1, h2, h3, h4, h5, h6,
+.title, .theater-headline, .services-main-title,
+.cosmos-clean-headline, .workflow-clean-headline,
+.section-headline, .d4-center-headline, .d4-faq-headline,
+.intro-headline, .service-title, .cosmos-discipline-title,
+.runway-card-title, .runway-step-headline, .price-card-title {
+  text-wrap: balance;
+}
+
+p, li, .service-description, .cosmos-discipline-desc,
+.runway-role-desc, .price-card-desc, .price-features-list li,
+.price-features-list li span, .d4-faq-answer-text,
+.intro-subline, .step-content p, .d4-footer-brand p,
+.d4-faq-question span {
+  text-wrap: pretty;
+}
+
 /* Typography & Common Accents */
 .serif-italic {
   font-family: var(--font-serif);
@@ -1906,6 +1924,7 @@ body.is-slider-resizing {
   letter-spacing: -0.025em;
   color: #111111;
   margin-bottom: 12px;
+  text-wrap: balance;
 }
 
 .service-description {
@@ -1916,6 +1935,7 @@ body.is-slider-resizing {
   color: #111111;
   margin-bottom: 28px;
   max-width: 440px;
+  text-wrap: pretty;
 }
 
 .service-zoom-card {
@@ -2403,6 +2423,7 @@ body.is-slider-resizing {
   color: #111111;
   margin-bottom: 10px;
   letter-spacing: -0.02em;
+  text-wrap: balance;
 }
 
 .cosmos-discipline-desc {
@@ -2413,6 +2434,7 @@ body.is-slider-resizing {
   color: #111111;
   max-width: 320px;
   margin: 0;
+  text-wrap: pretty;
 }
 
 /* Responsive adjustments for Cosmos */
