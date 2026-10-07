@@ -114,19 +114,16 @@ function initServiceAccordion() {
 
     // Elements for GSAP micro-interactions
     const thumbImg = collapsedRow.querySelector('.simple-thumb-img');
-    const titleText = collapsedRow.querySelector('.service-simple-title');
 
     collapsedRow.addEventListener('mouseenter', () => {
       if (typeof gsap !== 'undefined') {
         if (thumbImg) gsap.to(thumbImg, { scale: 1.04, duration: 0.35, ease: 'power2.out', overwrite: 'auto' });
-        if (titleText) gsap.to(titleText, { x: 5, duration: 0.25, ease: 'power2.out', overwrite: 'auto' });
       }
     });
 
     collapsedRow.addEventListener('mouseleave', () => {
       if (typeof gsap !== 'undefined') {
         if (thumbImg) gsap.to(thumbImg, { scale: 1, duration: 0.35, ease: 'power2.out', overwrite: 'auto' });
-        if (titleText) gsap.to(titleText, { x: 0, duration: 0.25, ease: 'power2.out', overwrite: 'auto' });
       }
     });
 
@@ -361,12 +358,10 @@ function cancelService2Camera() {
   const stage = document.getElementById('service-camera-stage-2');
   const divider = slider.querySelector('.model-slider-divider');
   const calloutNeck = document.getElementById('callout-neck');
-  const calloutZipper = document.getElementById('callout-zipper');
 
   if (typeof gsap !== 'undefined') {
     if (stage) gsap.set(stage, { scale: 1, x: 0, y: 0 });
-    if (calloutNeck) gsap.set(calloutNeck, { opacity: 0 });
-    if (calloutZipper) gsap.set(calloutZipper, { opacity: 0 });
+    if (calloutNeck) gsap.set(calloutNeck, { opacity: 0, scale: 0.9 });
     if (divider) gsap.set(divider, { opacity: 1, pointerEvents: 'auto' });
   }
   slider.style.setProperty('--slider-pos', '50%');
@@ -380,27 +375,28 @@ function playService2CameraTour() {
   if (!stage) return;
   const divider = slider.querySelector('.model-slider-divider');
   const calloutNeck = document.getElementById('callout-neck');
-  const calloutZipper = document.getElementById('callout-zipper');
 
   if (service2CameraTl) service2CameraTl.kill();
 
-  // Initially: hide divider line, show After image fully so user inspects the retouched result
+  // Initially:
+  // - Stage stays completely normal (scale: 1, x: 0, y: 0) -> NO CLIPPING, NO CUTTING OFF!
+  // - Hide divider line
+  // - Show After image fully so user inspects the retouched collar (slider-pos = 0%)
   if (divider) gsap.set(divider, { opacity: 0, pointerEvents: 'none' });
   slider.style.setProperty('--slider-pos', '0%');
   gsap.set(stage, { scale: 1, x: 0, y: 0 });
-  if (calloutNeck) gsap.set(calloutNeck, { opacity: 0, x: -14 });
-  if (calloutZipper) gsap.set(calloutZipper, { opacity: 0, x: -14 });
+  if (calloutNeck) gsap.set(calloutNeck, { opacity: 0, scale: 0.88 });
 
   service2CameraTl = gsap.timeline({
     delay: 0.2,
     onComplete: () => {
-      // Zoom out completed: smoothly reveal divider line and reset slider to exact 50%
+      // Completed: smoothly reveal divider line and set slider to exact 50%
       slider.style.setProperty('--slider-pos', '50%');
       if (divider) divider.style.left = '50%';
       if (divider) {
         gsap.to(divider, {
           opacity: 1,
-          duration: 0.4,
+          duration: 0.35,
           ease: 'power2.out',
           onStart: () => {
             divider.style.pointerEvents = 'auto';
@@ -411,74 +407,42 @@ function playService2CameraTour() {
     }
   });
 
-  // Step 1: Camera zooms into Collar & Neck-Joint (s = 2.25, x: 6, y: 305)
+  // Step 1: Khoanh vùng chỗ đã sửa đầu tiên (cổ áo) + hiện chú thích (0.4s)
   service2CameraTl
-    .to(stage, {
-      scale: 2.25,
-      x: 6,
-      y: 305,
-      duration: 0.85,
-      ease: 'power2.inOut'
-    })
-    // Callout 1 appears with gentle spring
     .to(calloutNeck, {
       opacity: 1,
-      x: 0,
-      duration: 0.4,
-      ease: 'back.out(1.5)'
-    }, '-=0.2')
-    // Wait for viewer observation
-    .to({}, { duration: 1.1 })
-    // Callout 1 exits smoothly
-    .to(calloutNeck, {
-      opacity: 0,
-      x: 10,
-      duration: 0.25,
-      ease: 'power2.in'
-    })
-    // Step 2: Camera pans down to Zipper & Fabric alignment (s = 2.25, x: 6, y: -10)
-    .to(stage, {
-      scale: 2.25,
-      x: 6,
-      y: -10,
-      duration: 0.85,
-      ease: 'power2.inOut'
-    }, '-=0.1')
-    // Callout 2 appears with gentle spring
-    .to(calloutZipper, {
-      opacity: 1,
-      x: 0,
-      duration: 0.4,
-      ease: 'back.out(1.5)'
-    }, '-=0.2')
-    // Wait for viewer observation
-    .to({}, { duration: 1.1 })
-    // Callout 2 exits smoothly
-    .to(calloutZipper, {
-      opacity: 0,
-      x: 10,
-      duration: 0.25,
-      ease: 'power2.in'
-    })
-    // Step 3: Camera zooms back out to full jacket view
-    .to(stage, {
       scale: 1,
-      x: 0,
-      y: 0,
-      duration: 0.85,
-      ease: 'power2.inOut'
-    }, '-=0.05')
-    // Concurrently transition slider-pos from 0% to 50%
+      duration: 0.4,
+      ease: 'back.out(1.5)'
+    })
+    // Dừng vừa đủ để người xem nhận diện vùng khoanh và đọc chú thích (0.9s)
+    .to({}, { duration: 0.9 })
+    // Step 2: Ẩn chú thích và vùng khoanh (0.25s)
+    .to(calloutNeck, {
+      opacity: 0,
+      scale: 0.95,
+      duration: 0.25,
+      ease: 'power2.in'
+    })
+    // Step 3: Đồng thời thanh Before/After trượt về 50% cho người dùng tương tác (0.45s)
     .to({ pos: 0 }, {
       pos: 50,
-      duration: 0.6,
+      duration: 0.45,
       ease: 'power2.out',
       onUpdate: function() {
         const val = this.targets()[0].pos;
         slider.style.setProperty('--slider-pos', val + '%');
         if (divider) divider.style.left = val + '%';
       }
-    }, '-=0.5');
+    }, '-=0.15')
+    .to(divider, {
+      opacity: 1,
+      duration: 0.35,
+      ease: 'power2.out',
+      onStart: () => {
+        divider.style.pointerEvents = 'auto';
+      }
+    }, '-=0.35');
 }
 
 let service3LoupeTl = null;
@@ -563,52 +527,51 @@ function playService3Loupe() {
     }
   });
 
-  // Step 1: Loupe scales in over the Left Earring diamonds
+  // Step 1: Loupe scales in quickly over the Left Earring diamonds (0.35s)
   service3LoupeTl
     .to(loupe, {
       scale: 1,
       opacity: 1,
-      duration: 0.6,
-      ease: 'back.out(1.6)'
+      duration: 0.35,
+      ease: 'back.out(1.4)'
     })
-    // Pause to inspect diamond pavé and prong settings
-    .to({}, { duration: 1.1 })
-    // Step 2: Loupe glides smoothly across to the Right Earring (inner polished gold clasp & diamonds)
+    // Brief pause to register diamond pavé texture (0.25s)
+    .to({}, { duration: 0.25 })
+    // Step 2: Loupe glides swiftly across to the Right Earring (0.65s)
     .to(posProxy, {
       x: 325,
       y: 205,
-      duration: 1.25,
+      duration: 0.65,
       ease: 'power2.inOut',
       onUpdate: () => updateLoupePosition(posProxy.x, posProxy.y)
     })
-    // Pause to inspect mirror gold polish & gemstone brilliance
-    .to({}, { duration: 1.1 })
-    // Step 3: Loupe gently scales down and exits
+    // Brief pause to register mirror gold polish (0.25s)
+    .to({}, { duration: 0.25 })
+    // Step 3: Loupe briskly scales down and exits (0.25s)
     .to(loupe, {
       scale: 0.7,
       opacity: 0,
-      duration: 0.4,
+      duration: 0.25,
       ease: 'power2.in'
     })
-    // Step 4: After loupe exits, the divider line appears AND the 2 tones are divided!
-    // Concurrently transition slider-pos from 100% (1 tone) to 50% (2 tones)!
+    // Step 4: After loupe exits, the divider line appears and smoothly splits to 50% (0.5s with slight overlap)
     .to({ pos: 100 }, {
       pos: 50,
-      duration: 0.65,
+      duration: 0.5,
       ease: 'power2.out',
       onUpdate: function() {
         const val = this.targets()[0].pos;
         slider.style.setProperty('--slider-pos', val + '%');
       }
-    }, '-=0.25')
+    }, '-=0.15')
     .to(divider, {
       opacity: 1,
-      duration: 0.4,
+      duration: 0.35,
       ease: 'power2.out',
       onStart: () => {
         divider.style.pointerEvents = 'auto';
       }
-    }, '-=0.45');
+    }, '-=0.35');
 }
 
 /* ==========================================================================
