@@ -27,25 +27,27 @@ function initAllServiceSliders() {
 
 function attachSliderDrag(container, divider) {
   let isDragging = false;
+  let rafId = null;
+  let latestClientX = 0;
 
   const setPercentage = (percentage) => {
     const clamped = Math.max(0, Math.min(100, percentage));
-    container.style.setProperty('--slider-pos', clamped + '%');
-    divider.style.left = clamped + '%';
+    container.style.setProperty('--slider-pos', clamped.toFixed(2) + '%');
+    divider.style.left = clamped.toFixed(2) + '%';
+    container.setAttribute('aria-valuenow', Math.round(clamped).toString());
   };
 
-  const setPositionFromClientX = (clientX) => {
+  const getPercentageFromClientX = (clientX) => {
     const rect = container.getBoundingClientRect();
+    if (!rect.width) return 50;
     const offsetX = clientX - rect.left;
-    const percentage = (offsetX / rect.width) * 100;
-    setPercentage(percentage);
+    return (offsetX / rect.width) * 100;
   };
 
   // Explicit default initialization at 50%
   setPercentage(50);
 
-  const onPointerDown = (e) => {
-    // If entrance animation is running on this slider, cancel immediately so user has full instant control
+  const stopEntranceAnimations = () => {
     if (service1SweepTween && container.id === 'service-slider-1') {
       service1SweepTween.kill();
       service1SweepTween = null;
@@ -56,30 +58,78 @@ function attachSliderDrag(container, divider) {
     if (container.id === 'service-slider-3') {
       cancelService3Loupe();
     }
-    isDragging = true;
-    try {
-      container.setPointerCapture(e.pointerId);
-    } catch (_) {}
-    setPositionFromClientX(e.clientX);
+  };
+
+  const renderSlider = () => {
+    if (!isDragging) return;
+    setPercentage(getPercentageFromClientX(latestClientX));
+    rafId = null;
   };
 
   const onPointerMove = (e) => {
     if (!isDragging) return;
-    setPositionFromClientX(e.clientX);
+    if (e.cancelable) e.preventDefault();
+    latestClientX = e.clientX;
+    if (!rafId) {
+      rafId = requestAnimationFrame(renderSlider);
+    }
   };
 
   const onPointerUp = (e) => {
     if (!isDragging) return;
     isDragging = false;
+    container.classList.remove('is-dragging');
+    document.body.classList.remove('is-slider-resizing');
+
+    if (rafId) {
+      cancelAnimationFrame(rafId);
+      rafId = null;
+    }
+
+    window.removeEventListener('pointermove', onPointerMove);
+    window.removeEventListener('pointerup', onPointerUp);
+    window.removeEventListener('pointercancel', onPointerUp);
+
     try {
-      container.releasePointerCapture(e.pointerId);
+      if (e && e.pointerId && container.hasPointerCapture && container.hasPointerCapture(e.pointerId)) {
+        container.releasePointerCapture(e.pointerId);
+      }
     } catch (_) {}
   };
 
+  const onPointerDown = (e) => {
+    // Only drag on primary button (0 for mouse, or touch/pen)
+    if (e.button !== undefined && e.button !== 0) return;
+
+    e.preventDefault();
+    stopEntranceAnimations();
+
+    isDragging = true;
+    container.classList.add('is-dragging');
+    document.body.classList.add('is-slider-resizing');
+
+    // Immediately update to clicked position on initial press
+    latestClientX = e.clientX;
+    setPercentage(getPercentageFromClientX(latestClientX));
+
+    // Try pointer capture on container
+    try {
+      if (e.pointerId) {
+        container.setPointerCapture(e.pointerId);
+      }
+    } catch (_) {}
+
+    // Window listeners guarantee buttery-smooth, un-droppable tracking everywhere
+    window.addEventListener('pointermove', onPointerMove, { passive: false });
+    window.addEventListener('pointerup', onPointerUp);
+    window.addEventListener('pointercancel', onPointerUp);
+  };
+
   container.addEventListener('pointerdown', onPointerDown);
-  container.addEventListener('pointermove', onPointerMove);
-  container.addEventListener('pointerup', onPointerUp);
-  container.addEventListener('pointercancel', onPointerUp);
+
+  // Stop browser default drag and drop or selection
+  container.addEventListener('dragstart', (e) => e.preventDefault());
+  container.addEventListener('selectstart', (e) => e.preventDefault());
 
   // Keyboard accessibility
   container.setAttribute('tabindex', '0');
@@ -93,9 +143,11 @@ function attachSliderDrag(container, divider) {
     const current = parseFloat(getComputedStyle(container).getPropertyValue('--slider-pos')) || 50;
     if (e.key === 'ArrowLeft') {
       e.preventDefault();
+      stopEntranceAnimations();
       setPercentage(current - 5);
     } else if (e.key === 'ArrowRight') {
       e.preventDefault();
+      stopEntranceAnimations();
       setPercentage(current + 5);
     }
   });
