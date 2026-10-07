@@ -631,6 +631,16 @@ textarea {
     display: none;
   }
 
+  /* Mobile performance optimization: disable heavy backdrop blur & limit will-change to GPU transform */
+  .center-glow {
+    -webkit-backdrop-filter: none !important;
+    backdrop-filter: none !important;
+  }
+
+  .card {
+    will-change: transform;
+  }
+
   .explore-section {
     padding: 64px 20px 80px;
   }

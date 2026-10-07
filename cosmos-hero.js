@@ -40,7 +40,8 @@
     const reduceMotion = false;
 
     // Approved reference constants
-    const CARD_COUNT = 100;
+    const DESKTOP_CARD_COUNT = 100;
+    const MOBILE_CARD_COUNT = 38;
     const TURNS = 4.25;
     const INNER_SAFE = 210;
     const OUTER_EXTRA = 150;
@@ -91,27 +92,47 @@
       'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=240&q=75'
     ];
 
-    // Clean existing cards in stage if any
-    const existingCards = stage.querySelectorAll('.card');
-    existingCards.forEach(c => c.remove());
-
-    // Generate 48 uniform portrait cards
-    const cards = [];
-    for (let i = 0; i < CARD_COUNT; i++) {
-      const el = document.createElement('div');
-      el.className = 'card';
-
-      const img = document.createElement('img');
-      img.className = 'media';
-      img.alt = 'Nesso retouching work';
-      img.loading = 'eager';
-      img.decoding = 'async';
-      img.src = REAL_IMAGES[i % REAL_IMAGES.length];
-
-      el.appendChild(img);
-      stage.appendChild(el);
-      cards.push({ el, index: i });
+    function isMobileViewport() {
+      return window.innerWidth <= 768;
     }
+
+    let cards = [];
+    let currentCardCount = 0;
+
+    // Cleanly generate uniform cards matching device target capacity
+    function buildCards(targetCount) {
+      if (cards.length === targetCount && currentCardCount === targetCount) return;
+      currentCardCount = targetCount;
+
+      const existingCards = stage.querySelectorAll('.card');
+      existingCards.forEach(c => c.remove());
+
+      cards = [];
+      const isMob = targetCount === MOBILE_CARD_COUNT;
+
+      for (let i = 0; i < targetCount; i++) {
+        const el = document.createElement('div');
+        el.className = 'card';
+        if (isMob) {
+          el.style.left = '0px';
+          el.style.top = '0px';
+        }
+
+        const img = document.createElement('img');
+        img.className = 'media';
+        img.alt = 'Nesso retouching work';
+        img.loading = 'eager';
+        img.decoding = 'async';
+        img.src = REAL_IMAGES[i % REAL_IMAGES.length];
+
+        el.appendChild(img);
+        stage.appendChild(el);
+        cards.push({ el, index: i });
+      }
+    }
+
+    // Initialize cards based on viewport
+    buildCards(isMobileViewport() ? MOBILE_CARD_COUNT : DESKTOP_CARD_COUNT);
 
     // Toggle debug spiral path
     if (toggle) {
@@ -217,6 +238,12 @@
     let cachedLookup = null;
 
     function updateGeometry() {
+      const isMob = isMobileViewport();
+      const targetCount = isMob ? MOBILE_CARD_COUNT : DESKTOP_CARD_COUNT;
+      if (currentCardCount !== targetCount) {
+        buildCards(targetCount);
+      }
+
       const rect = stage.getBoundingClientRect();
       const w = rect.width || window.innerWidth;
       const h = rect.height || window.innerHeight;
@@ -308,15 +335,37 @@
       }
     }, { passive: true });
 
-    // Seamless continuous loop: cycle = 1.0, step = 1 / CARD_COUNT
+    // IntersectionObserver to pause animation when Hero is scrolled out of viewport (eliminates background CPU/GPU drain)
+    let isHeroVisible = true;
+    let rafId = null;
+
+    if ('IntersectionObserver' in window && hero) {
+      const heroObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          const wasVisible = isHeroVisible;
+          isHeroVisible = entry.isIntersecting;
+          if (isHeroVisible && !wasVisible && !rafId) {
+            lastTimestamp = 0; // Prevent delta-time jump upon re-entry
+            rafId = requestAnimationFrame(render);
+          }
+        });
+      }, { threshold: 0 });
+      heroObserver.observe(hero);
+    }
+
+    // Seamless continuous loop: cycle = 1.0
     // Eliminates any ending blank gap/tail completely!
-    const step = 1 / CARD_COUNT;
     const cycle = 1.0;
     let accumulatedTime = 0;
     let lastTimestamp = 0;
 
     // Main 60fps RAF animation loop
     function render(timestamp) {
+      if (!isHeroVisible) {
+        rafId = null;
+        return;
+      }
+
       if (!lastTimestamp) lastTimestamp = timestamp;
       const dt = Math.min(0.1, (timestamp - lastTimestamp) / 1000);
       lastTimestamp = timestamp;
@@ -332,12 +381,16 @@
       // Force motion: continuous ambient drift + silky smooth clockwise scroll velocity (always active, bypassing prefers-reduced-motion)
       accumulatedTime += (FLOW_SPEED + currentScrollVelocity) * dt;
 
-      if (!cachedLookup) {
-        requestAnimationFrame(render);
+      if (!cachedLookup || cards.length === 0) {
+        rafId = requestAnimationFrame(render);
         return;
       }
 
-      for (let i = 0; i < CARD_COUNT; i++) {
+      const activeCount = cards.length;
+      const step = 1 / activeCount;
+      const isMob = currentCardCount === MOBILE_CARD_COUNT;
+
+      for (let i = 0; i < activeCount; i++) {
         const item = cards[i];
         let t = i * step + accumulatedTime;
         t = ((t % cycle) + cycle) % cycle;
@@ -358,25 +411,32 @@
         const fadeOut = clamp((1 - t) / 0.045, 0, 1);
         const opacity = Math.min(fadeIn, fadeOut);
         
-        // Ethereal depth-of-field: cards smoothly blur as they approach the center aura
-        const innerProgress = clamp((p.u - 0.58) / 0.42, 0, 1);
-        const blur = Math.pow(innerProgress, 1.6) * 12.0;
-
         // Cards smoothly dissolve as they reach the innermost turns behind the blurred color patch
         const coreFade = clamp(1 - (p.u - 0.78) / 0.22, 0, 1);
         const finalOpacity = Math.min(opacity, coreFade);
 
-        item.el.style.left = x + 'px';
-        item.el.style.top = y + 'px';
-        item.el.style.opacity = finalOpacity.toFixed(3);
-        item.el.style.filter = blur > 0.08 ? `blur(${blur.toFixed(2)}px)` : 'none';
-        item.el.style.transform = `translate(-50%,-50%) rotate(${rotation.toFixed(2)}deg) scale(${scale.toFixed(3)})`;
-        item.el.style.zIndex = String(Math.round(100 - p.u * 35));
+        if (isMob) {
+          // MOBILE HIGH PERFORMANCE: Pure GPU transform compositing (zero reflow/relayout), no Gaussian blur filter
+          item.el.style.transform = `translate3d(${x.toFixed(1)}px,${y.toFixed(1)}px,0) translate(-50%,-50%) rotate(${rotation.toFixed(1)}deg) scale(${scale.toFixed(2)})`;
+          item.el.style.opacity = finalOpacity.toFixed(2);
+          item.el.style.zIndex = String(Math.round(100 - p.u * 35));
+        } else {
+          // DESKTOP: 100% UNTOUCHED ORIGINAL BEHAVIOR & VISUAL FIDELITY
+          const innerProgress = clamp((p.u - 0.58) / 0.42, 0, 1);
+          const blur = Math.pow(innerProgress, 1.6) * 12.0;
+
+          item.el.style.left = x + 'px';
+          item.el.style.top = y + 'px';
+          item.el.style.opacity = finalOpacity.toFixed(3);
+          item.el.style.filter = blur > 0.08 ? `blur(${blur.toFixed(2)}px)` : 'none';
+          item.el.style.transform = `translate(-50%,-50%) rotate(${rotation.toFixed(2)}deg) scale(${scale.toFixed(3)})`;
+          item.el.style.zIndex = String(Math.round(100 - p.u * 35));
+        }
       }
 
-      requestAnimationFrame(render);
+      rafId = requestAnimationFrame(render);
     }
 
-    requestAnimationFrame(render);
+    rafId = requestAnimationFrame(render);
   }
 })();
