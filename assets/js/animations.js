@@ -32,12 +32,8 @@
 
     gsap.registerPlugin(ScrollTrigger);
 
-    // 2. Respect accessibility preference
-    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    if (prefersReducedMotion) {
-      console.info('[Cosmos Animations] Reduced motion preferred. Scroll animations bypassed.');
-      return;
-    }
+    // 2. Force motion bypass: ensure all entrance and scroll animations run regardless of browser prefers-reduced-motion
+    // (Bypasses browser reduce motion rule per project requirements to guarantee full visual experience)
 
     // 3. Initialize Cosmos-Style Scroll Reveal Engine
     initCosmosHeadlines();
@@ -277,27 +273,75 @@
       }
     }
 
-    // ── SECTION: THE APPROACH (FADE IN FROM BELOW TOGETHER) ──
+    // ── SECTION: THE APPROACH (EYEBROW & HEADLINE LETTER WAVE BLUR, CINEMA SCREEN LIFT) ──
     const approachSection = document.getElementById('approach');
     if (approachSection) {
-      const approachLeft = approachSection.querySelector('.approach-left');
-      const approachRight = approachSection.querySelector('.approach-right') || approachSection.querySelector('.video-preview-wrapper');
+      const eyebrowText = approachSection.querySelector('.eyebrow-center .eyebrow-text');
+      const theaterHeadline = approachSection.querySelector('.theater-headline');
+      const stageContainer = approachSection.querySelector('.theater-stage-container');
+      const clientsStrip = approachSection.querySelector('#approach-clients-strip');
 
-      const approachBlocks = [approachLeft, approachRight].filter(Boolean);
-      if (approachBlocks.length > 0) {
+      // 1. Eyebrow text letter wave blur
+      if (eyebrowText) {
+        animateCharCluster(splitElementIntoChars(eyebrowText), {
+          trigger: approachSection,
+          start: 'top 85%',
+          delay: 0.0,
+          stagger: 0.012,
+          duration: 0.45,
+          blur: '6px'
+        });
+      }
+
+      // 2. Luxury Headline letter wave blur (letter-by-letter unblurring)
+      if (theaterHeadline) {
+        animateCharCluster(splitElementIntoChars(theaterHeadline), {
+          trigger: approachSection,
+          start: 'top 85%',
+          delay: 0.1,
+          stagger: 0.012,
+          duration: 0.52,
+          blur: '8px'
+        });
+      }
+
+      // 3. 4K Cinema Stage Screen (subtle lift and scale in)
+      if (stageContainer) {
         gsap.fromTo(
-          approachBlocks,
-          { y: 35, opacity: 0 },
+          stageContainer,
+          { y: 35, opacity: 0, scale: 0.985 },
           {
             scrollTrigger: {
               trigger: approachSection,
-              start: 'top 82%',
+              start: 'top 80%',
               once: true
             },
             y: 0,
             opacity: 1,
+            scale: 1,
             duration: 0.95,
-            stagger: 0.1,
+            delay: 0.2,
+            ease: 'power3.out',
+            clearProps: 'transform'
+          }
+        );
+      }
+
+      // 4. Client Logos Strip (fade in below screen)
+      if (clientsStrip) {
+        gsap.fromTo(
+          clientsStrip,
+          { y: 20, opacity: 0 },
+          {
+            scrollTrigger: {
+              trigger: approachSection,
+              start: 'top 75%',
+              once: true
+            },
+            y: 0,
+            opacity: 1,
+            duration: 0.85,
+            delay: 0.35,
             ease: 'power3.out',
             clearProps: 'transform'
           }

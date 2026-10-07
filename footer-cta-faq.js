@@ -63,7 +63,7 @@
       console.warn('[NESSO CTA Magnet] GSAP not detected. Effect disabled.');
       return;
     }
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    // Force motion: bypass prefers-reduced-motion rule so magnetic attraction is always active
     if (window.matchMedia('(hover: none)').matches) return;
 
     const section = document.getElementById('d4-cta');
