@@ -8,6 +8,7 @@ Thumbs.db
 
 # Temporary screen recordings & skill zip extract
 *.mp4
+!assets/video/*.mp4
 ui-ux-pro-max-skill-main/
 
 # Temporary root test screenshots

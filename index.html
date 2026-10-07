@@ -111,40 +111,116 @@
 
         <div class="theater-stage-container">
           <div class="theater-cinema-screen" id="video-preview-card-opt2">
-            <img src="assets/images/approach-video-thumb.jpg" alt="Nesso Retouching Atelier Cinema Reel" class="video-bg-img">
+            <!-- Inline Video Element -->
+            <video class="theater-video-element" id="approach-video-player"
+              src="assets/video/[Nesso] Photo Retouch Sevice Introducing_Final.mp4"
+              poster="assets/images/approach-video-thumb.jpg"
+              preload="metadata" playsinline>
+            </video>
+
             <div class="theater-vignette-overlay"></div>
 
-            <div class="theater-top-pills">
-              <span class="theater-tag-pill">
-                <span class="live-pulse"></span>
-                INSIDE THE ATELIER
-              </span>
-              <span class="theater-tag-pill pill-glass">
-                4K MASTER PROOF
-              </span>
-            </div>
+            <!-- Single Center Play Button (No text, no extra labels) -->
+            <button type="button" class="theater-play-btn-circle" id="theater-play-btn" aria-label="Play Studio Film">
+              <svg viewBox="0 0 24 24" width="30" height="30" fill="currentColor">
+                <polygon points="8 5 19 12 8 19 8 5"></polygon>
+              </svg>
+            </button>
 
-            <div class="theater-play-hub">
-              <div class="theater-play-btn-circle">
-                <div class="theater-pulse-effect"></div>
-                <svg viewBox="0 0 24 24" width="28" height="28" fill="currentColor">
-                  <polygon points="7 4 19 12 7 20 7 4"></polygon>
-                </svg>
+            <!-- Custom Luxury Video Control Bar (Shown on hover) -->
+            <div class="theater-player-controls" id="theater-controls" aria-label="Video Player Controls">
+              <!-- Scrubber Bar -->
+              <div class="theater-scrubber-wrap" id="theater-scrubber">
+                <div class="scrubber-track">
+                  <div class="scrubber-buffer" id="scrubber-buffer"></div>
+                  <div class="scrubber-progress" id="scrubber-progress"></div>
+                  <div class="scrubber-thumb" id="scrubber-thumb"></div>
+                </div>
+                <div class="scrubber-tooltip" id="scrubber-tooltip">00:00</div>
               </div>
-              <div class="theater-play-caption">
-                <span class="play-action-text">PLAY STUDIO OVERVIEW</span>
-                <span class="play-action-duration">01:45 MIN · SOUND RECOMMENDED</span>
-              </div>
-            </div>
 
-            <div class="theater-bottom-rail">
-              <div class="rail-left">
-                <span class="rail-chapter">FEATURE STORY</span>
-                <span class="rail-title">Balancing Micro-Precision with Editorial Expression</span>
-              </div>
-              <div class="rail-right">
-                <span class="rail-badge">EIZO CALIBRATED</span>
-                <span class="rail-badge">CAPTURE ONE + PS PRO</span>
+              <!-- Controls Actions Row -->
+              <div class="theater-controls-row">
+                <!-- Left: Play/Pause, Time -->
+                <div class="controls-group-left">
+                  <button type="button" class="ctrl-btn btn-toggle-play" id="ctrl-play-pause" aria-label="Play/Pause">
+                    <!-- Play icon -->
+                    <svg class="icon-play" viewBox="0 0 24 24" width="18" height="18" fill="currentColor">
+                      <polygon points="7 4 19 12 7 20 7 4"></polygon>
+                    </svg>
+                    <!-- Pause icon -->
+                    <svg class="icon-pause" viewBox="0 0 24 24" width="18" height="18" fill="currentColor">
+                      <rect x="6" y="4" width="4" height="16" rx="1"></rect>
+                      <rect x="14" y="4" width="4" height="16" rx="1"></rect>
+                    </svg>
+                  </button>
+
+                  <div class="ctrl-time-display">
+                    <span id="ctrl-current-time">00:00</span>
+                    <span class="time-sep">/</span>
+                    <span id="ctrl-duration">00:00</span>
+                  </div>
+                </div>
+
+                <!-- Right: Volume, Quality/Speed, PiP, Fullscreen -->
+                <div class="controls-group-right">
+                  <!-- Volume Control -->
+                  <div class="ctrl-volume-group">
+                    <button type="button" class="ctrl-btn btn-mute-toggle" id="ctrl-mute-btn" aria-label="Mute/Unmute">
+                      <!-- Vol High -->
+                      <svg class="icon-vol-high" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" fill="currentColor"></polygon>
+                        <path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path>
+                      </svg>
+                      <!-- Vol Mute -->
+                      <svg class="icon-vol-muted" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" fill="currentColor"></polygon>
+                        <line x1="23" y1="9" x2="17" y2="15"></line>
+                        <line x1="17" y1="9" x2="23" y2="15"></line>
+                      </svg>
+                    </button>
+                    <div class="volume-slider-wrap">
+                      <input type="range" class="volume-slider" id="ctrl-volume-slider" min="0" max="1" step="0.05" value="1" aria-label="Volume">
+                    </div>
+                  </div>
+
+                  <!-- Quality / Speed Settings Menu -->
+                  <div class="ctrl-settings-group" id="ctrl-settings-group">
+                    <button type="button" class="ctrl-btn btn-settings" id="ctrl-settings-btn" aria-label="Playback Settings">
+                      <span class="quality-badge-pill">4K UHD</span>
+                    </button>
+                    <div class="settings-dropdown-menu" id="settings-dropdown">
+                      <div class="settings-menu-header">Playback Speed</div>
+                      <div class="speed-options">
+                        <button type="button" class="speed-opt" data-speed="0.75">0.75x</button>
+                        <button type="button" class="speed-opt is-active" data-speed="1">1x (Normal)</button>
+                        <button type="button" class="speed-opt" data-speed="1.25">1.25x</button>
+                        <button type="button" class="speed-opt" data-speed="1.5">1.5x</button>
+                        <button type="button" class="speed-opt" data-speed="2">2x</button>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Picture in Picture -->
+                  <button type="button" class="ctrl-btn btn-pip" id="ctrl-pip-btn" aria-label="Picture in Picture">
+                    <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <rect x="2" y="4" width="20" height="16" rx="2"></rect>
+                      <rect x="12" y="10" width="8" height="6" rx="1" fill="currentColor"></rect>
+                    </svg>
+                  </button>
+
+                  <!-- Fullscreen / Zoom -->
+                  <button type="button" class="ctrl-btn btn-fullscreen" id="ctrl-fullscreen-btn" aria-label="Toggle Fullscreen">
+                    <!-- Expand icon -->
+                    <svg class="icon-expand" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"></path>
+                    </svg>
+                    <!-- Compress icon -->
+                    <svg class="icon-compress" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M4 14h6m0 0v6m0-6-7 7m17-11h-6m0 0V4m0 6 7-7m-7 17v-6m0 0h6m-6 0 7 7M10 4v6m0 0H4m6 0L3 3"></path>
+                    </svg>
+                  </button>
+                </div>
               </div>
             </div>
           </div>
@@ -173,52 +249,6 @@
 
       </div>
     </section>
-
-    <!-- Video Modal Lightbox (Shared between both options) -->
-    <div class="video-modal-backdrop" id="approach-video-modal" aria-hidden="true">
-      <div class="video-modal-card" role="dialog" aria-modal="true" aria-label="Nesso Studio Video Overview">
-        <div class="video-modal-header">
-          <div class="modal-header-meta">
-            <span class="modal-brand-badge">NESSO ATELIER</span>
-            <span class="modal-title">Studio Process & Color Calibration Film</span>
-          </div>
-          <button type="button" class="btn-close-modal" id="btn-close-video-modal" aria-label="Close modal">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-              <line x1="18" y1="6" x2="6" y2="18"></line>
-              <line x1="6" y1="6" x2="18" y2="18"></line>
-            </svg>
-            <span>ESC</span>
-          </button>
-        </div>
-
-        <div class="video-player-viewport">
-          <img src="assets/images/approach-video-thumb.jpg" alt="Video player stream preview">
-          <div class="video-player-controls">
-            <div class="progress-track-bar">
-              <div class="progress-fill-bar"></div>
-            </div>
-            <div class="controls-row">
-              <div class="controls-left">
-                <button type="button" class="btn-player-play" aria-label="Toggle play/pause">
-                  <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
-                    <rect x="6" y="4" width="4" height="16"></rect>
-                    <rect x="14" y="4" width="4" height="16"></rect>
-                  </svg>
-                </button>
-                <span class="player-time">00:34 / 01:45</span>
-              </div>
-              <div class="controls-right">
-                <span class="player-quality">4K PROOF</span>
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                  <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
-                  <path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path>
-                </svg>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
 
     <!-- ==================== OUR SERVICES ==================== -->
     <section class="figma-services-section" id="services">
@@ -516,10 +546,10 @@
             <div class="cosmos-col-center">
               <div class="cosmos-card-stage" id="cosmos-card-stage">
 
-                <!-- Card 1: E-commerce Footwear -->
+                <!-- Card 1: E-Commerce -->
                 <div class="cosmos-card-layer is-active" data-index="0">
                   <div class="cosmos-img-wrapper">
-                    <img src="assets/images/audience-sneakers.png" alt="E-commerce Footwear Retouching"
+                    <img src="assets/images/1.Ecom.png" alt="E-commerce Retouching"
                       class="cosmos-card-img">
                   </div>
                   <div class="cosmos-floating-pill">
@@ -527,10 +557,10 @@
                   </div>
                 </div>
 
-                <!-- Card 2: Fashion & Beauty Model -->
+                <!-- Card 2: Fashion & Beauty -->
                 <div class="cosmos-card-layer" data-index="1">
                   <div class="cosmos-img-wrapper">
-                    <img src="assets/images/service-model-after.png" alt="Editorial Fashion Model Retouching"
+                    <img src="assets/images/2.fashion.png" alt="Editorial Fashion & Beauty Retouching"
                       class="cosmos-card-img">
                   </div>
                   <div class="cosmos-floating-pill">
@@ -538,10 +568,10 @@
                   </div>
                 </div>
 
-                <!-- Card 3: Photographers & Studios Ghost Mannequin -->
+                <!-- Card 3: Photographers & Studios -->
                 <div class="cosmos-card-layer" data-index="2">
                   <div class="cosmos-img-wrapper">
-                    <img src="assets/images/service-mannequin.png" alt="Ghost Mannequin Apparel Retouching"
+                    <img src="assets/images/3.photograph.png" alt="Photographers & Studio Portrait Retouching"
                       class="cosmos-card-img">
                   </div>
                   <div class="cosmos-floating-pill">
@@ -549,10 +579,10 @@
                   </div>
                 </div>
 
-                <!-- Card 4: Creative Agencies Key Visual -->
+                <!-- Card 4: Creative Agencies -->
                 <div class="cosmos-card-layer" data-index="3">
                   <div class="cosmos-img-wrapper">
-                    <img src="assets/images/hero-portrait.png" alt="Advertising Campaign Key Visual"
+                    <img src="assets/images/4.creative.png" alt="Advertising Campaign Creative Retouching"
                       class="cosmos-card-img">
                   </div>
                   <div class="cosmos-floating-pill">
@@ -560,14 +590,14 @@
                   </div>
                 </div>
 
-                <!-- Card 5: Retail & Product Brands Luxury Jewelry -->
+                <!-- Card 5: Retail & Luxury Products -->
                 <div class="cosmos-card-layer" data-index="4">
                   <div class="cosmos-img-wrapper">
-                    <img src="assets/images/service-jewelry.png" alt="Luxury Jewelry & Precious Metal Polish"
+                    <img src="assets/images/5.retail.png" alt="Retail & Luxury Products Retouching"
                       class="cosmos-card-img">
                   </div>
                   <div class="cosmos-floating-pill">
-                    <span class="pill-label">Jewelry polish by Nesso</span>
+                    <span class="pill-label">Product polish by Nesso</span>
                   </div>
                 </div>
 
