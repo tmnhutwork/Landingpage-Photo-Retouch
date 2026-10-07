@@ -232,14 +232,49 @@
       }
 
       outerR = Math.hypot(w / 2, h / 2) + OUTER_EXTRA;
-      innerR = Math.max(190, Math.min(INNER_SAFE, w * 0.14));
+      
+      // Proportional inner radius so spiral cards clear the center text safely on any screen size
+      if (w <= 480) {
+        innerR = Math.max(90, Math.min(130, w * 0.30));
+      } else if (w <= 768) {
+        innerR = Math.max(125, Math.min(160, w * 0.22));
+      } else if (w <= 1024) {
+        innerR = Math.max(155, Math.min(185, w * 0.18));
+      } else {
+        innerR = Math.max(190, Math.min(INNER_SAFE, w * 0.14));
+      }
 
       buildGuide(cx, cy, outerR, innerR);
       cachedLookup = buildLookup(outerR, innerR);
     }
 
+    // Auto-fit execution on initial UI load across all lifecycle events
     updateGeometry();
+
+    // Re-calculate when custom fonts are ready (re-centers headline accurately)
+    if (document.fonts && document.fonts.ready) {
+      document.fonts.ready.then(() => {
+        updateGeometry();
+      });
+    }
+
+    // Re-calculate on window load (after all stylesheets/images resolve)
+    window.addEventListener('load', updateGeometry);
+
+    // Responsive listeners for resize and device orientation change
     window.addEventListener('resize', updateGeometry, { passive: true });
+    window.addEventListener('orientationchange', () => {
+      setTimeout(updateGeometry, 80);
+    }, { passive: true });
+
+    // Modern ResizeObserver to dynamically auto-fit any viewport changes immediately
+    if (window.ResizeObserver && stage) {
+      const ro = new ResizeObserver(() => {
+        updateGeometry();
+      });
+      ro.observe(stage);
+      if (hero) ro.observe(hero);
+    }
 
     // Calibrated scroll velocity physics: MAX = 0.025, impulse +35%, pleasant smooth glide (~0.85s)
     let currentScrollVelocity = 0;

@@ -22,13 +22,33 @@
   --card-h: 106px;
   --card-radius: 12px;
   --sans: 'Plus Jakarta Sans', sans-serif;
+  --header-height: 90px;
 }
 
-@media (max-width: 900px) {
+@media (max-width: 1024px) {
   :root {
-    --card-w: 68px;
-    --card-h: 94px;
+    --header-height: 76px;
+    --card-w: 64px;
+    --card-h: 88px;
     --card-radius: 10px;
+  }
+}
+
+@media (max-width: 768px) {
+  :root {
+    --header-height: 70px;
+    --card-w: 52px;
+    --card-h: 72px;
+    --card-radius: 8px;
+  }
+}
+
+@media (max-width: 480px) {
+  :root {
+    --header-height: 64px;
+    --card-w: 42px;
+    --card-h: 58px;
+    --card-radius: 7px;
   }
 }
 
@@ -188,18 +208,27 @@ textarea {
   background: #2A2A30;
 }
 
-/* ── Hero Container ────────────────────────────────────────────────── */
+/* ── Hero Container (100% Viewport-Fitted Across All Devices) ─────── */
 .hero {
   position: relative;
-  width: 100vw;
-  height: 100vh;
-  min-height: 680px;
+  width: 100%;
+  height: calc(100vh - var(--header-height, 90px));
+  height: calc(100dvh - var(--header-height, 90px));
+  max-height: calc(100dvh - var(--header-height, 90px));
+  min-height: 480px;
   display: flex;
   align-items: center;
   justify-content: center;
   overflow: hidden;
   background: var(--bg);
   user-select: none;
+  box-sizing: border-box;
+}
+
+@media (max-height: 600px) {
+  .hero {
+    min-height: 0;
+  }
 }
 
 /* ── Floating Cards Stage (Circular Spiral System v13) ─────────────── */
@@ -316,23 +345,44 @@ textarea {
   display: none !important;
 }
 
-@media (max-width: 900px) {
+@media (max-width: 1024px) {
   .center-glow {
-    background: radial-gradient(ellipse 460px 260px at 50% calc(50% - 6px),
+    background: radial-gradient(ellipse 560px 280px at 50% calc(50% - 6px),
         rgba(251, 251, 251, 1) 0%,
-        rgba(251, 251, 251, 1) 54%,
-        rgba(251, 251, 251, 0.98) 66%,
-        rgba(251, 251, 251, 0.90) 78%,
-        rgba(251, 251, 251, 0.65) 86%,
-        rgba(251, 251, 251, 0.30) 93%,
+        rgba(251, 251, 251, 1) 58%,
+        rgba(251, 251, 251, 0.98) 70%,
+        rgba(251, 251, 251, 0.88) 80%,
+        rgba(251, 251, 251, 0.65) 88%,
+        rgba(251, 251, 251, 0.30) 94%,
         rgba(251, 251, 251, 0) 100%);
-    -webkit-mask-image: radial-gradient(ellipse 460px 260px at 50% calc(50% - 6px),
+    -webkit-mask-image: radial-gradient(ellipse 560px 280px at 50% calc(50% - 6px),
         rgba(0, 0, 0, 1) 0%,
-        rgba(0, 0, 0, 1) 62%,
+        rgba(0, 0, 0, 1) 66%,
         rgba(0, 0, 0, 0) 100%);
-    mask-image: radial-gradient(ellipse 460px 260px at 50% calc(50% - 6px),
+    mask-image: radial-gradient(ellipse 560px 280px at 50% calc(50% - 6px),
         rgba(0, 0, 0, 1) 0%,
-        rgba(0, 0, 0, 1) 62%,
+        rgba(0, 0, 0, 1) 66%,
+        rgba(0, 0, 0, 0) 100%);
+  }
+}
+
+@media (max-width: 600px) {
+  .center-glow {
+    background: radial-gradient(ellipse 340px 230px at 50% calc(50% - 4px),
+        rgba(251, 251, 251, 1) 0%,
+        rgba(251, 251, 251, 1) 52%,
+        rgba(251, 251, 251, 0.96) 66%,
+        rgba(251, 251, 251, 0.82) 78%,
+        rgba(251, 251, 251, 0.50) 88%,
+        rgba(251, 251, 251, 0.20) 95%,
+        rgba(251, 251, 251, 0) 100%);
+    -webkit-mask-image: radial-gradient(ellipse 340px 230px at 50% calc(50% - 4px),
+        rgba(0, 0, 0, 1) 0%,
+        rgba(0, 0, 0, 1) 60%,
+        rgba(0, 0, 0, 0) 100%);
+    mask-image: radial-gradient(ellipse 340px 230px at 50% calc(50% - 4px),
+        rgba(0, 0, 0, 1) 0%,
+        rgba(0, 0, 0, 1) 60%,
         rgba(0, 0, 0, 0) 100%);
   }
 }
@@ -340,12 +390,12 @@ textarea {
 .title {
   position: relative;
   z-index: 2;
-  font-size: clamp(2.1rem, 3.5vw, 3.25rem);
+  font-size: clamp(1.75rem, min(3.6vw, 5.8vh), 3.25rem);
   font-weight: 500;
   letter-spacing: -0.03em;
   line-height: 1.18;
   color: var(--ink);
-  margin-bottom: 24px;
+  margin-bottom: clamp(14px, 2.5vh, 24px);
 }
 
 .serif-italic {
@@ -363,7 +413,7 @@ textarea {
   justify-content: center;
   pointer-events: auto;
   /* CTAs remain clickable */
-  margin-top: 8px;
+  margin-top: 4px;
 }
 
 /* Nesso CTA: Get A Free Trial Test & Explore Our Work */
@@ -371,11 +421,11 @@ textarea {
   display: inline-flex;
   align-items: center;
   gap: 10px;
-  padding: 14px 28px;
+  padding: clamp(10px, 1.8vh, 14px) clamp(22px, 2.5vw, 28px);
   background-color: #111111;
   color: #FFFFFF;
   border-radius: 9999px;
-  font-size: 13px;
+  font-size: clamp(12px, 1.4vh, 13px);
   font-weight: 600;
   letter-spacing: 0.03em;
   text-transform: uppercase;
@@ -427,10 +477,10 @@ textarea {
   box-shadow: 0 3px 10px rgba(0, 0, 0, 0.06);
 }
 
-/* ── Scroll Indicator (Reference A Chevron above Platter Card) ─────── */
+/* ── Scroll Indicator (Always visible inside bottom viewport) ─────── */
 .scroll-indicator {
   position: absolute;
-  bottom: 84px;
+  bottom: clamp(14px, 2.8vh, 32px);
   left: 50%;
   transform: translateX(-50%);
   z-index: 40;
@@ -442,6 +492,12 @@ textarea {
   text-decoration: none;
   transition: opacity 0.2s, transform 0.2s;
   animation: subtle-bounce 2.6s ease-in-out infinite;
+}
+
+@media (max-height: 540px) {
+  .scroll-indicator {
+    display: none;
+  }
 }
 
 .scroll-indicator:hover {
@@ -559,9 +615,9 @@ textarea {
   }
 
   .title {
-    font-size: 2.1rem;
-    line-height: 1.2;
-    margin-bottom: 20px;
+    font-size: clamp(1.45rem, min(6.5vw, 4.2vh), 2.05rem);
+    line-height: 1.18;
+    margin-bottom: clamp(12px, 2.2vh, 18px);
   }
 
 

@@ -105,7 +105,7 @@ button, input, select, textarea {
   top: 0;
   left: 0;
   width: 100%;
-  height: 90px;
+  height: var(--header-height, 90px);
   background: rgba(251, 251, 251, 0.88);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
@@ -113,6 +113,7 @@ button, input, select, textarea {
   z-index: 1000;
   display: flex;
   align-items: center;
+  transition: height 0.2s ease;
 }
 
 .header-inner {
@@ -165,11 +166,44 @@ button, input, select, textarea {
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.03em;
+  white-space: nowrap;
   transition: background-color 0.2s ease;
 }
 
 .btn-trial-header:hover {
   background-color: #222222;
+}
+
+@media (max-width: 1024px) {
+  .header-inner {
+    padding: 0 36px;
+  }
+}
+
+@media (max-width: 768px) {
+  .header-inner {
+    padding: 0 20px;
+  }
+  .header-nav-links {
+    display: none !important;
+  }
+  .btn-trial-header {
+    padding: 8px 14px;
+    font-size: 11.5px;
+  }
+}
+
+@media (max-width: 480px) {
+  .header-inner {
+    padding: 0 16px;
+  }
+  .logo-img {
+    height: 30px;
+  }
+  .btn-trial-header {
+    padding: 7px 12px;
+    font-size: 11px;
+  }
 }
 
 /* ==========================================================================
