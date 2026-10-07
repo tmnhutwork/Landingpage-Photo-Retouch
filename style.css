@@ -232,13 +232,22 @@ p, li, .service-description, .cosmos-discipline-desc,
     right: 0;
     width: 100%;
     height: var(--header-mobile-height, 60px);
+    background: #ffffff !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
     z-index: 10003;
-    transition: background-color 0.25s ease, border-color 0.25s ease;
+    transition: border-color 0.25s ease;
   }
 
   .figma-header.menu-open {
     background: #ffffff !important;
     border-bottom-color: rgba(0, 0, 0, 0.07);
+  }
+
+  /* Hide top CTA button and divider when mobile menu is active */
+  .figma-header.menu-open .btn-trial-header,
+  .figma-header.menu-open .header-mobile-divider {
+    display: none !important;
   }
 
   .header-inner {
@@ -343,7 +352,7 @@ p, li, .service-description, .cosmos-discipline-desc,
     transform: translateY(-6px) rotate(-45deg);
   }
 
-  /* Mobile Full-Viewport Navigation Drawer (Ref Image #3 Cosmos.so) */
+  /* Mobile Full-Viewport Navigation Drawer (Clipped at header bottom, NEVER runs underneath navbar) */
   .mobile-nav-panel {
     display: block;
     position: fixed !important;
@@ -354,34 +363,40 @@ p, li, .service-description, .cosmos-discipline-desc,
     width: 100%;
     height: calc(100dvh - var(--header-mobile-height, 60px));
     height: calc(100vh - var(--header-mobile-height, 60px));
-    background-color: #ffffff;
-    box-sizing: border-box;
-    transform: translateY(-8px);
-    opacity: 0;
+    overflow: hidden; /* Hard clipping boundary: strictly prevents any content from passing into header area */
     visibility: hidden;
     pointer-events: none;
-    transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1),
-                opacity 0.24s ease,
-                visibility 0.3s ease;
     z-index: 10002;
-    overflow-y: auto;
-    -webkit-overflow-scrolling: touch;
+    transition: visibility 0s linear 0.28s;
   }
 
   .mobile-nav-panel.is-open {
-    transform: translateY(0);
-    opacity: 1;
     visibility: visible;
     pointer-events: auto;
+    transition: visibility 0s linear 0s;
   }
 
   .mobile-nav-container {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    min-height: 100%;
-    padding: 16px 24px calc(28px + env(safe-area-inset-bottom, 16px));
+    width: 100%;
+    height: 100%;
+    background-color: #ffffff;
     box-sizing: border-box;
+    padding: 16px 24px calc(28px + env(safe-area-inset-bottom, 16px));
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    transform: translate3d(0, -100%, 0);
+    will-change: transform;
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+    transition: transform 0.28s cubic-bezier(0.32, 0, 0.67, 0);
+  }
+
+  .mobile-nav-panel.is-open .mobile-nav-container {
+    transform: translate3d(0, 0, 0);
+    transition: transform 0.32s cubic-bezier(0.22, 1, 0.36, 1);
   }
 
   .mobile-nav-list {
@@ -402,23 +417,11 @@ p, li, .service-description, .cosmos-discipline-desc,
     color: #111111;
     text-decoration: none;
     border-bottom: 1px solid rgba(0, 0, 0, 0.08);
-    transition: color 0.15s ease, opacity 0.15s ease, transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    transition: color 0.15s ease, opacity 0.15s ease;
     text-align: left;
     -webkit-tap-highlight-color: transparent;
-    transform: translateY(6px);
-    opacity: 0;
-  }
-
-  .mobile-nav-panel.is-open .mobile-nav-item {
-    transform: translateY(0);
     opacity: 1;
   }
-
-  .mobile-nav-panel.is-open .mobile-nav-item:nth-child(1) { transition-delay: 0.04s; }
-  .mobile-nav-panel.is-open .mobile-nav-item:nth-child(2) { transition-delay: 0.08s; }
-  .mobile-nav-panel.is-open .mobile-nav-item:nth-child(3) { transition-delay: 0.12s; }
-  .mobile-nav-panel.is-open .mobile-nav-item:nth-child(4) { transition-delay: 0.16s; }
-  .mobile-nav-panel.is-open .mobile-nav-item:nth-child(5) { transition-delay: 0.20s; }
 
   .mobile-nav-item:active {
     color: #000000;
@@ -429,16 +432,7 @@ p, li, .service-description, .cosmos-discipline-desc,
     padding-top: 32px;
     padding-bottom: 12px;
     width: 100%;
-    transform: translateY(6px);
-    opacity: 0;
-    transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1),
-                opacity 0.25s ease;
-  }
-
-  .mobile-nav-panel.is-open .mobile-nav-footer {
-    transform: translateY(0);
     opacity: 1;
-    transition-delay: 0.24s;
   }
 
   .mobile-nav-cta-pill {
