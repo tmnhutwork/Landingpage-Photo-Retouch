@@ -17,10 +17,10 @@
 
   <link rel="stylesheet" href="cosmos-hero.css?v=cosmos.autofit3">
   <link rel="stylesheet" href="style.css?v=autofit3">
-  <link rel="stylesheet" href="approach-video.css?v=2.2">
+  <link rel="stylesheet" href="approach-video.css?v=2.3">
   <link rel="stylesheet" href="workflow-pricing.css?v=opt2.1">
   <link rel="stylesheet" href="trial-modal.css?v=1.0">
-  <link rel="stylesheet" href="footer-cta-faq.css?v=1.0">
+  <link rel="stylesheet" href="footer-cta-faq.css?v=3.1">
 </head>
 
 <body>
@@ -114,9 +114,12 @@
             <!-- Inline Video Element -->
             <video class="theater-video-element" id="approach-video-player"
               src="assets/video/[Nesso] Photo Retouch Sevice Introducing_Final.mp4"
-              poster="assets/images/approach-video-thumb.jpg"
-              preload="metadata" playsinline>
+              poster="assets/images/approach-video-thumb.jpg?v=lastframe"
+              preload="none" playsinline>
             </video>
+
+            <!-- Dedicated High-Fidelity Poster Cover (Guarantees last frame thumbnail display on load) -->
+            <div class="theater-poster-cover" id="theater-poster-cover" aria-hidden="true"></div>
 
             <div class="theater-vignette-overlay"></div>
 
@@ -1240,8 +1243,9 @@
       </div>
 
       <div class="d4-faq-list">
-        <div class="d4-faq-card is-open">
-          <button type="button" class="d4-faq-question" aria-expanded="true">
+        <!-- 1 -->
+        <div class="d4-faq-card">
+          <button type="button" class="d4-faq-question" aria-expanded="false">
             <span>1. Do you offer a free sample edit?</span>
             <span class="d4-faq-toggle-icon" aria-hidden="true">
               <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
@@ -1250,14 +1254,17 @@
               </svg>
             </span>
           </button>
-          <div class="d4-faq-answer" style="max-height: 200px; opacity: 1;">
+          <div class="d4-faq-answer">
             <div class="d4-faq-answer-inner">
-              Yes. Send us your images and requirements and the team can assess the project and provide a sample edit
-              based on the agreed scope.
+              <div class="d4-faq-answer-text">
+                Yes. Send us your images and requirements and the team can assess the project and provide a sample edit
+                based on the agreed scope.
+              </div>
             </div>
           </div>
         </div>
 
+        <!-- 2 -->
         <div class="d4-faq-card">
           <button type="button" class="d4-faq-question" aria-expanded="false">
             <span>2. What types of images do you retouch?</span>
@@ -1270,11 +1277,14 @@
           </button>
           <div class="d4-faq-answer">
             <div class="d4-faq-answer-inner">
-              Product, fashion, apparel, jewelry, beauty, commercial and other professional photography.
+              <div class="d4-faq-answer-text">
+                Product, fashion, apparel, jewelry, beauty, commercial and other professional photography.
+              </div>
             </div>
           </div>
         </div>
 
+        <!-- 3 -->
         <div class="d4-faq-card">
           <button type="button" class="d4-faq-question" aria-expanded="false">
             <span>3. Can you follow our existing retouching guidelines?</span>
@@ -1287,11 +1297,14 @@
           </button>
           <div class="d4-faq-answer">
             <div class="d4-faq-answer-inner">
-              Yes. You can provide references, visual guidelines and specific editing instructions.
+              <div class="d4-faq-answer-text">
+                Yes. You can provide references, visual guidelines and specific editing instructions.
+              </div>
             </div>
           </div>
         </div>
 
+        <!-- 4 -->
         <div class="d4-faq-card">
           <button type="button" class="d4-faq-question" aria-expanded="false">
             <span>4. How do you maintain consistency across large batches?</span>
@@ -1304,11 +1317,14 @@
           </button>
           <div class="d4-faq-answer">
             <div class="d4-faq-answer-inner">
-              Projects can be standardized through references, editing instructions and production quality checks.
+              <div class="d4-faq-answer-text">
+                Projects can be standardized through references, editing instructions and production quality checks.
+              </div>
             </div>
           </div>
         </div>
 
+        <!-- 5 -->
         <div class="d4-faq-card">
           <button type="button" class="d4-faq-question" aria-expanded="false">
             <span>5. Can you handle recurring or high-volume projects?</span>
@@ -1321,11 +1337,14 @@
           </button>
           <div class="d4-faq-answer">
             <div class="d4-faq-answer-inner">
-              Yes. Nesso supports both individual projects and recurring production workflows.
+              <div class="d4-faq-answer-text">
+                Yes. Nesso supports both individual projects and recurring production workflows.
+              </div>
             </div>
           </div>
         </div>
 
+        <!-- 6 -->
         <div class="d4-faq-card">
           <button type="button" class="d4-faq-question" aria-expanded="false">
             <span>6. Do you work with international clients?</span>
@@ -1338,11 +1357,14 @@
           </button>
           <div class="d4-faq-answer">
             <div class="d4-faq-answer-inner">
-              Yes. Nesso has experience supporting clients and projects across international markets.
+              <div class="d4-faq-answer-text">
+                Yes. Nesso has experience supporting clients and projects across international markets.
+              </div>
             </div>
           </div>
         </div>
 
+        <!-- 7 -->
         <div class="d4-faq-card">
           <button type="button" class="d4-faq-question" aria-expanded="false">
             <span>7. How do I get a quote?</span>
@@ -1355,8 +1377,10 @@
           </button>
           <div class="d4-faq-answer">
             <div class="d4-faq-answer-inner">
-              Send your images, requirements and estimated volume. The team can assess the scope and provide a
-              quotation.
+              <div class="d4-faq-answer-text">
+                Send your images, requirements and estimated volume. The team can assess the scope and provide a
+                quotation.
+              </div>
             </div>
           </div>
         </div>
@@ -1666,9 +1690,9 @@
   <script src="cosmos-hero.js?v=cosmos.autofit3"></script>
   <script src="workflow-pricing.js?v=1.0"></script>
   <script src="script.js"></script>
-  <script src="approach-video.js?v=2.0"></script>
+  <script src="approach-video.js?v=2.1"></script>
   <script src="trial-modal.js"></script>
-  <script src="footer-cta-faq.js"></script>
+  <script src="footer-cta-faq.js?v=3.1"></script>
 </body>
 
 </html>

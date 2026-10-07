@@ -11,41 +11,91 @@
   });
 
   /* ==========================================================================
-     1. FAQ ACCORDION INTERACTION
+     1. FAQ ACCORDION INTERACTION & FOOTER STABILITY CONTROLLER
      ========================================================================== */
   function initFAQAccordion() {
+    const section = document.querySelector('.d4-faq-section');
+    const header = document.querySelector('.d4-faq-header');
+    const list = document.querySelector('.d4-faq-list');
     const items = document.querySelectorAll('.d4-faq-card');
+    if (!items.length) return;
 
+    // Dynamically calculate and lock stable height so footer NEVER shifts
+    function updateStableHeight() {
+      if (!list) return;
+
+      let baseHeight = 0;
+      const gap = 12;
+      let maxSingleAnswer = 0;
+
+      items.forEach((item, index) => {
+        const questionBtn = item.querySelector('.d4-faq-question');
+        const qHeight = questionBtn ? questionBtn.getBoundingClientRect().height : 58;
+        baseHeight += qHeight + 2; // + 2px for card border
+        if (index > 0) baseHeight += gap;
+
+        const ansText = item.querySelector('.d4-faq-answer-text');
+        if (ansText) {
+          const aH = ansText.scrollHeight + 20; // 20px padding-bottom
+          if (aH > maxSingleAnswer) maxSingleAnswer = aH;
+        }
+      });
+
+      // Exactly 1 question open at a time: list needs baseHeight + maxSingleAnswer
+      const isMobile = window.innerWidth <= 640;
+      const minDesktop = 565;
+      const minMobile = 680;
+      const calculatedListHeight = Math.ceil(baseHeight + maxSingleAnswer + 4);
+      const lockedListHeight = Math.max(isMobile ? minMobile : minDesktop, calculatedListHeight);
+
+      list.style.minHeight = lockedListHeight + 'px';
+      list.style.setProperty('--faq-list-min-height', lockedListHeight + 'px');
+
+      if (section) {
+        const headerH = header ? header.getBoundingClientRect().height : 75;
+        const padV = isMobile ? 68 : 88; // 64px top + 24px bottom = 88px (mobile: 48 + 20 = 68)
+        const lockedSectionHeight = Math.ceil(lockedListHeight + headerH + padV);
+        section.style.minHeight = lockedSectionHeight + 'px';
+        section.style.setProperty('--faq-section-min-height', lockedSectionHeight + 'px');
+      }
+    }
+
+    updateStableHeight();
+    window.addEventListener('resize', updateStableHeight, { passive: true });
+    if (document.fonts && document.fonts.ready) {
+      document.fonts.ready.then(updateStableHeight);
+    }
+
+    // Pure class-based toggle with CSS Grid 0fr -> 1fr (zero jank, zero stutter)
+    // Strictly at most 1 card open at any time
     items.forEach(item => {
       const btn = item.querySelector('.d4-faq-question');
       const answer = item.querySelector('.d4-faq-answer');
       if (!btn || !answer) return;
 
-      btn.addEventListener('click', () => {
+      // Remove any leftover inline styles
+      answer.style.maxHeight = '';
+
+      btn.addEventListener('click', (e) => {
+        e.preventDefault();
         const isOpen = item.classList.contains('is-open');
 
-        // Optional: close siblings in the same list
-        const parentList = item.parentElement;
-        if (parentList) {
-          parentList.querySelectorAll('.d4-faq-card').forEach(sibling => {
-            if (sibling !== item) {
-              sibling.classList.remove('is-open');
-              const sibBtn = sibling.querySelector('.d4-faq-question');
-              if (sibBtn) sibBtn.setAttribute('aria-expanded', 'false');
-              const sibAnswer = sibling.querySelector('.d4-faq-answer');
-              if (sibAnswer) sibAnswer.style.maxHeight = null;
-            }
-          });
-        }
+        // Strictly close any other open question (only 1 open at a time)
+        items.forEach(otherItem => {
+          if (otherItem !== item && otherItem.classList.contains('is-open')) {
+            otherItem.classList.remove('is-open');
+            const otherBtn = otherItem.querySelector('.d4-faq-question');
+            if (otherBtn) otherBtn.setAttribute('aria-expanded', 'false');
+          }
+        });
 
+        // Toggle current card
         if (isOpen) {
           item.classList.remove('is-open');
           btn.setAttribute('aria-expanded', 'false');
-          answer.style.maxHeight = null;
         } else {
           item.classList.add('is-open');
           btn.setAttribute('aria-expanded', 'true');
-          answer.style.maxHeight = answer.scrollHeight + 30 + 'px';
         }
       });
     });

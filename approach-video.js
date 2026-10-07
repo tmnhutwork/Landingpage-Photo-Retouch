@@ -116,6 +116,7 @@
 
     // ── Video Events: Sync Classes and Controls ──
     video.addEventListener('play', () => {
+      screen.classList.add('has-played');
       screen.classList.add('is-playing');
       screen.classList.remove('is-paused');
       scheduleControlsHide();
