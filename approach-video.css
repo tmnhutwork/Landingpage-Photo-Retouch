@@ -1,0 +1,608 @@
+/* ==========================================================================
+   NESSO — THE APPROACH VIDEO SECTION (CENTRIC THEATER STAGE)
+   - Seamless off-white background (#FBFBFB)
+   - Unified pitch black headline (#111111) with Sans-serif + Serif Italic hierarchy
+   - Flat borderless/shadowless cinematic video frame
+   - Integrated client logo trust strip directly below the video
+   ========================================================================== */
+
+/* ── Section Root & Background ───────────────────────────────────────── */
+.figma-approach-section {
+  width: 100%;
+  background: #FBFBFB !important;
+  color: #111111 !important;
+  padding: 80px 0 110px !important;
+  scroll-margin-top: 96px;
+  position: relative;
+  overflow: hidden;
+  border-top: 1px solid rgba(0, 0, 0, 0.05);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+/* Subtle background warmth grid (ultra faint) */
+.figma-approach-section::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 50% 25%, rgba(194, 157, 124, 0.05) 0%, transparent 65%);
+  pointer-events: none;
+}
+
+/* ── Centric Theater Layout ──────────────────────────────────────────── */
+.approach-theater-inner {
+  width: 100%;
+  max-width: 1320px;
+  margin: 0 auto;
+  padding: 0 40px;
+  text-align: center;
+  position: relative;
+  z-index: 10;
+}
+
+/* Eyebrow & Headline */
+.theater-header-group {
+  max-width: 900px;
+  margin: 0 auto 46px;
+}
+
+.eyebrow-center {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 12px;
+}
+
+.eyebrow-center .eyebrow-text {
+  font-family: var(--font-sans, 'Plus Jakarta Sans', sans-serif);
+  font-size: 15px;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #111111 !important;
+}
+
+.theater-headline {
+  font-family: var(--font-sans, 'Plus Jakarta Sans', sans-serif);
+  font-size: clamp(34px, 4.2vw, 48px);
+  font-weight: 500;
+  line-height: 1.18;
+  color: #111111 !important;
+  letter-spacing: -0.025em;
+  margin: 8px auto 0;
+  max-width: 920px;
+}
+
+.theater-headline .serif-italic {
+  font-family: var(--font-serif, 'Playfair Display', Georgia, serif);
+  font-style: italic;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  color: #111111 !important;
+}
+
+/* ── Theater Stage Video Screen (No Shadow) ─────────────────────────── */
+.theater-stage-container {
+  width: 100%;
+  max-width: 1140px;
+  margin: 0 auto;
+}
+
+.theater-cinema-screen {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  max-height: 580px;
+  border-radius: 24px;
+  overflow: hidden;
+  box-shadow: none !important;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  cursor: pointer;
+  background: #1A1817;
+  transition: border-color 0.3s ease;
+}
+
+.theater-cinema-screen:hover {
+  box-shadow: none !important;
+  border-color: rgba(0, 0, 0, 0.16);
+}
+
+.theater-cinema-screen .video-bg-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.theater-cinema-screen:hover .video-bg-img {
+  transform: scale(1.02);
+}
+
+.theater-vignette-overlay {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at center, rgba(0, 0, 0, 0.08) 0%, rgba(0, 0, 0, 0.5) 100%),
+              linear-gradient(180deg, rgba(0, 0, 0, 0.22) 0%, transparent 40%, rgba(0, 0, 0, 0.65) 100%);
+  pointer-events: none;
+}
+
+/* Top Corner Pills */
+.theater-top-pills {
+  position: absolute;
+  top: 24px;
+  left: 28px;
+  right: 28px;
+  z-index: 5;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.theater-tag-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  border-radius: 9999px;
+  background: rgba(17, 17, 17, 0.75);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: #FFFFFF;
+}
+
+.theater-tag-pill.pill-glass {
+  background: rgba(255, 255, 255, 0.18);
+  border-color: rgba(255, 255, 255, 0.25);
+  color: #FFFFFF;
+}
+
+.live-pulse {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #C29D7C;
+  box-shadow: 0 0 10px #C29D7C;
+  animation: pulseWarm 2s infinite ease-in-out;
+}
+
+@keyframes pulseWarm {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.4);
+    opacity: 0.6;
+  }
+}
+
+/* Center Dramatic Play Hub */
+.theater-play-hub {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 6;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+}
+
+.theater-play-btn-circle {
+  position: relative;
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.94);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 2px solid rgba(255, 255, 255, 0.95);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #111111;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.theater-play-btn-circle svg {
+  margin-left: 4px;
+}
+
+.theater-pulse-effect {
+  position: absolute;
+  inset: -8px;
+  border-radius: 50%;
+  background: rgba(194, 157, 124, 0.45);
+  animation: pulsePlayRing 2.6s ease-out infinite;
+  pointer-events: none;
+}
+
+@keyframes pulsePlayRing {
+  0% {
+    transform: scale(0.9);
+    opacity: 0.8;
+  }
+  100% {
+    transform: scale(1.4);
+    opacity: 0;
+  }
+}
+
+.theater-cinema-screen:hover .theater-play-btn-circle {
+  transform: scale(1.12);
+  background: #FFFFFF;
+  color: #876450;
+  box-shadow: 0 14px 38px rgba(135, 100, 80, 0.4);
+}
+
+.theater-play-caption {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  background: rgba(17, 17, 17, 0.72);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  padding: 8px 20px;
+  border-radius: 9999px;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.3);
+}
+
+.play-action-text {
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #FFFFFF;
+}
+
+.play-action-duration {
+  font-size: 10.5px;
+  font-weight: 500;
+  color: #C29D7C;
+  letter-spacing: 0.04em;
+}
+
+/* Bottom Cinematic Rail */
+.theater-bottom-rail {
+  position: absolute;
+  bottom: 24px;
+  left: 28px;
+  right: 28px;
+  z-index: 5;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  color: #FFFFFF;
+}
+
+.rail-left {
+  text-align: left;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.rail-chapter {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #C29D7C;
+}
+
+.rail-title {
+  font-size: 14.5px;
+  font-weight: 600;
+  color: #FFFFFF;
+  text-shadow: 0 1px 6px rgba(0, 0, 0, 0.5);
+}
+
+.rail-right {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.rail-badge {
+  padding: 5px 12px;
+  border-radius: 6px;
+  background: rgba(17, 17, 17, 0.65);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  color: rgba(255, 255, 255, 0.85);
+}
+
+/* ── Integrated Client Logos Strip (Directly Below Video) ─────────────── */
+.theater-clients-row {
+  width: 100%;
+  max-width: 1140px;
+  margin: 98px auto 0;
+  padding-top: 0;
+  border-top: none;
+}
+
+.theater-clients-row .clients-logo-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding-left: 0;
+  gap: 36px;
+  flex-wrap: wrap;
+}
+
+.theater-clients-row .client-logo-wrap {
+  display: flex;
+  align-items: center;
+  opacity: 0.20 !important;
+  transition: opacity 0.25s ease, transform 0.25s ease;
+}
+
+.theater-clients-row .client-logo-wrap:hover {
+  opacity: 0.55 !important;
+  transform: translateY(-2px);
+}
+
+.theater-clients-row .client-svg,
+.theater-clients-row .client-png {
+  height: 32px;
+  width: auto;
+  object-fit: contain;
+}
+
+/* ── CINEMATIC VIDEO LIGHTBOX MODAL ──────────────────────────────────── */
+.video-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 99999;
+  background: rgba(10, 9, 12, 0.88);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+  padding: 24px;
+}
+
+.video-modal-backdrop.is-open {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+}
+
+.video-modal-card {
+  position: relative;
+  width: 100%;
+  max-width: 1020px;
+  background: #111014;
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 40px 100px rgba(0, 0, 0, 0.7);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  transform: scale(0.94);
+  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.video-modal-backdrop.is-open .video-modal-card {
+  transform: scale(1);
+}
+
+.video-modal-header {
+  padding: 16px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.modal-header-meta {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.modal-brand-badge {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  color: #C29D7C;
+  text-transform: uppercase;
+}
+
+.modal-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: #FFFFFF;
+}
+
+.btn-close-modal {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 9999px;
+  padding: 6px 14px;
+  color: rgba(255, 255, 255, 0.85);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-close-modal:hover {
+  background: rgba(255, 255, 255, 0.2);
+  color: #FFFFFF;
+}
+
+.video-player-viewport {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  background: #000000;
+}
+
+.video-player-viewport img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.video-player-controls {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 20px 24px;
+  background: linear-gradient(180deg, transparent 0%, rgba(0, 0, 0, 0.88) 100%);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.progress-track-bar {
+  width: 100%;
+  height: 4px;
+  background: rgba(255, 255, 255, 0.25);
+  border-radius: 9999px;
+  position: relative;
+  cursor: pointer;
+}
+
+.progress-fill-bar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  width: 32%;
+  background: #C29D7C;
+  border-radius: 9999px;
+}
+
+.controls-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  color: #FFFFFF;
+  font-size: 12.5px;
+}
+
+.controls-left {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.btn-player-play {
+  background: none;
+  border: none;
+  color: #FFFFFF;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.player-time {
+  font-variant-numeric: tabular-nums;
+  color: rgba(255, 255, 255, 0.75);
+}
+
+.controls-right {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  color: rgba(255, 255, 255, 0.75);
+}
+
+/* ── RESPONSIVE ADAPTATIONS ────────────────────────────────────────── */
+@media (max-width: 1024px) {
+  .figma-approach-section {
+    padding: 60px 0 75px !important;
+  }
+
+  .approach-theater-inner {
+    padding: 0 30px;
+  }
+
+  .theater-clients-row {
+    margin-top: 74px;
+    padding-top: 0;
+  }
+
+  .theater-clients-row .clients-logo-row {
+    justify-content: center;
+    gap: 32px;
+  }
+}
+
+@media (max-width: 768px) {
+  .figma-approach-section {
+    padding: 44px 0 60px !important;
+  }
+
+  .approach-theater-inner {
+    padding: 0 20px;
+  }
+
+  .theater-header-group {
+    margin-bottom: 28px;
+  }
+
+  .theater-cinema-screen {
+    border-radius: 18px;
+  }
+
+  .theater-play-btn-circle {
+    width: 64px;
+    height: 64px;
+  }
+
+  .theater-bottom-rail {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+    bottom: 16px;
+    left: 18px;
+    right: 18px;
+  }
+
+  .theater-top-pills {
+    top: 16px;
+    left: 18px;
+    right: 18px;
+  }
+
+  .theater-clients-row {
+    margin-top: 56px;
+    padding-top: 0;
+  }
+
+  .theater-clients-row .clients-logo-row {
+    justify-content: center;
+    gap: 22px;
+  }
+
+  .theater-clients-row .client-svg,
+  .theater-clients-row .client-png {
+    height: 24px;
+  }
+}

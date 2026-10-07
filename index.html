@@ -17,6 +17,7 @@
 
   <link rel="stylesheet" href="cosmos-hero.css?v=cosmos.autofit3">
   <link rel="stylesheet" href="style.css?v=autofit3">
+  <link rel="stylesheet" href="approach-video.css?v=2.2">
   <link rel="stylesheet" href="workflow-pricing.css?v=opt2.1">
   <link rel="stylesheet" href="trial-modal.css?v=1.0">
   <link rel="stylesheet" href="footer-cta-faq.css?v=1.0">
@@ -84,7 +85,7 @@
       </div>
 
       <!-- Scroll Indicator Arrow (Chevron) -->
-      <a href="#clients" class="scroll-indicator" id="scroll-arrow" aria-label="Scroll to explore">
+      <a href="#approach" class="scroll-indicator" id="scroll-arrow" aria-label="Scroll to explore">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"
           stroke-linecap="round" stroke-linejoin="round">
           <polyline points="6 9 12 15 18 9"></polyline>
@@ -93,75 +94,131 @@
 
     </section>
 
-    <!-- ==================== SELECTED CLIENTS ==================== -->
-    <section class="figma-clients-section" id="clients">
-      <div class="clients-inner">
-        <span class="clients-title">SELECTED CLIENTS</span>
-
-        <div class="clients-logo-row">
-          <div class="client-logo-wrap logo-borg">
-            <img src="assets/images/client-borg.png" alt="Borg Logo" class="client-svg">
-          </div>
-          <div class="client-logo-wrap logo-mercury">
-            <img src="assets/images/client-mercury.png" alt="Mercury Lighting Logo" class="client-svg">
-          </div>
-          <div class="client-logo-wrap logo-peter">
-            <img src="assets/images/client-peter-millar.png" alt="Peter Millar Logo" class="client-svg">
-          </div>
-          <div class="client-logo-wrap logo-david">
-            <img src="assets/images/client-david-watt.png" alt="David Watt Photography Logo" class="client-svg">
-          </div>
-          <div class="client-logo-wrap logo-alice">
-            <img src="assets/images/client-alice-olivia.png" alt="Alice + Olivia Logo" class="client-png">
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- ==================== THE APPROACH ==================== -->
+    <!-- ==================== THE APPROACH (CENTRIC THEATER STAGE) ==================== -->
     <section class="figma-approach-section" id="approach">
-      <div class="approach-inner">
+      <div class="approach-theater-inner">
 
-        <div class="approach-left">
-          <div class="eyebrow-group eyebrow-light">
+        <div class="theater-header-group">
+          <div class="eyebrow-center">
             <span class="eyebrow-text">THE APPROACH</span>
           </div>
 
-          <h2 class="approach-headline">
+          <h2 class="theater-headline">
             Behind every polished image,<br>
-            there’s a considered process
+            <span class="serif-italic">there’s a considered process.</span>
           </h2>
+        </div>
 
-          <p class="approach-subline">
-            A closer look at how we balance technical precision and brand consistency
-          </p>
+        <div class="theater-stage-container">
+          <div class="theater-cinema-screen" id="video-preview-card-opt2">
+            <img src="assets/images/approach-video-thumb.jpg" alt="Nesso Retouching Atelier Cinema Reel" class="video-bg-img">
+            <div class="theater-vignette-overlay"></div>
 
-          <div class="approach-cta-wrap">
-            <button type="button" class="btn-watch-overview" id="btn-watch-video">
-              <svg class="play-icon-svg" viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor"
-                stroke-width="2">
-                <circle cx="12" cy="12" r="10" stroke="currentColor" />
-                <polygon points="10 8 16 12 10 16 10 8" fill="currentColor" />
-              </svg>
-              <span>WATCH OVERVIEW</span>
-            </button>
+            <div class="theater-top-pills">
+              <span class="theater-tag-pill">
+                <span class="live-pulse"></span>
+                INSIDE THE ATELIER
+              </span>
+              <span class="theater-tag-pill pill-glass">
+                4K MASTER PROOF
+              </span>
+            </div>
+
+            <div class="theater-play-hub">
+              <div class="theater-play-btn-circle">
+                <div class="theater-pulse-effect"></div>
+                <svg viewBox="0 0 24 24" width="28" height="28" fill="currentColor">
+                  <polygon points="7 4 19 12 7 20 7 4"></polygon>
+                </svg>
+              </div>
+              <div class="theater-play-caption">
+                <span class="play-action-text">PLAY STUDIO OVERVIEW</span>
+                <span class="play-action-duration">01:45 MIN · SOUND RECOMMENDED</span>
+              </div>
+            </div>
+
+            <div class="theater-bottom-rail">
+              <div class="rail-left">
+                <span class="rail-chapter">FEATURE STORY</span>
+                <span class="rail-title">Balancing Micro-Precision with Editorial Expression</span>
+              </div>
+              <div class="rail-right">
+                <span class="rail-badge">EIZO CALIBRATED</span>
+                <span class="rail-badge">CAPTURE ONE + PS PRO</span>
+              </div>
+            </div>
           </div>
         </div>
 
-        <div class="approach-right">
-          <div class="video-preview-wrapper" id="video-preview-card">
-            <img src="assets/images/video-thumb.png" alt="Video overview preview" class="video-bg-img">
-            <div class="video-play-center-btn">
-              <svg viewBox="0 0 54 54" width="54" height="54" fill="none">
-                <circle cx="27" cy="27" r="26" stroke="rgba(255, 255, 255, 0.8)" stroke-width="2" />
-                <polygon points="22 17 38 27 22 37" fill="#FFFFFF" />
-              </svg>
+        <!-- Client Logos Strip (Moved directly below video frame, without "SELECTED CLIENTS") -->
+        <div class="theater-clients-row" id="clients">
+          <div class="clients-logo-row">
+            <div class="client-logo-wrap logo-borg">
+              <img src="assets/images/client-borg.png" alt="Borg Logo" class="client-svg">
+            </div>
+            <div class="client-logo-wrap logo-mercury">
+              <img src="assets/images/client-mercury.png" alt="Mercury Lighting Logo" class="client-svg">
+            </div>
+            <div class="client-logo-wrap logo-peter">
+              <img src="assets/images/client-peter-millar.png" alt="Peter Millar Logo" class="client-svg">
+            </div>
+            <div class="client-logo-wrap logo-david">
+              <img src="assets/images/client-david-watt.png" alt="David Watt Photography Logo" class="client-svg">
+            </div>
+            <div class="client-logo-wrap logo-alice">
+              <img src="assets/images/client-alice-olivia.png" alt="Alice + Olivia Logo" class="client-png">
             </div>
           </div>
         </div>
 
       </div>
     </section>
+
+    <!-- Video Modal Lightbox (Shared between both options) -->
+    <div class="video-modal-backdrop" id="approach-video-modal" aria-hidden="true">
+      <div class="video-modal-card" role="dialog" aria-modal="true" aria-label="Nesso Studio Video Overview">
+        <div class="video-modal-header">
+          <div class="modal-header-meta">
+            <span class="modal-brand-badge">NESSO ATELIER</span>
+            <span class="modal-title">Studio Process & Color Calibration Film</span>
+          </div>
+          <button type="button" class="btn-close-modal" id="btn-close-video-modal" aria-label="Close modal">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+              <line x1="18" y1="6" x2="6" y2="18"></line>
+              <line x1="6" y1="6" x2="18" y2="18"></line>
+            </svg>
+            <span>ESC</span>
+          </button>
+        </div>
+
+        <div class="video-player-viewport">
+          <img src="assets/images/approach-video-thumb.jpg" alt="Video player stream preview">
+          <div class="video-player-controls">
+            <div class="progress-track-bar">
+              <div class="progress-fill-bar"></div>
+            </div>
+            <div class="controls-row">
+              <div class="controls-left">
+                <button type="button" class="btn-player-play" aria-label="Toggle play/pause">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+                    <rect x="6" y="4" width="4" height="16"></rect>
+                    <rect x="14" y="4" width="4" height="16"></rect>
+                  </svg>
+                </button>
+                <span class="player-time">00:34 / 01:45</span>
+              </div>
+              <div class="controls-right">
+                <span class="player-quality">4K PROOF</span>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+                  <path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path>
+                </svg>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
 
     <!-- ==================== OUR SERVICES ==================== -->
     <section class="figma-services-section" id="services">
@@ -435,6 +492,9 @@
             </div>
           </div>
         </div>
+
+        <!-- Section Divider Line after Service 03 -->
+        <div class="item-divider-line"></div>
 
       </div>
     </section>
@@ -1576,6 +1636,7 @@
   <script src="cosmos-hero.js?v=cosmos.autofit3"></script>
   <script src="workflow-pricing.js?v=1.0"></script>
   <script src="script.js"></script>
+  <script src="approach-video.js?v=2.0"></script>
   <script src="trial-modal.js"></script>
   <script src="footer-cta-faq.js"></script>
 </body>
