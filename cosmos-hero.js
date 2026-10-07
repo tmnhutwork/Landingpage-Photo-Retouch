@@ -36,7 +36,8 @@
     const centerContent = document.getElementById('center-content');
     if (!hero || !stage) return;
 
-    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    // Force motion: always run spiral drift and scroll effect, bypass browser prefers-reduced-motion rule
+    const reduceMotion = false;
 
     // Approved reference constants
     const CARD_COUNT = 100;
@@ -293,10 +294,8 @@
       const ease = 1 - Math.exp(-10 * dt);
       currentScrollVelocity += (targetScrollVelocity - currentScrollVelocity) * ease;
 
-      if (!reduceMotion) {
-        // Continuous ambient drift + silky smooth clockwise scroll velocity (always multiplied by dt)
-        accumulatedTime += (FLOW_SPEED + currentScrollVelocity) * dt;
-      }
+      // Force motion: continuous ambient drift + silky smooth clockwise scroll velocity (always active, bypassing prefers-reduced-motion)
+      accumulatedTime += (FLOW_SPEED + currentScrollVelocity) * dt;
 
       if (!cachedLookup) {
         requestAnimationFrame(render);
