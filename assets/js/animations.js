@@ -256,18 +256,18 @@
       if (clientLogos.length > 0) {
         gsap.fromTo(
           clientLogos,
-          { y: 25, opacity: 0 },
+          { y: 20, opacity: 0 },
           {
             scrollTrigger: {
               trigger: clientsSection,
-              start: 'top 80%',
+              start: 'top 82%',
               once: true
             },
             y: 0,
             opacity: 1,
             duration: 0.85,
-            stagger: 0.08,
-            ease: 'power3.out'
+            ease: 'power3.out',
+            clearProps: 'transform'
           }
         );
       }

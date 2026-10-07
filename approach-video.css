@@ -767,6 +767,11 @@
     gap: 22px;
   }
 
+  /* Hide Alice + Olivia logo on mobile */
+  .theater-clients-row .client-logo-wrap.logo-alice {
+    display: none !important;
+  }
+
   .theater-clients-row .client-svg,
   .theater-clients-row .client-png {
     height: 24px;
