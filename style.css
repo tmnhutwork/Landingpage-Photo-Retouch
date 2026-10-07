@@ -1955,9 +1955,14 @@ body.is-slider-resizing {
   position: relative;
   border-radius: 18px;
   overflow: hidden;
-  background: #1B1817;
+  background: transparent;
   box-shadow: none; /* NO SHADOW */
   border: none;
+  /* Subpixel anti-aliasing & corner clipping without dark fringe */
+  isolation: isolate;
+  transform: translateZ(0);
+  -webkit-mask-image: -webkit-radial-gradient(white, black);
+  mask-image: radial-gradient(white, black);
 }
 
 .cosmos-card-layer {
@@ -1965,15 +1970,49 @@ body.is-slider-resizing {
   inset: 0;
   width: 100%;
   height: 100%;
+  border-radius: 18px;
+  overflow: hidden;
+  background: transparent;
   opacity: 0;
-  transform: scale(0.97);
+  transform: translateY(22px) scale(0.99);
   pointer-events: none;
-  transition: opacity 0.5s cubic-bezier(0.2, 0.8, 0.2, 1), transform 0.5s cubic-bezier(0.2, 0.8, 0.2, 1);
+  will-change: opacity, transform;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  transform-origin: center center;
+  transition: opacity 0.55s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.55s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
+/* Directional entry: down (entering from below) vs up (entering from above) */
+.cosmos-card-stage[data-direction="down"] .cosmos-card-layer {
+  transform: translateY(22px) scale(0.99);
+}
+
+.cosmos-card-stage[data-direction="down"] .cosmos-card-layer.is-leaving {
+  opacity: 0;
+  transform: translateY(-12px) scale(0.995);
+  pointer-events: none;
+  transition: opacity 0.45s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.cosmos-card-stage[data-direction="up"] .cosmos-card-layer {
+  transform: translateY(-22px) scale(0.99);
+}
+
+.cosmos-card-stage[data-direction="up"] .cosmos-card-layer.is-leaving {
+  opacity: 0;
+  transform: translateY(12px) scale(0.995);
+  pointer-events: none;
+  transition: opacity 0.45s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Active card always sits perfectly flush */
 .cosmos-card-layer.is-active {
-  opacity: 1;
-  transform: scale(1);
+  opacity: 1 !important;
+  transform: translateY(0) scale(1) !important;
   pointer-events: auto;
 }
 
@@ -1981,7 +2020,9 @@ body.is-slider-resizing {
   width: 100%;
   height: 100%;
   position: relative;
+  border-radius: 18px;
   overflow: hidden;
+  background: transparent;
 }
 
 .cosmos-card-img {
@@ -1990,6 +2031,7 @@ body.is-slider-resizing {
   object-fit: cover;
   object-position: center;
   display: block;
+  border-radius: 18px;
 }
 
 /* Floating Glass Pill Badge (Cosmos Guiri style) */
@@ -2036,16 +2078,36 @@ body.is-slider-resizing {
   position: absolute;
   top: 50%;
   left: 0;
-  transform: translateY(-50%) translateY(20px);
+  transform: translateY(-50%) translateY(22px);
   width: 100%;
   opacity: 0;
   pointer-events: none;
-  transition: opacity 0.45s ease, transform 0.45s cubic-bezier(0.2, 0.8, 0.2, 1);
+  will-change: opacity, transform;
+  transition: opacity 0.5s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.cosmos-text-stage[data-direction="down"] .cosmos-text-item {
+  transform: translateY(-50%) translateY(22px);
+}
+
+.cosmos-text-stage[data-direction="down"] .cosmos-text-item.is-leaving {
+  opacity: 0;
+  transform: translateY(-50%) translateY(-12px);
+}
+
+.cosmos-text-stage[data-direction="up"] .cosmos-text-item {
+  transform: translateY(-50%) translateY(-22px);
+}
+
+.cosmos-text-stage[data-direction="up"] .cosmos-text-item.is-leaving {
+  opacity: 0;
+  transform: translateY(-50%) translateY(12px);
 }
 
 .cosmos-text-item.is-active {
-  opacity: 1;
-  transform: translateY(-50%) translateY(0);
+  opacity: 1 !important;
+  transform: translateY(-50%) translateY(0) !important;
   pointer-events: auto;
 }
 

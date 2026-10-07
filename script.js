@@ -631,6 +631,8 @@ function playService3Loupe() {
    ========================================================================== */
 function initAudienceConcepts() {
   const cosmosContainer = document.getElementById('cosmos-scrolly-container');
+  const cosmosStage = document.getElementById('cosmos-card-stage');
+  const cosmosTextStage = document.getElementById('cosmos-text-stage');
   const cosmosCards = document.querySelectorAll('.cosmos-card-layer');
   const cosmosTexts = document.querySelectorAll('.cosmos-text-item');
 
@@ -640,14 +642,38 @@ function initAudienceConcepts() {
 
   function setCosmosStep(index) {
     if (index === activeCosmosIndex) return;
+    const direction = index >= activeCosmosIndex ? 'down' : 'up';
+    const prevIndex = activeCosmosIndex;
     activeCosmosIndex = index;
 
+    if (cosmosStage) cosmosStage.setAttribute('data-direction', direction);
+    if (cosmosTextStage) cosmosTextStage.setAttribute('data-direction', direction);
+
     cosmosCards.forEach((card, idx) => {
-      card.classList.toggle('is-active', idx === index);
+      if (idx === index) {
+        card.classList.remove('is-leaving');
+        card.classList.add('is-active');
+        card.style.zIndex = '3';
+      } else if (idx === prevIndex) {
+        card.classList.remove('is-active');
+        card.classList.add('is-leaving');
+        card.style.zIndex = '2';
+      } else {
+        card.classList.remove('is-active', 'is-leaving');
+        card.style.zIndex = '1';
+      }
     });
 
     cosmosTexts.forEach((item, idx) => {
-      item.classList.toggle('is-active', idx === index);
+      if (idx === index) {
+        item.classList.remove('is-leaving');
+        item.classList.add('is-active');
+      } else if (idx === prevIndex) {
+        item.classList.remove('is-active');
+        item.classList.add('is-leaving');
+      } else {
+        item.classList.remove('is-active', 'is-leaving');
+      }
     });
   }
 
