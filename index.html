@@ -1514,7 +1514,7 @@
               <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
               <path d="M7 11V7a5 5 0 0 1 10 0v4" />
             </svg>
-            <span>100% Confidential · Zero payment required · Turnaround &lt; 24h</span>
+            <span>Permanent file links · Zero payment required · Turnaround &lt; 24h</span>
           </div>
         </div>
 
@@ -1533,6 +1533,10 @@
 
           <form id="trialTestForm" class="trial-form-element">
             <input type="hidden" id="selectedTierInput" name="tier" value="Simple">
+            <div class="trial-form-honeypot" aria-hidden="true">
+              <label for="trialWebsiteUrl">Website</label>
+              <input type="text" id="trialWebsiteUrl" name="website_url" tabindex="-1" autocomplete="off">
+            </div>
 
             <div class="trial-form-grid">
               <div class="trial-field">
@@ -1541,8 +1545,8 @@
               </div>
 
               <div class="trial-field">
-                <label for="trialPhone">Phone Number *</label>
-                <input type="tel" id="trialPhone" name="phone" placeholder="+1 (555) 019-2834" required>
+                <label for="trialPhone">Phone Number</label>
+                <input type="tel" id="trialPhone" name="phone" placeholder="+1 (555) 019-2834">
               </div>
 
               <div class="trial-field">
@@ -1551,8 +1555,8 @@
               </div>
 
               <div class="trial-field">
-                <label for="trialCompany">Company / Studio *</label>
-                <input type="text" id="trialCompany" name="company" placeholder="e.g. Acme Fashion Studio" required>
+                <label for="trialCompany">Company / Studio</label>
+                <input type="text" id="trialCompany" name="company" placeholder="e.g. Acme Fashion Studio">
               </div>
 
               <div class="trial-field col-full">
@@ -1588,8 +1592,8 @@
 
               <!-- Panel 1: Direct File Upload -->
               <div class="upload-mode-panel is-active" id="panelUploadFiles" role="tabpanel">
-                <input type="file" id="trialFileInput" accept="image/*,.cr2,.arw,.nef,.dng,.tiff,.tif" multiple
-                  style="display: none;">
+                <input type="file" id="trialFileInput" name="files[]" accept=".jpg,.jpeg,.tif,.tiff,.cr3,.cr2,.crw,.nef,.arw,.raf,.rw2,.orf,.dng"
+                  multiple style="display: none;">
 
                 <div class="trial-dropzone" id="trialDropzone">
                   <div class="dropzone-empty-state" id="dropzoneEmptyState">
@@ -1642,6 +1646,7 @@
             <button type="submit" class="btn-trial-submit" id="trialSubmitBtn">
               <span id="trialSubmitText">Submit 3 Free Trial Images &rarr;</span>
             </button>
+            <p class="trial-form-message" id="trialFormMessage" aria-live="polite" role="status"></p>
           </form>
         </div>
 

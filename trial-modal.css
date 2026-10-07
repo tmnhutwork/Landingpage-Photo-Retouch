@@ -559,6 +559,38 @@
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
 }
 
+.btn-trial-submit:disabled {
+  cursor: wait;
+  opacity: 0.7;
+  box-shadow: none;
+}
+
+.trial-form-message {
+  min-height: 18px;
+  margin: 10px 0 0;
+  color: #666666;
+  font-size: 12px;
+  line-height: 1.4;
+  text-align: center;
+}
+
+.trial-form-message.is-error {
+  color: #a3331d;
+}
+
+.trial-form-message.is-success {
+  color: #21613a;
+}
+
+.trial-form-honeypot {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+}
+
 .modal-intro-guarantee {
   font-size: 12px;
   color: #777777;
