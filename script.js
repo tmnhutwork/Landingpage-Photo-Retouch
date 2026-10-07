@@ -9,6 +9,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initServiceAccordion();
   initServiceCircleCursor();
   initAudienceConcepts();
+  initMobileNav();
 });
 
 /* ==========================================================================
@@ -699,5 +700,102 @@ function initAudienceConcepts() {
   // Initial step setup
   setCosmosStep(0);
   handleCosmosScroll();
+}
+
+/* ==========================================================================
+   MOBILE NAVIGATION MENU TOGGLE & SMOOTH ANCHOR SCROLL
+   ========================================================================== */
+function initMobileNav() {
+  const toggleBtn = document.getElementById('mobile-menu-toggle');
+  const navPanel = document.getElementById('mobile-nav-panel');
+  const header = document.getElementById('main-header');
+  const navItems = document.querySelectorAll('.mobile-nav-item');
+  const ctaPill = document.querySelector('.mobile-nav-cta-pill');
+  if (!toggleBtn || !navPanel) return;
+
+  function toggleMenu(open) {
+    const isOpen = open !== undefined ? open : !toggleBtn.classList.contains('is-open');
+    toggleBtn.classList.toggle('is-open', isOpen);
+    navPanel.classList.toggle('is-open', isOpen);
+    if (header) header.classList.toggle('menu-open', isOpen);
+    toggleBtn.setAttribute('aria-expanded', String(isOpen));
+    navPanel.setAttribute('aria-hidden', String(!isOpen));
+
+    // Lock background page scroll on mobile while menu is open
+    if (isOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+  }
+
+  toggleBtn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    toggleMenu();
+  });
+
+  navItems.forEach(item => {
+    item.addEventListener('click', (e) => {
+      const targetId = item.getAttribute('href');
+      toggleMenu(false);
+
+      if (targetId && targetId.startsWith('#')) {
+        const targetEl = document.querySelector(targetId);
+        if (targetEl) {
+          e.preventDefault();
+          setTimeout(() => {
+            targetEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          }, 100);
+        }
+      }
+    });
+  });
+
+  if (ctaPill) {
+    ctaPill.addEventListener('click', () => {
+      toggleMenu(false);
+    });
+  }
+
+  const headerCta = header ? header.querySelector('.btn-trial-header') : null;
+  if (headerCta) {
+    headerCta.addEventListener('click', () => {
+      if (toggleBtn.classList.contains('is-open')) {
+        toggleMenu(false);
+      }
+    });
+  }
+
+  const brandLogo = header ? header.querySelector('.brand-logo') : null;
+  if (brandLogo) {
+    brandLogo.addEventListener('click', () => {
+      if (toggleBtn.classList.contains('is-open')) {
+        toggleMenu(false);
+      }
+    });
+  }
+
+  // Click outside to close (e.g. if overlay clicked)
+  document.addEventListener('click', (e) => {
+    if (toggleBtn.classList.contains('is-open')) {
+      if (!navPanel.contains(e.target) && !toggleBtn.contains(e.target) && (!header || !header.contains(e.target))) {
+        toggleMenu(false);
+      }
+    }
+  });
+
+  // Escape key to close
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && toggleBtn.classList.contains('is-open')) {
+      toggleMenu(false);
+    }
+  });
+
+  // Close when window resized to desktop
+  window.addEventListener('resize', () => {
+    if (window.innerWidth > 768 && toggleBtn.classList.contains('is-open')) {
+      toggleMenu(false);
+    }
+  });
 }
 

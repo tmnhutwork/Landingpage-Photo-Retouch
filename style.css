@@ -19,6 +19,9 @@
   --font-serif: 'Playfair Display', Georgia, serif;
   --font-sans: 'Plus Jakarta Sans', sans-serif;
   --font-kalam: 'Kalam', cursive, sans-serif;
+
+  --header-height: 90px;
+  --header-mobile-height: 60px;
 }
 
 /* Reset & Basics */
@@ -154,6 +157,12 @@ button, input, select, textarea {
   opacity: 1;
 }
 
+.header-actions-right {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
 .btn-trial-header {
   display: inline-flex;
   align-items: center;
@@ -174,6 +183,19 @@ button, input, select, textarea {
   background-color: #222222;
 }
 
+/* Mobile Toggle, Divider & Panel (Hidden by default on Desktop) */
+.btn-mobile-menu-toggle {
+  display: none;
+}
+
+.header-mobile-divider {
+  display: none;
+}
+
+.mobile-nav-panel {
+  display: none;
+}
+
 @media (max-width: 1024px) {
   .header-inner {
     padding: 0 36px;
@@ -181,28 +203,279 @@ button, input, select, textarea {
 }
 
 @media (max-width: 768px) {
-  .header-inner {
-    padding: 0 20px;
+  body {
+    padding-top: var(--header-mobile-height, 60px);
   }
+
+  .figma-header {
+    position: fixed !important;
+    top: 0;
+    left: 0;
+    right: 0;
+    width: 100%;
+    height: var(--header-mobile-height, 60px);
+    z-index: 10003;
+    transition: background-color 0.25s ease, border-color 0.25s ease;
+  }
+
+  .figma-header.menu-open {
+    background: #ffffff !important;
+    border-bottom-color: rgba(0, 0, 0, 0.07);
+  }
+
+  .header-inner {
+    padding: 0 14px;
+  }
+
+  .brand-logo {
+    flex-shrink: 0;
+  }
+
+  .logo-img {
+    height: 26px;
+    width: auto;
+  }
+
   .header-nav-links {
     display: none !important;
   }
+
+  .header-actions-right {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    flex-shrink: 0;
+  }
+
   .btn-trial-header {
-    padding: 8px 14px;
-    font-size: 11.5px;
+    padding: 6px 11px;
+    font-size: 10.5px;
+    gap: 5px;
+    letter-spacing: 0.02em;
+    flex-shrink: 0;
+  }
+
+  .btn-trial-header .icon-arrow {
+    width: 12px;
+    height: 12px;
+  }
+
+  /* Vertical Divider Line between CTA and Toggle Icon (Ref Image #2) */
+  .header-mobile-divider {
+    display: block;
+    width: 1px;
+    height: 16px;
+    background-color: rgba(0, 0, 0, 0.15);
+    margin: 0 2px;
+    flex-shrink: 0;
+  }
+
+  /* Mobile Hamburger Icon (Frameless, NO circle border) */
+  .btn-mobile-menu-toggle {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 4px;
+    width: 24px;
+    height: 24px;
+    padding: 0;
+    background: transparent !important;
+    border: none !important;
+    border-radius: 0;
+    cursor: pointer;
+    outline: none;
+    -webkit-tap-highlight-color: transparent;
+    flex-shrink: 0;
+    transition: transform 0.15s ease;
+  }
+
+  .btn-mobile-menu-toggle:active {
+    transform: scale(0.92);
+    background: transparent !important;
+  }
+
+  .hamburger-bar {
+    display: block;
+    width: 18px;
+    height: 2px;
+    background-color: #111111;
+    border-radius: 1px;
+    transition: transform 0.28s cubic-bezier(0.16, 1, 0.3, 1),
+                opacity 0.2s ease;
+    transform-origin: center;
+  }
+
+  /* Morph 3-lines into clean '✕' when open (Frameless, NO circle border) */
+  .btn-mobile-menu-toggle.is-open {
+    background: transparent !important;
+    border: none !important;
+  }
+
+  .btn-mobile-menu-toggle.is-open .bar-1 {
+    transform: translateY(6px) rotate(45deg);
+  }
+
+  .btn-mobile-menu-toggle.is-open .bar-2 {
+    opacity: 0;
+    transform: scaleX(0);
+  }
+
+  .btn-mobile-menu-toggle.is-open .bar-3 {
+    transform: translateY(-6px) rotate(-45deg);
+  }
+
+  /* Mobile Full-Viewport Navigation Drawer (Ref Image #3 Cosmos.so) */
+  .mobile-nav-panel {
+    display: block;
+    position: fixed !important;
+    top: var(--header-mobile-height, 60px);
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: 100%;
+    height: calc(100dvh - var(--header-mobile-height, 60px));
+    height: calc(100vh - var(--header-mobile-height, 60px));
+    background-color: #ffffff;
+    box-sizing: border-box;
+    transform: translateY(-8px);
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+                opacity 0.24s ease,
+                visibility 0.3s ease;
+    z-index: 10002;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .mobile-nav-panel.is-open {
+    transform: translateY(0);
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+  }
+
+  .mobile-nav-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    min-height: 100%;
+    padding: 16px 24px calc(28px + env(safe-area-inset-bottom, 16px));
+    box-sizing: border-box;
+  }
+
+  .mobile-nav-list {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .mobile-nav-item {
+    display: block;
+    width: 100%;
+    padding: 18px 0;
+    font-family: var(--font-sans, 'Plus Jakarta Sans', sans-serif);
+    font-size: clamp(26px, 7vw, 34px);
+    font-weight: 700;
+    letter-spacing: -0.025em;
+    line-height: 1.25;
+    color: #111111;
+    text-decoration: none;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+    transition: color 0.15s ease, opacity 0.15s ease, transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    text-align: left;
+    -webkit-tap-highlight-color: transparent;
+    transform: translateY(6px);
+    opacity: 0;
+  }
+
+  .mobile-nav-panel.is-open .mobile-nav-item {
+    transform: translateY(0);
+    opacity: 1;
+  }
+
+  .mobile-nav-panel.is-open .mobile-nav-item:nth-child(1) { transition-delay: 0.04s; }
+  .mobile-nav-panel.is-open .mobile-nav-item:nth-child(2) { transition-delay: 0.08s; }
+  .mobile-nav-panel.is-open .mobile-nav-item:nth-child(3) { transition-delay: 0.12s; }
+  .mobile-nav-panel.is-open .mobile-nav-item:nth-child(4) { transition-delay: 0.16s; }
+  .mobile-nav-panel.is-open .mobile-nav-item:nth-child(5) { transition-delay: 0.20s; }
+
+  .mobile-nav-item:active {
+    color: #000000;
+    opacity: 0.6;
+  }
+
+  .mobile-nav-footer {
+    padding-top: 32px;
+    padding-bottom: 12px;
+    width: 100%;
+    transform: translateY(6px);
+    opacity: 0;
+    transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+                opacity 0.25s ease;
+  }
+
+  .mobile-nav-panel.is-open .mobile-nav-footer {
+    transform: translateY(0);
+    opacity: 1;
+    transition-delay: 0.24s;
+  }
+
+  .mobile-nav-cta-pill {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    width: 100%;
+    height: 52px;
+    background-color: #111111;
+    color: #ffffff;
+    border-radius: 9999px;
+    font-family: var(--font-sans, 'Plus Jakarta Sans', sans-serif);
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+    text-decoration: none;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.14);
+    transition: background-color 0.2s ease, transform 0.15s ease;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .mobile-nav-cta-pill:active {
+    background-color: #000000;
+    transform: scale(0.98);
   }
 }
 
 @media (max-width: 480px) {
   .header-inner {
-    padding: 0 16px;
+    padding: 0 14px;
   }
   .logo-img {
-    height: 30px;
+    height: 28px;
   }
   .btn-trial-header {
-    padding: 7px 12px;
-    font-size: 11px;
+    padding: 6px 11px;
+    font-size: 10.5px;
+    gap: 5px;
+  }
+  .header-mobile-divider {
+    height: 16px;
+    margin: 0 1px;
+  }
+  .btn-mobile-menu-toggle {
+    width: 26px;
+    height: 26px;
+  }
+  .mobile-nav-container {
+    padding: 14px 20px calc(24px + env(safe-area-inset-bottom, 16px));
+  }
+  .mobile-nav-item {
+    font-size: 26px;
+    padding: 15px 0;
   }
 }
 

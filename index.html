@@ -16,7 +16,7 @@
     rel="stylesheet">
 
   <link rel="stylesheet" href="cosmos-hero.css?v=cosmos.autofit3">
-  <link rel="stylesheet" href="style.css?v=autofit5">
+  <link rel="stylesheet" href="style.css?v=autofit8">
   <link rel="stylesheet" href="approach-video.css?v=bw1.0">
   <link rel="stylesheet" href="workflow-pricing.css?v=opt2.1">
   <link rel="stylesheet" href="trial-modal.css?v=1.0">
@@ -40,15 +40,48 @@
         <a href="#pricing" class="hdr-link">Pricing</a>
       </nav>
 
-      <a href="#trial" class="btn-trial-header">
-        <span>GET A FREE TRIAL TEST</span>
-        <svg class="icon-arrow" viewBox="0 0 16 16" width="16" height="16" fill="none" stroke="currentColor"
-          stroke-width="2">
-          <path d="M4 12L12 4M12 4H6M12 4V10" />
-        </svg>
-      </a>
+      <div class="header-actions-right">
+        <a href="#trial" class="btn-trial-header">
+          <span>GET A FREE TRIAL TEST</span>
+          <svg class="icon-arrow" viewBox="0 0 16 16" width="16" height="16" fill="none" stroke="currentColor"
+            stroke-width="2">
+            <path d="M4 12L12 4M12 4H6M12 4V10" />
+          </svg>
+        </a>
+
+        <span class="header-mobile-divider" aria-hidden="true"></span>
+
+        <!-- Mobile Hamburger Toggle Button (Frameless, NO circle border) -->
+        <button type="button" class="btn-mobile-menu-toggle" id="mobile-menu-toggle" aria-label="Toggle navigation menu" aria-expanded="false" aria-controls="mobile-nav-panel">
+          <span class="hamburger-bar bar-1"></span>
+          <span class="hamburger-bar bar-2"></span>
+          <span class="hamburger-bar bar-3"></span>
+        </button>
+      </div>
     </div>
   </header>
+
+  <!-- Mobile Full-Viewport Navigation Drawer (Ref #3 Cosmos.so) -->
+  <div class="mobile-nav-panel" id="mobile-nav-panel" aria-hidden="true">
+    <div class="mobile-nav-container">
+      <nav class="mobile-nav-list" aria-label="Mobile Navigation">
+        <a href="#services" class="mobile-nav-item">Services</a>
+        <a href="#approach" class="mobile-nav-item">The Approach</a>
+        <a href="#who-we-worked-with" class="mobile-nav-item">Who We Support</a>
+        <a href="#workflow" class="mobile-nav-item">Workflow</a>
+        <a href="#pricing" class="mobile-nav-item">Pricing</a>
+      </nav>
+
+      <div class="mobile-nav-footer">
+        <a href="#trial" class="mobile-nav-cta-pill">
+          <span>GET A FREE TRIAL TEST</span>
+          <svg class="icon-arrow" viewBox="0 0 16 16" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M4 12L12 4M12 4H6M12 4V10" />
+          </svg>
+        </a>
+      </div>
+    </div>
+  </div>
 
   <main>
     <!-- ==================== HERO SECTION ==================== -->
@@ -1717,7 +1750,7 @@
   <script src="assets/js/animations.js"></script>
   <script src="cosmos-hero.js?v=cosmos.autofit3"></script>
   <script src="workflow-pricing.js?v=1.0"></script>
-  <script src="script.js?v=cardflow1"></script>
+  <script src="script.js?v=cardflow5"></script>
   <script src="approach-video.js?v=bw1.0"></script>
   <script src="trial-modal.js"></script>
   <script src="footer-cta-faq.js?v=3.1"></script>
