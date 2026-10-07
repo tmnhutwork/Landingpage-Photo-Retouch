@@ -1084,4 +1084,23 @@
     text-align: center;
     padding: 20px;
   }
+
+  /* Mobile Unified Body Text — Full Black (#000000), 13.5px, line-height 1.5, regular */
+  .runway-role-desc,
+  .runway-step-sla,
+  .runway-step-sla span,
+  .price-card-desc,
+  .price-features-list li,
+  .price-features-list li span,
+  .pricing-guarantee-note {
+    font-family: var(--font-sans, 'Plus Jakarta Sans', sans-serif) !important;
+    font-size: 13.5px !important;
+    line-height: 1.5 !important;
+    color: #000000 !important;
+    font-weight: 400 !important;
+  }
+
+  .runway-step-sla .sla-clock-icon {
+    stroke: #000000 !important;
+  }
 }
