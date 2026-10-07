@@ -619,6 +619,30 @@
   display: flex;
 }
 
+.trial-modal-dialog.is-success {
+  max-width: 430px;
+  min-height: 420px;
+}
+
+.trial-modal-dialog.is-success .trial-modal-topbar,
+.trial-modal-dialog.is-success .modal-col-intro,
+.trial-modal-dialog.is-success .trial-form-stage {
+  display: none !important;
+}
+
+.trial-modal-dialog.is-success .trial-modal-body {
+  display: flex;
+  min-height: 420px;
+  padding: 0;
+  overflow: hidden;
+}
+
+.trial-modal-dialog.is-success .trial-success-overlay {
+  flex: 1;
+  min-height: 420px;
+  padding: 56px 28px;
+}
+
 .success-check-icon {
   width: 56px;
   height: 56px;
@@ -644,6 +668,14 @@
   max-width: 360px;
   line-height: 1.5;
   margin: 0 0 22px 0;
+}
+
+@media (max-width: 480px) {
+  .trial-modal-dialog.is-success,
+  .trial-modal-dialog.is-success .trial-modal-body,
+  .trial-modal-dialog.is-success .trial-success-overlay {
+    min-height: 390px;
+  }
 }
 
 .btn-reset-action {

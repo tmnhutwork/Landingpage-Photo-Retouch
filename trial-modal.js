@@ -24,8 +24,6 @@
     const submitBtn = document.getElementById('trialSubmitBtn');
     const submitText = document.getElementById('trialSubmitText');
     const formMessage = document.getElementById('trialFormMessage');
-    const successHeadline = document.getElementById('successHeadline');
-    const successDesc = document.getElementById('successDesc');
     
     // Dual-Mode Upload / Cloud Link Tabs
     const tabUploadFiles = document.getElementById('tabUploadFiles');
@@ -116,6 +114,10 @@
     function closeModal() {
       overlay.classList.remove('is-open');
       document.body.style.overflow = '';
+
+      if (dialog.classList.contains('is-success')) {
+        resetSuccessState();
+      }
     }
 
     if (closeBtn) closeBtn.addEventListener('click', closeModal);
@@ -367,26 +369,23 @@
     function showSubmissionSuccess() {
       if (!formStage || !successStage) return;
 
-      const cloudLink = cloudLinkInput ? cloudLinkInput.value.trim() : '';
       formStage.style.display = 'none';
+      dialog.classList.add('is-success');
       successStage.classList.add('is-visible');
+    }
 
-      if (currentMode === 'link' && cloudLink) {
-        if (successHeadline) successHeadline.textContent = 'Cloud Link Received';
-        if (successDesc) {
-          successDesc.textContent = 'Thank you! We received your cloud transfer link. Our lead retouchers will review the files and contact you within 24 hours.';
-        }
-      } else if (uploadedFiles.length > 0) {
-        if (successHeadline) successHeadline.textContent = `${uploadedFiles.length} Test Image${uploadedFiles.length === 1 ? '' : 's'} Received`;
-        if (successDesc) {
-          successDesc.textContent = 'Thank you! Your trial request and image files were received by our retouching team. We will contact you within 24 hours.';
-        }
-      } else {
-        if (successHeadline) successHeadline.textContent = 'Trial Request Received';
-        if (successDesc) {
-          successDesc.textContent = 'Thank you! Our team received your trial request and will contact you within 24 hours.';
-        }
-      }
+    function resetSuccessState() {
+      if (!formStage || !successStage) return;
+
+      successStage.classList.remove('is-visible');
+      dialog.classList.remove('is-success');
+      formStage.style.display = 'block';
+      if (trialForm) trialForm.reset();
+      uploadedFiles = [];
+      setFormMessage('');
+      renderFiles();
+      selectTier('Simple');
+      setSubmissionMode('files');
     }
 
     // ── Form Submission ──
@@ -445,16 +444,7 @@
 
     if (resetSuccessBtn) {
       resetSuccessBtn.addEventListener('click', () => {
-        if (formStage && successStage) {
-          successStage.classList.remove('is-visible');
-          formStage.style.display = 'block';
-          trialForm.reset();
-          uploadedFiles = [];
-          setFormMessage('');
-          renderFiles();
-          selectTier('Simple');
-          setSubmissionMode('files');
-        }
+        closeModal();
       });
     }
   }
