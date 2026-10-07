@@ -41,8 +41,9 @@
 
     // Approved reference constants
     const DESKTOP_CARD_COUNT = 100;
-    const MOBILE_CARD_COUNT = 38;
-    const TURNS = 4.25;
+    const MOBILE_CARD_COUNT = 44;
+    const DESKTOP_TURNS = 4.25;
+    const MOBILE_TURNS = 2.4;
     const INNER_SAFE = 210;
     const OUTER_EXTRA = 150;
 
@@ -147,10 +148,12 @@
     const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
     const lerp = (a, b, t) => a + (b - a) * t;
 
+    let currentTurns = DESKTOP_TURNS;
+
     // Mathematical spiral trajectory (identical to approved reference v13)
     function spiralPoint(u, outerR, innerR) {
       const r = lerp(outerR, innerR, u);
-      const theta = -Math.PI * 0.58 + u * (Math.PI * 2 * TURNS);
+      const theta = -Math.PI * 0.58 + u * (Math.PI * 2 * currentTurns);
       return {
         u,
         r,
@@ -240,6 +243,7 @@
     function updateGeometry() {
       const isMob = isMobileViewport();
       const targetCount = isMob ? MOBILE_CARD_COUNT : DESKTOP_CARD_COUNT;
+      currentTurns = isMob ? MOBILE_TURNS : DESKTOP_TURNS;
       if (currentCardCount !== targetCount) {
         buildCards(targetCount);
       }
@@ -258,7 +262,7 @@
         cy = h / 2;
       }
 
-      outerR = Math.hypot(w / 2, h / 2) + OUTER_EXTRA;
+      outerR = Math.hypot(w / 2, h / 2) + (w <= 768 ? 75 : OUTER_EXTRA);
       
       // Proportional inner radius so spiral cards clear the center text safely on any screen size
       if (w <= 480) {
