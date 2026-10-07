@@ -17,7 +17,7 @@
 
   <link rel="stylesheet" href="cosmos-hero.css?v=cosmos.autofit3">
   <link rel="stylesheet" href="style.css?v=autofit5">
-  <link rel="stylesheet" href="approach-video.css?v=2.3">
+  <link rel="stylesheet" href="approach-video.css?v=bw1.0">
   <link rel="stylesheet" href="workflow-pricing.css?v=opt2.1">
   <link rel="stylesheet" href="trial-modal.css?v=1.0">
   <link rel="stylesheet" href="footer-cta-faq.css?v=3.1">
@@ -123,6 +123,12 @@
 
             <div class="theater-vignette-overlay"></div>
 
+            <!-- Quality Change Toast Indicator -->
+            <div class="theater-quality-toast" id="theater-quality-toast" aria-live="polite">
+              <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
+              <span class="quality-toast-text">1080p HD</span>
+            </div>
+
             <!-- Single Center Play Button (No text, no extra labels) -->
             <button type="button" class="theater-play-btn-circle" id="theater-play-btn" aria-label="Play Studio Film">
               <svg viewBox="0 0 24 24" width="30" height="30" fill="currentColor">
@@ -190,16 +196,47 @@
                   <!-- Quality / Speed Settings Menu -->
                   <div class="ctrl-settings-group" id="ctrl-settings-group">
                     <button type="button" class="ctrl-btn btn-settings" id="ctrl-settings-btn" aria-label="Playback Settings">
-                      <span class="quality-badge-pill">4K UHD</span>
+                      <span class="quality-badge-pill" id="ctrl-quality-badge">1080p</span>
                     </button>
                     <div class="settings-dropdown-menu" id="settings-dropdown">
+                      <div class="settings-menu-header">Quality</div>
+                      <div class="quality-options" id="quality-options">
+                        <button type="button" class="quality-opt is-active" data-quality="1080p">
+                          <span>1080p (HD)</span>
+                          <svg class="check-icon" viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                        </button>
+                        <button type="button" class="quality-opt" data-quality="720p">
+                          <span>720p</span>
+                          <svg class="check-icon" viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                        </button>
+                        <button type="button" class="quality-opt" data-quality="480p">
+                          <span>480p</span>
+                          <svg class="check-icon" viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                        </button>
+                      </div>
+                      <div class="settings-menu-divider"></div>
                       <div class="settings-menu-header">Playback Speed</div>
                       <div class="speed-options">
-                        <button type="button" class="speed-opt" data-speed="0.75">0.75x</button>
-                        <button type="button" class="speed-opt is-active" data-speed="1">1x (Normal)</button>
-                        <button type="button" class="speed-opt" data-speed="1.25">1.25x</button>
-                        <button type="button" class="speed-opt" data-speed="1.5">1.5x</button>
-                        <button type="button" class="speed-opt" data-speed="2">2x</button>
+                        <button type="button" class="speed-opt" data-speed="0.75">
+                          <span>0.75x</span>
+                          <svg class="check-icon" viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                        </button>
+                        <button type="button" class="speed-opt is-active" data-speed="1">
+                          <span>1x (Normal)</span>
+                          <svg class="check-icon" viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                        </button>
+                        <button type="button" class="speed-opt" data-speed="1.25">
+                          <span>1.25x</span>
+                          <svg class="check-icon" viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                        </button>
+                        <button type="button" class="speed-opt" data-speed="1.5">
+                          <span>1.5x</span>
+                          <svg class="check-icon" viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                        </button>
+                        <button type="button" class="speed-opt" data-speed="2">
+                          <span>2x</span>
+                          <svg class="check-icon" viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                        </button>
                       </div>
                     </div>
                   </div>
@@ -1681,7 +1718,7 @@
   <script src="cosmos-hero.js?v=cosmos.autofit3"></script>
   <script src="workflow-pricing.js?v=1.0"></script>
   <script src="script.js?v=cardflow1"></script>
-  <script src="approach-video.js?v=2.1"></script>
+  <script src="approach-video.js?v=bw1.0"></script>
   <script src="trial-modal.js"></script>
   <script src="footer-cta-faq.js?v=3.1"></script>
 </body>

@@ -65,12 +65,17 @@
     const volumeSlider = document.getElementById('ctrl-volume-slider');
     const settingsBtn = document.getElementById('ctrl-settings-btn');
     const settingsDropdown = document.getElementById('settings-dropdown');
+    const qualityBadge = document.getElementById('ctrl-quality-badge');
+    const qualityOpts = document.querySelectorAll('.quality-opt');
+    const qualityToast = document.getElementById('theater-quality-toast');
+    const qualityToastText = qualityToast ? qualityToast.querySelector('.quality-toast-text') : null;
     const speedOpts = document.querySelectorAll('.speed-opt');
     const pipBtn = document.getElementById('ctrl-pip-btn');
     const fullscreenBtn = document.getElementById('ctrl-fullscreen-btn');
 
     let isSeeking = false;
     let controlsTimer = null;
+    let qualityToastTimer = null;
     let lastVolume = 1;
 
     // ── Time Formatting Helper (MM:SS) ──
@@ -262,11 +267,48 @@
       });
     }
 
-    // ── Playback Speed & Quality Dropdown ──
+    // ── Quality & Playback Speed Settings Dropdown ──
+    function showQualityToast(label) {
+      if (!qualityToast || !qualityToastText) return;
+      qualityToastText.textContent = label;
+      qualityToast.classList.add('is-visible');
+      clearTimeout(qualityToastTimer);
+      qualityToastTimer = setTimeout(() => {
+        qualityToast.classList.remove('is-visible');
+      }, 1500);
+    }
+
+    function setVideoQuality(quality) {
+      if (qualityBadge) {
+        qualityBadge.textContent = quality;
+      }
+      qualityOpts.forEach(btn => {
+        btn.classList.toggle('is-active', btn.dataset.quality === quality);
+      });
+      // Visual texture emulation for resolutions
+      if (quality === '480p') {
+        video.style.filter = 'contrast(0.98) blur(0.35px)';
+      } else if (quality === '720p') {
+        video.style.filter = 'contrast(0.99) blur(0.15px)';
+      } else {
+        video.style.filter = 'none';
+      }
+      showQualityToast(quality === '1080p' ? 'Quality: 1080p (HD)' : `Quality: ${quality}`);
+    }
+
     if (settingsBtn && settingsDropdown) {
       settingsBtn.addEventListener('click', (e) => {
         e.stopPropagation();
         settingsDropdown.classList.toggle('is-active');
+      });
+
+      qualityOpts.forEach(btn => {
+        btn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          const quality = btn.dataset.quality || '1080p';
+          setVideoQuality(quality);
+          settingsDropdown.classList.remove('is-active');
+        });
       });
 
       speedOpts.forEach(btn => {
@@ -277,6 +319,7 @@
           speedOpts.forEach(opt => opt.classList.remove('is-active'));
           btn.classList.add('is-active');
           settingsDropdown.classList.remove('is-active');
+          showQualityToast(`Speed: ${btn.textContent.trim()}`);
         });
       });
 
