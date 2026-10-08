@@ -2752,6 +2752,40 @@ body.is-slider-resizing {
     gap: 16px;
   }
 
+  /* Mobile Collapsed Service Row - Fix missing headlines and 838px overflow */
+  .service-collapsed-row {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 22px !important;
+    width: 100% !important;
+    padding: 8px 0 !important;
+    cursor: pointer !important;
+  }
+
+  .collapsed-left-col {
+    width: 100% !important;
+    flex-shrink: 0 !important;
+  }
+
+  .simple-thumb-card {
+    width: 100% !important;
+    height: 190px !important;
+    border-radius: 10px !important;
+  }
+
+  .collapsed-right-col {
+    width: 100% !important;
+    max-width: 100% !important;
+    flex: none !important;
+  }
+
+  .service-simple-title {
+    font-size: 22px !important;
+    line-height: 1.25 !important;
+    font-weight: 600 !important;
+    letter-spacing: -0.02em !important;
+  }
+
   /* Mobile Unified Body Text — Full Black (#000000), 13.5px, line-height 1.5, regular */
   .service-description,
   .cosmos-discipline-desc,
