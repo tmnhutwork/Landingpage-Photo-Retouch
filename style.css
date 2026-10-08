@@ -2803,3 +2803,11 @@ body.is-slider-resizing {
     font-weight: 400 !important;
   }
 }
+
+@media (max-width: 480px) {
+  /* Giữ thiết kế 1 dòng chuẩn editorial, co giãn mượt trên màn hình nhỏ mà không bị cắt chữ */
+  .cosmos-clean-headline {
+    font-size: clamp(28px, 9.6vw, 38.4px);
+  }
+}
+
