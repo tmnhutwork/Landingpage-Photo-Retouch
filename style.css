@@ -2465,7 +2465,7 @@ body.is-slider-resizing {
     position: sticky;
     top: var(--header-mobile-height, 60px);
     height: calc(100vh - var(--header-mobile-height, 60px));
-    height: calc(100dvh - var(--header-mobile-height, 60px));
+    height: calc(100svh - var(--header-mobile-height, 60px));
     width: 100%;
     display: flex;
     flex-direction: column;
