@@ -2455,42 +2455,233 @@ body.is-slider-resizing {
 
 @media (max-width: 991px) {
   .cosmos-scrolly-container {
-    height: auto;
+    height: 350vh;
+    position: relative;
   }
+
+  /* Nằm ngay chính giữa viewport nhìn thấy được (bên dưới fixed header 60px) */
   .cosmos-sticky-stage {
-    position: static;
-    height: auto;
-    padding: 40px 0;
+    position: -webkit-sticky;
+    position: sticky;
+    top: var(--header-mobile-height, 60px);
+    height: calc(100vh - var(--header-mobile-height, 60px));
+    height: calc(100dvh - var(--header-mobile-height, 60px));
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    padding: 0 16px;
+    box-sizing: border-box;
+    background: transparent;
   }
+
+  /* Khung nội dung đặt ngay chính giữa, khoảng cách cân đối */
   .cosmos-triptych-grid {
-    grid-template-columns: 1fr;
-    gap: 30px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    max-width: 440px;
+    margin: 0 auto;
+    padding: 0;
+    gap: 0;
     text-align: center;
+    position: relative;
+    transform: none;
   }
+
   .cosmos-col-left {
+    order: 1;
     align-items: center;
     text-align: center;
+    width: 100%;
+    margin-bottom: 36px; /* Đồng nhất khoảng cách 36px từ headline đến nội dung card chuẩn 1:1 như How we collaborate */
   }
+
+  /* Cụm typo Headline đồng nhất 100% chuẩn với section How we collaborate (.workflow-clean-headline) */
   .cosmos-clean-headline {
+    font-family: var(--font-sans, 'Plus Jakarta Sans', sans-serif);
+    font-size: clamp(2.4rem, 4vw, 54px);
+    font-weight: 500;
+    line-height: 1.08;
+    letter-spacing: -0.035em;
+    color: #111111;
     text-align: center;
+    margin: 0;
+    white-space: nowrap;
   }
+  .cosmos-clean-headline br,
+  .cosmos-headline-br {
+    display: none !important;
+  }
+
   .cosmos-col-center {
     order: 2;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    margin-bottom: 18px;
   }
+
+  /* Kích thước to như cũ: Chiều cao tối ưu (390px - 460px) giữ tỉ lệ 380/480 chuẩn */
+  .cosmos-card-stage {
+    height: clamp(380px, 52vh, 460px);
+    aspect-ratio: 380 / 480;
+    width: auto;
+    max-width: min(360px, calc(100vw - 32px));
+    margin: 0 auto;
+    border-radius: 18px;
+    background: transparent;
+    box-shadow: none;
+    border: none;
+    -webkit-mask-image: none !important;
+    mask-image: none !important;
+  }
+  .cosmos-card-layer,
+  .cosmos-img-wrapper,
+  .cosmos-card-img {
+    border-radius: 18px;
+  }
+
+  /* Hiệu ứng chuyển động của Card hình:
+     - Thấy rõ sự thay đổi chuyển tiếp giữa card trước và card sau (directional slide & parallax)
+     - Tuyệt đối KHÔNG chớp nháy: Card cũ (is-leaving) giữ nguyên 100% opacity ở tầng z-index: 2
+     - Khi cuộn xuống: Card cũ trượt nhẹ lên (-10px), Card mới (z-index: 3) lướt từ dưới lên (+24px -> 0)
+     - Khi cuộn lên: Card cũ trượt nhẹ xuống (+10px), Card mới lướt từ trên xuống (-24px -> 0)
+     - Easing cubic-bezier mượt mà (0.32s), tạo cảm giác chuyển động rõ nét và cao cấp */
+  .cosmos-card-layer {
+    opacity: 0;
+    transform: translateY(24px) scale(0.995);
+    pointer-events: none;
+    will-change: opacity, transform;
+    transition: opacity 0.28s ease-out, transform 0.32s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  /* Cuộn xuống: Card mới trượt từ dưới lên */
+  .cosmos-card-stage[data-direction="down"] .cosmos-card-layer {
+    transform: translateY(24px) scale(0.995);
+    opacity: 0;
+  }
+  /* Card cũ lùi nhẹ lên trên nhưng GIỮ NGUYÊN 100% OPACITY để không bao giờ bị hở nền chớp nháy */
+  .cosmos-card-stage[data-direction="down"] .cosmos-card-layer.is-leaving {
+    opacity: 1 !important;
+    transform: translateY(-10px) scale(0.99) !important;
+    z-index: 2 !important;
+    pointer-events: none;
+    transition: transform 0.32s cubic-bezier(0.16, 1, 0.3, 1) !important;
+  }
+
+  /* Cuộn lên: Card mới trượt từ trên xuống */
+  .cosmos-card-stage[data-direction="up"] .cosmos-card-layer {
+    transform: translateY(-24px) scale(0.995);
+    opacity: 0;
+  }
+  /* Card cũ lùi nhẹ xuống dưới nhưng GIỮ NGUYÊN 100% OPACITY */
+  .cosmos-card-stage[data-direction="up"] .cosmos-card-layer.is-leaving {
+    opacity: 1 !important;
+    transform: translateY(10px) scale(0.99) !important;
+    z-index: 2 !important;
+    pointer-events: none;
+    transition: transform 0.32s cubic-bezier(0.16, 1, 0.3, 1) !important;
+  }
+
+  /* Card active ở lớp trên cùng (z-index: 3), lướt vào khớp vị trí trung tâm */
+  .cosmos-card-layer.is-active {
+    opacity: 1 !important;
+    transform: translateY(0) scale(1) !important;
+    z-index: 3 !important;
+    pointer-events: auto;
+    transition: opacity 0.26s ease-out, transform 0.32s cubic-bezier(0.16, 1, 0.3, 1) !important;
+  }
+
   .cosmos-col-right {
     order: 3;
+    display: flex;
     justify-content: center;
+    align-items: center;
+    width: 100%;
   }
   .cosmos-text-stage {
-    min-height: 140px;
-  }
-  .cosmos-discipline-desc {
+    position: relative;
+    width: 100%;
+    max-width: 360px;
+    min-height: 100px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     margin: 0 auto;
   }
-  .cosmos-card-stage {
+
+  /* Phần text: Cố định vị trí từ đỉnh top: 0 (thay vì top: 50% translateY(-50%))
+     để cụm Discipline 01 (có 3 dòng mô tả) không bị đẩy ngược lên trên,
+     đảm bảo mọi cụm (01, 02, 03, 04, 05) đều có khoảng cách cách đều và đồng nhất 100% so với card hình */
+  .cosmos-text-stage[data-direction="down"] .cosmos-text-item,
+  .cosmos-text-stage[data-direction="down"] .cosmos-text-item.is-leaving,
+  .cosmos-text-stage[data-direction="up"] .cosmos-text-item,
+  .cosmos-text-stage[data-direction="up"] .cosmos-text-item.is-leaving {
+    top: 0 !important;
+    transform: none !important;
+  }
+  .cosmos-text-item {
+    position: absolute;
+    top: 0 !important;
+    left: 0;
     width: 100%;
-    max-width: 380px;
-    height: 480px;
+    text-align: center;
+    padding: 0 8px;
+    box-sizing: border-box;
+    transform: none !important;
+    transition: opacity 0.18s ease-out !important;
+  }
+  .cosmos-text-item.is-leaving {
+    opacity: 0 !important;
+    top: 0 !important;
+    transform: none !important;
+    transition: opacity 0.12s ease-in !important;
+  }
+  .cosmos-text-item.is-active {
+    opacity: 1 !important;
+    top: 0 !important;
+    transform: none !important;
+    transition: opacity 0.18s ease-out !important;
+  }
+
+  /* Typographic scales chuẩn đồng nhất với design system & How we collaborate */
+  .cosmos-discipline-tag {
+    font-family: var(--font-sans, 'Plus Jakarta Sans', sans-serif);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    color: #7E7C85;
+    text-transform: uppercase;
+    display: block;
+    margin-bottom: 6px;
+    text-align: center;
+  }
+  .cosmos-discipline-title {
+    font-family: var(--font-sans, 'Plus Jakarta Sans', sans-serif);
+    font-size: 24px;
+    line-height: 30px;
+    font-weight: 600;
+    color: #111111;
+    margin-bottom: 6px;
+    letter-spacing: -0.02em;
+    text-align: center;
+  }
+  /* Body text đồng nhất chuẩn kích cỡ 13.5px, line-height 1.5, #000000 như How we collaborate */
+  .cosmos-discipline-desc {
+    font-family: var(--font-sans, 'Plus Jakarta Sans', sans-serif) !important;
+    font-size: 13.5px !important;
+    line-height: 1.5 !important;
+    color: #000000 !important;
+    font-weight: 400 !important;
+    margin: 0 auto;
+    max-width: 320px;
+    text-align: center;
   }
 }
 
