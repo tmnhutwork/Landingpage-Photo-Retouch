@@ -632,6 +632,7 @@ function playService3Loupe() {
    ========================================================================== */
 function initAudienceConcepts() {
   const cosmosContainer = document.getElementById('cosmos-scrolly-container');
+  const cosmosStickyStage = document.getElementById('cosmos-sticky-stage');
   const cosmosStage = document.getElementById('cosmos-card-stage');
   const cosmosTextStage = document.getElementById('cosmos-text-stage');
   const cosmosCards = document.querySelectorAll('.cosmos-card-layer');
@@ -640,6 +641,10 @@ function initAudienceConcepts() {
   if (!cosmosContainer || cosmosCards.length === 0) return;
 
   let activeCosmosIndex = -1;
+
+  function isMobile() {
+    return window.innerWidth <= 768;
+  }
 
   function setCosmosStep(index) {
     if (index === activeCosmosIndex) return;
@@ -678,9 +683,155 @@ function initAudienceConcepts() {
     });
   }
 
+  // ── MOBILE DISCRETE TOUCH SWIPE GATING (OPTION 1) ──
+  let isMobileCooldown = false;
+  let touchStartX = 0;
+  let touchStartY = 0;
+  let touchSwipedInGesture = false;
+
+  function isSectionPinned() {
+    if (!cosmosContainer) return false;
+    const rect = cosmosContainer.getBoundingClientRect();
+    const headerH = 60;
+    return rect.top <= headerH + 20 && rect.bottom >= window.innerHeight - 20;
+  }
+
+  function goToMobileStep(newStep) {
+    if (newStep < 0 || newStep > 4) return;
+    if (newStep === activeCosmosIndex) return;
+    if (isMobileCooldown) return;
+
+    isMobileCooldown = true;
+    setCosmosStep(newStep);
+
+    // Synchronize window scroll position to match step target
+    if (cosmosContainer) {
+      const rect = cosmosContainer.getBoundingClientRect();
+      const headerH = 60;
+      const containerTop = window.scrollY + rect.top - headerH;
+      const winHeight = window.innerHeight;
+      const totalDist = rect.height - winHeight;
+      if (totalDist > 0) {
+        const targetScrollY = containerTop + (newStep / 4) * totalDist;
+        window.scrollTo({ top: targetScrollY, behavior: 'instant' });
+      }
+    }
+
+    setTimeout(() => {
+      isMobileCooldown = false;
+    }, 420);
+  }
+
+  if (cosmosStickyStage) {
+    cosmosStickyStage.addEventListener('touchstart', (e) => {
+      if (!isMobile()) return;
+      if (!e.touches || e.touches.length !== 1) return;
+      touchStartX = e.touches[0].clientX;
+      touchStartY = e.touches[0].clientY;
+      touchSwipedInGesture = false;
+    }, { passive: true });
+
+    cosmosStickyStage.addEventListener('touchmove', (e) => {
+      if (!isMobile()) return;
+      if (!e.touches || e.touches.length !== 1) return;
+      if (!isSectionPinned()) return;
+
+      const currentX = e.touches[0].clientX;
+      const currentY = e.touches[0].clientY;
+      const deltaX = touchStartX - currentX;
+      const deltaY = touchStartY - currentY;
+
+      // Determine predominant swipe direction
+      const isVertical = Math.abs(deltaY) >= Math.abs(deltaX);
+      const distance = isVertical ? deltaY : deltaX;
+
+      // distance > 0: user swipes UP or LEFT (wants NEXT item)
+      // distance < 0: user swipes DOWN or RIGHT (wants PREV item)
+
+      if (distance > 10) {
+        if (activeCosmosIndex < 4) {
+          // Block native momentum scrolling!
+          if (e.cancelable) e.preventDefault();
+
+          if (!touchSwipedInGesture && distance > 30) {
+            touchSwipedInGesture = true;
+            goToMobileStep(activeCosmosIndex + 1);
+          }
+        }
+      } else if (distance < -10) {
+        if (activeCosmosIndex > 0) {
+          // Block native momentum scrolling!
+          if (e.cancelable) e.preventDefault();
+
+          if (!touchSwipedInGesture && distance < -30) {
+            touchSwipedInGesture = true;
+            goToMobileStep(activeCosmosIndex - 1);
+          }
+        }
+      }
+    }, { passive: false });
+
+    cosmosStickyStage.addEventListener('touchend', () => {
+      if (!isMobile()) return;
+      touchSwipedInGesture = false;
+    }, { passive: true });
+
+    // Wheel support for mobile emulation
+    cosmosStickyStage.addEventListener('wheel', (e) => {
+      if (!isMobile()) return;
+      if (!isSectionPinned()) return;
+
+      if (e.deltaY > 0) {
+        if (activeCosmosIndex < 4) {
+          if (e.cancelable) e.preventDefault();
+          goToMobileStep(activeCosmosIndex + 1);
+        }
+      } else if (e.deltaY < 0) {
+        if (activeCosmosIndex > 0) {
+          if (e.cancelable) e.preventDefault();
+          goToMobileStep(activeCosmosIndex - 1);
+        }
+      }
+    }, { passive: false });
+  }
+
   function handleCosmosScroll() {
     if (!cosmosContainer) return;
 
+    // ── MOBILE: Discrete step clamp & boundary tracking ──
+    if (isMobile()) {
+      const rect = cosmosContainer.getBoundingClientRect();
+      const headerH = 60;
+      const winHeight = window.innerHeight;
+      const totalDist = rect.height - winHeight;
+
+      if (totalDist <= 0) return;
+
+      const containerTop = window.scrollY + rect.top - headerH;
+
+      // Scrolled well above the section
+      if (window.scrollY < containerTop - 15) {
+        if (activeCosmosIndex !== 0) setCosmosStep(0);
+        return;
+      }
+
+      // Scrolled well below the section
+      if (window.scrollY > containerTop + totalDist + 15) {
+        if (activeCosmosIndex !== 4) setCosmosStep(4);
+        return;
+      }
+
+      // Within section: clamp momentum scroll to current step's target
+      const currentTargetY = containerTop + (activeCosmosIndex / 4) * totalDist;
+      if (activeCosmosIndex < 4 && window.scrollY > currentTargetY + 20) {
+        window.scrollTo({ top: currentTargetY, behavior: 'instant' });
+      } else if (activeCosmosIndex > 0 && window.scrollY < currentTargetY - 20) {
+        window.scrollTo({ top: currentTargetY, behavior: 'instant' });
+      }
+      return;
+    }
+
+    // ── DESKTOP: Native smooth continuous scrollytelling (100% UNTOUCHED) ──
     const rect = cosmosContainer.getBoundingClientRect();
     const winHeight = window.innerHeight;
     const totalDist = rect.height - winHeight;
