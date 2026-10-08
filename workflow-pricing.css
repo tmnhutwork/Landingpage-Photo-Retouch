@@ -412,6 +412,11 @@
   box-shadow: 0 0 0 4px #FFFFFF, 0 2px 6px rgba(0, 0, 0, 0.18);
 }
 
+/* ── Mobile Vertical Timeline (Hidden on Desktop) ─────────────────── */
+.runway-v-timeline {
+  display: none !important;
+}
+
 /* 4 Steps Columns Grid */
 .runway-steps-grid {
   display: grid;
@@ -1038,12 +1043,77 @@
   .runway-line-fill {
     transform: scaleX(1) !important;
   }
+
+  /* Mobile: Giữ nguyên độ mờ 0.28 chuẩn desktop cho các bước chưa cuộn tới */
   .runway-step-col.is-dimmed {
-    opacity: 1 !important;
-    transform: none !important;
+    opacity: 0.28 !important;
+    transform: translateY(3px) !important;
+    transition: opacity 0.4s cubic-bezier(0.16, 1, 0.3, 1), transform 0.4s cubic-bezier(0.16, 1, 0.3, 1) !important;
   }
-  .runway-marker-dot {
-    background: #111111 !important;
+  .runway-step-col.is-active {
+    opacity: 1 !important;
+    transform: translateY(0) !important;
+    transition: opacity 0.4s cubic-bezier(0.16, 1, 0.3, 1), transform 0.4s cubic-bezier(0.16, 1, 0.3, 1) !important;
+  }
+
+  /* Lưới 1 cột trên Mobile có chừa khoảng trống bên trái cho trục tiến trình dọc */
+  .runway-steps-grid {
+    position: relative;
+    grid-template-columns: 1fr;
+    padding-left: 33px; /* Tăng thêm 5px khoảng cách từ trục tiến trình sang content bên phải */
+    gap: 32px;
+  }
+
+  /* Trục tiến trình dọc trên Mobile (Vertical Spine) */
+  .runway-v-timeline {
+    display: block !important;
+    position: absolute;
+    left: 4px;
+    top: 0;
+    bottom: 0;
+    width: 14px;
+    pointer-events: none;
+    z-index: 2;
+  }
+
+  .runway-v-line-track {
+    position: absolute;
+    left: 6px;
+    width: 2px;
+    background: #E8E8E8;
+    border-radius: 9999px;
+  }
+
+  .runway-v-line-fill {
+    position: absolute;
+    left: 6px;
+    width: 2px;
+    background: #111111;
+    border-radius: 9999px;
+    transform-origin: top;
+    transform: scaleY(0);
+    will-change: transform;
+    transition: transform 0.15s ease-out;
+  }
+
+  .runway-v-dot {
+    position: absolute;
+    left: 3px;
+    width: 8px;
+    height: 8px;
+    background: #D8D8D8;
+    border-radius: 2px;
+    box-shadow: 0 0 0 3px #FFFFFF;
+    transform: translateY(-50%);
+    transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1),
+                background-color 0.25s ease,
+                box-shadow 0.25s ease;
+    z-index: 3;
+  }
+
+  .runway-v-dot.is-active {
+    background: #111111;
+    box-shadow: 0 0 0 3px #FFFFFF, 0 1px 4px rgba(0, 0, 0, 0.15);
   }
 }
 
@@ -1076,7 +1146,8 @@
 
   .runway-steps-grid {
     grid-template-columns: 1fr;
-    gap: 24px;
+    padding-left: 33px;
+    gap: 32px;
   }
 
   .pricing-guarantee-note {

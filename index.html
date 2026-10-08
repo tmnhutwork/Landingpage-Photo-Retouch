@@ -785,8 +785,19 @@
                   <span class="runway-marker-dot runway-marker-dot-end"></span>
                 </div>
 
-                <!-- 4 Steps Columns Grid -->
+                <!-- 4 Steps Columns Grid with Mobile Vertical Timeline -->
                 <div class="runway-steps-grid">
+
+                  <!-- Vertical Timeline for Mobile (Hidden on Desktop) -->
+                  <div class="runway-v-timeline" id="runway-v-timeline" aria-hidden="true">
+                    <div class="runway-v-line-track"></div>
+                    <div class="runway-v-line-fill" id="runway-v-line-fill"></div>
+                    <span class="runway-v-dot is-active" data-v-step="0"></span>
+                    <span class="runway-v-dot" data-v-step="1"></span>
+                    <span class="runway-v-dot" data-v-step="2"></span>
+                    <span class="runway-v-dot" data-v-step="3"></span>
+                    <span class="runway-v-dot runway-v-dot-end" id="runway-v-dot-end"></span>
+                  </div>
 
                   <!-- Step 01 (Initial Active) -->
                   <div class="runway-step-col is-active">

@@ -9,6 +9,7 @@
 
   document.addEventListener('DOMContentLoaded', () => {
     initRunwayScrollytelling();
+    initMobileRunwayTimeline();
     initPricingSwitcher();
     initBillingToggle();
   });
@@ -106,6 +107,144 @@
 
     // Initial setup on page load
     handleScroll();
+  }
+
+  // ── Mobile Runway Scrollytelling: Vertical Timeline & Progressive Center Illumination ──
+  function initMobileRunwayTimeline() {
+    const vTimeline = document.getElementById('runway-v-timeline');
+    const vTrack = document.querySelector('.runway-v-line-track');
+    const vFill = document.querySelector('.runway-v-line-fill');
+    const vDots = document.querySelectorAll('.runway-v-dot');
+    const stepCols = document.querySelectorAll('.runway-step-col');
+    const grid = document.querySelector('.runway-steps-grid');
+
+    if (!vTimeline || vDots.length === 0 || stepCols.length === 0 || !grid) return;
+
+    let dotTops = [];
+
+    function updateMobilePositions() {
+      if (window.innerWidth > 900) return;
+      const gridRect = grid.getBoundingClientRect();
+      dotTops = [];
+
+      stepCols.forEach((col, idx) => {
+        const pill = col.querySelector('.runway-step-pill');
+        const target = pill || col;
+        const targetRect = target.getBoundingClientRect();
+        // Tâm điểm chính xác của badge số so với đỉnh của lưới
+        const dotCenter = (targetRect.top + targetRect.height / 2) - gridRect.top;
+        dotTops.push(dotCenter);
+        if (vDots[idx]) {
+          vDots[idx].style.top = `${dotCenter}px`;
+        }
+      });
+
+      const firstDot = dotTops[0] || 0;
+      // Điểm kết thúc: lướt qua hết toàn bộ nội dung của Bước 04 (xuống tới icon/text SLA của bước 4)
+      const lastCol = stepCols[stepCols.length - 1];
+      const lastSla = lastCol ? lastCol.querySelector('.runway-step-sla') : null;
+      let endPoint = 0;
+      if (lastSla) {
+        const slaRect = lastSla.getBoundingClientRect();
+        endPoint = (slaRect.top + slaRect.height / 2) - gridRect.top;
+      } else if (lastCol) {
+        endPoint = lastCol.getBoundingClientRect().bottom - gridRect.top;
+      } else {
+        endPoint = dotTops[dotTops.length - 1] || 1;
+      }
+
+      const trackSpan = endPoint - firstDot;
+
+      if (trackSpan > 0) {
+        if (vTrack) {
+          vTrack.style.top = `${firstDot}px`;
+          vTrack.style.height = `${trackSpan}px`;
+        }
+        if (vFill) {
+          vFill.style.top = `${firstDot}px`;
+          vFill.style.height = `${trackSpan}px`;
+        }
+        const endDot = document.getElementById('runway-v-dot-end');
+        if (endDot) {
+          endDot.style.top = `${endPoint}px`;
+        }
+      }
+    }
+
+    function handleMobileScroll() {
+      if (window.innerWidth > 900) return;
+      if (dotTops.length < 4) updateMobilePositions();
+
+      // Đường kích hoạt nằm ngay chính giữa màn hình (tầm mắt: 50% viewport height)
+      const triggerY = window.innerHeight * 0.5;
+
+      const pills = Array.from(stepCols).map(c => c.querySelector('.runway-step-pill') || c);
+      const pillFirstRect = pills[0].getBoundingClientRect();
+      const pillLastRect = pills[pills.length - 1].getBoundingClientRect();
+
+      // Điểm bắt đầu là tâm badge 01, điểm kết thúc là ngang hàng cuối Bước 04
+      const startY = pillFirstRect.top + pillFirstRect.height / 2;
+      const lastCol = stepCols[stepCols.length - 1];
+      const lastSla = lastCol ? lastCol.querySelector('.runway-step-sla') : null;
+      let endY = 0;
+      if (lastSla) {
+        const slaRect = lastSla.getBoundingClientRect();
+        endY = slaRect.top + slaRect.height / 2;
+      } else if (lastCol) {
+        endY = lastCol.getBoundingClientRect().bottom;
+      } else {
+        endY = pillLastRect.top + pillLastRect.height / 2;
+      }
+
+      const span = endY - startY;
+
+      let progress = 0;
+      if (span > 0) {
+        progress = (triggerY - startY) / span;
+        progress = Math.max(0, Math.min(1, progress));
+      }
+
+      if (vFill) {
+        vFill.style.transform = `scaleY(${progress})`;
+      }
+
+      // Ô vuông kết thúc ở đáy đường line: sáng đen khi vệt đen lướt tới cuối
+      const endDot = document.getElementById('runway-v-dot-end');
+      if (endDot) {
+        const isEndActive = progress >= 0.96;
+        endDot.classList.toggle('is-active', isEndActive);
+      }
+
+      // Bước 01 luôn sáng mặc định
+      stepCols[0].classList.add('is-active');
+      stepCols[0].classList.remove('is-dimmed');
+      vDots[0].classList.add('is-active');
+
+      // Các bước 02, 03, 04 sáng dần khi badge chạm vào giữa tầm mắt người xem
+      for (let i = 1; i < stepCols.length; i++) {
+        const pRect = pills[i].getBoundingClientRect();
+        const pCenter = pRect.top + pRect.height / 2;
+        const isReached = pCenter <= triggerY;
+
+        stepCols[i].classList.toggle('is-active', isReached);
+        stepCols[i].classList.toggle('is-dimmed', !isReached);
+        if (vDots[i]) {
+          vDots[i].classList.toggle('is-active', isReached);
+        }
+      }
+    }
+
+    window.addEventListener('scroll', handleMobileScroll, { passive: true });
+    window.addEventListener('resize', () => {
+      updateMobilePositions();
+      handleMobileScroll();
+    }, { passive: true });
+
+    // Cập nhật vị trí ngay sau khi trình duyệt render
+    setTimeout(() => {
+      updateMobilePositions();
+      handleMobileScroll();
+    }, 100);
   }
 
   // ── Pricing Switcher: Elevated Cards (Option A) vs Editorial Columns (Option B) ──
