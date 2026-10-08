@@ -701,7 +701,19 @@ function initAudienceConcepts() {
     const scrolled = stickyTop - rect.top;
     const progress = Math.max(0, Math.min(1, scrolled / totalDist));
 
-    const step = Math.min(4, Math.floor(progress * 5));
+    let step = 0;
+    const isMobile = window.innerWidth <= 991;
+    if (isMobile) {
+      // Mobile: Dành 30% đầu tiên làm vùng đệm cho Thẻ 01 hấp thụ quán tính từ Services, tránh bị trôi sang Thẻ 02
+      if (progress < 0.30) step = 0;
+      else if (progress < 0.475) step = 1;
+      else if (progress < 0.65) step = 2;
+      else if (progress < 0.825) step = 3;
+      else step = 4;
+    } else {
+      // Desktop: Giữ nguyên chia đều 5 thẻ tuyến tính 100% như cũ
+      step = Math.min(4, Math.floor(progress * 5));
+    }
     setCosmosStep(step);
   }
 
