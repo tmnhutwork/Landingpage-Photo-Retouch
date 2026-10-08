@@ -53,6 +53,11 @@
   overflow: visible;
 }
 
+/* Mobile Grid Canvas is hidden on desktop by default */
+.d4-grid-mobile {
+  display: none !important;
+}
+
 /* Each cell in the 9×4 grid */
 .d4-grid-cell {
   position: relative;
@@ -496,7 +501,7 @@
    ========================================================================== */
 
 @media (max-width: 1024px) {
-  .d4-grid-canvas {
+  .d4-grid-desktop {
     grid-template-columns: repeat(6, 1fr);
     grid-template-rows: repeat(4, 100px);
   }
@@ -506,22 +511,89 @@
   }
 }
 
-@media (max-width: 640px) {
-  .d4-grid-canvas {
-    grid-template-columns: repeat(4, 1fr);
-    grid-template-rows: repeat(5, 80px);
+@media (max-width: 768px) {
+  /* Toggle from Desktop to Mobile Grid Canvas */
+  .d4-grid-desktop {
+    display: none !important;
   }
-  .d4-cell-media {
-    width: 48px;
-    height: 48px;
+
+  .d4-grid-mobile {
+    display: grid !important;
+    grid-template-columns: repeat(4, 1fr) !important;
+    grid-template-rows: repeat(5, 96px) !important;
+    gap: 0 !important;
+    width: 100% !important;
+    max-width: 342px !important;
+    margin: 0 auto !important;
+    position: relative !important;
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    overflow: visible !important;
   }
+
+  .d4-cta-section {
+    padding: 60px 16px 70px !important;
+    overflow: hidden !important;
+  }
+
+  .d4-cta-container {
+    width: 100% !important;
+    max-width: 342px !important;
+    margin: 0 auto !important;
+    position: relative !important;
+  }
+
+  /* Compact symmetrical corner media & sketches */
+  .d4-grid-mobile .d4-cell-media {
+    width: 56px !important;
+    height: 56px !important;
+    border-radius: 8px !important;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08) !important;
+    border: 1px solid rgba(0, 0, 0, 0.08) !important;
+  }
+
+
+  .d4-grid-mobile .d4-sketch-art {
+    width: 54px !important;
+    height: 54px !important;
+  }
+
+  /* Floating Center Headline & CTA Button - Positioned in the clean safe zone */
   .d4-center-stage {
-    padding: 24px 16px;
-    width: 94%;
+    position: absolute !important;
+    top: 50% !important;
+    left: 50% !important;
+    transform: translate(-50%, -50%) !important;
+    width: 100% !important;
+    max-width: 310px !important;
+    padding: 0 !important;
+    text-align: center !important;
+    pointer-events: auto !important;
+    z-index: 15 !important;
   }
+
   .d4-center-headline {
-    font-size: 1.75rem;
+    font-size: 1.55rem !important;
+    line-height: 1.24 !important;
+    letter-spacing: -0.03em !important;
+    margin: 0 0 20px !important;
+    color: #111111 !important;
   }
+
+
+  .d4-actions-row {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+  }
+
+  .d4-actions-row .btn-trial-main {
+    padding: 13px 22px !important;
+    font-size: 12px !important;
+    letter-spacing: 0.05em !important;
+  }
+
   .d4-footer-grid {
     grid-template-columns: 1fr;
     gap: 24px;
