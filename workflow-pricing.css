@@ -1042,9 +1042,16 @@
   }
 }
 
-@media (max-width: 900px) {
+/* Mobile + tablet/iPad (<= 1200px): 1 layout duy nhất — 1 cột + timeline dọc, không pinned
+   (trước đây 769–1200px lẫn thanh ngang desktop, lưới 2×2 pinned và tiêu đề bị header che) */
+@media (max-width: 1200px) {
   .section-workflow {
     padding: 80px 20px;
+  }
+
+  /* Thanh tiến trình ngang chỉ dành cho desktop */
+  .runway-timeline-bar {
+    display: none;
   }
   .workflow-scrolly-container {
     height: auto !important;
@@ -1130,6 +1137,15 @@
   .runway-v-dot.is-active {
     background: #111111;
     box-shadow: 0 0 0 3px #FFFFFF, 0 1px 4px rgba(0, 0, 0, 0.15);
+  }
+}
+
+/* Tablet / iPad (769–1200px): giữ khung card ở độ rộng dễ đọc như mobile, căn giữa */
+@media (min-width: 769px) and (max-width: 1200px) {
+  .runway-workflow-card {
+    max-width: 720px;
+    margin-left: auto;
+    margin-right: auto;
   }
 }
 

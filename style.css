@@ -2842,6 +2842,48 @@ body.is-slider-resizing {
   }
 }
 
+/* Tablet / iPad (769–1200px): Our Services giữ layout NGANG giống desktop (không có layout thứ 3).
+   Kích thước co giãn tuyến tính và chạm đúng giá trị desktop tại 1200px (ảnh 693px, gap 75px, lề 70px)
+   nên kéo cửa sổ qua mốc 1200/1201px không có bước nhảy. Desktop > 1200px không bị ảnh hưởng. */
+@media (min-width: 769px) and (max-width: 1200px) {
+  .services-inner {
+    padding: 0 clamp(32px, calc(8.95vw - 37.4px), 70px);
+  }
+
+  .service-row-01 {
+    flex-direction: row;
+    align-items: flex-start;
+    gap: clamp(32px, calc(9.21vw - 35.5px), 75px);
+  }
+
+  .service-model-visual {
+    width: clamp(340px, calc(77.1vw - 232px), 693px);
+    height: auto;
+    aspect-ratio: 693 / 403;
+  }
+
+  .service-model-content {
+    width: auto;
+    flex: 1;
+    min-width: 0;
+  }
+
+  /* Hàng dịch vụ thu gọn: cột ảnh bằng đúng cột ảnh phía trên, tiêu đề luôn nằm trong màn hình */
+  .service-collapsed-row {
+    gap: clamp(32px, calc(9.21vw - 35.5px), 75px);
+  }
+
+  .collapsed-left-col {
+    width: clamp(340px, calc(77.1vw - 232px), 693px);
+  }
+
+  .simple-thumb-card {
+    width: min(325px, 100%);
+    height: auto;
+    aspect-ratio: 325 / 183;
+  }
+}
+
 @media (max-width: 768px) {
   .services-inner {
     padding: 0 20px !important;
@@ -2849,6 +2891,10 @@ body.is-slider-resizing {
 
   .service-model-visual {
     height: 300px;
+  }
+  /* Khối chữ rộng bằng ảnh, thẳng lề trái (trước đây giữ max 480px của desktop nên bị căn vào giữa ở 600–768px) */
+  .service-model-content {
+    max-width: none;
   }
   .service-cta-row {
     flex-wrap: wrap;

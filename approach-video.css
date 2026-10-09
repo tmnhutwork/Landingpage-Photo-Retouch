@@ -773,9 +773,16 @@
     padding-top: 0;
   }
 
+  /* Luôn 4 logo trên 1 hàng: không xuống dòng, logo co nhỏ cân đối khi màn hình hẹp */
   .theater-clients-row .clients-logo-row {
     justify-content: center;
-    gap: 22px;
+    flex-wrap: nowrap;
+    gap: clamp(10px, 4vw, 22px);
+  }
+
+  .theater-clients-row .client-logo-wrap {
+    flex: 0 1 auto;
+    min-width: 0;
   }
 
   /* Hide Alice + Olivia logo on mobile */
@@ -785,7 +792,9 @@
 
   .theater-clients-row .client-svg,
   .theater-clients-row .client-png {
-    height: 24px;
+    height: auto;
+    max-height: 24px;
+    max-width: 100%;
   }
 }
 

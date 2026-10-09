@@ -70,7 +70,7 @@
     }
 
     function handleScroll() {
-      if (window.innerWidth <= 900) return;
+      if (window.innerWidth <= 1200) return;
 
       const rect = container.getBoundingClientRect();
       const winHeight = window.innerHeight;
@@ -144,7 +144,7 @@
     }
 
     function updateMobilePositions() {
-      if (window.innerWidth > 900) return;
+      if (window.innerWidth > 1200) return;
       dotTops = [];
 
       stepCols.forEach((col, idx) => {
@@ -189,7 +189,7 @@
     }
 
     function handleMobileScroll() {
-      if (window.innerWidth > 900) return;
+      if (window.innerWidth > 1200) return;
       if (dotTops.length < 4) updateMobilePositions();
 
       // Đường kích hoạt nằm ngay chính giữa màn hình (tầm mắt: 50% viewport height)

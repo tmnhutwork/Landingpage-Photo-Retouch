@@ -226,13 +226,61 @@ function initServiceAccordion() {
   }
 }
 
+// Mobile/tablet (<= 1024px): khi mở một dịch vụ, đưa dịch vụ đó lên ngay dưới header để đọc từ trên xuống.
+// Desktop giữ nguyên hành vi cũ. Kiểm tra tại thời điểm chạm nên tự đúng khi resize desktop <-> mobile.
+const SERVICE_COMPACT_QUERY = '(max-width: 1024px)';
+const SERVICE_ALIGN_GAP = 16;
+let isServiceSwitching = false;
+let serviceSwitchTimer = null;
+
+function isCompactServiceLayout() {
+  return window.matchMedia(SERVICE_COMPACT_QUERY).matches;
+}
+
+function releaseServiceSwitchLock() {
+  clearTimeout(serviceSwitchTimer);
+  isServiceSwitching = false;
+}
+
+function alignServiceItemInView(item, topBefore) {
+  // 1) Dịch vụ phía trên vừa thu gọn kéo mọi thứ lên: giữ dịch vụ vừa chạm đứng yên tại chỗ
+  //    (Safari không tự bù vị trí cuộn như Chrome nên phải tự bù)
+  const shift = item.getBoundingClientRect().top - topBefore;
+  if (Math.abs(shift) > 1) {
+    window.scrollTo({ top: window.scrollY + shift, behavior: 'instant' });
+  }
+
+  // 2) Khung hình kế tiếp (sau khi vị trí bù đã vẽ): trượt mượt để mép trên dịch vụ nằm ngay dưới header
+  requestAnimationFrame(() => {
+    const header = document.getElementById('main-header');
+    const headerBottom = header ? header.getBoundingClientRect().bottom : 0;
+    const target = window.scrollY + item.getBoundingClientRect().top - headerBottom - SERVICE_ALIGN_GAP;
+    if (Math.abs(target - window.scrollY) > 2) {
+      window.scrollTo({ top: Math.max(0, target), behavior: 'smooth' });
+    }
+  });
+}
+
 function switchServiceAccordion(targetItem) {
   if (targetItem.classList.contains('is-active')) return;
+
+  const compact = isCompactServiceLayout();
+  // Mobile/tablet: bỏ qua chạm mới khi đang chuyển dịch vụ (tránh mở 2 dịch vụ cùng lúc)
+  if (compact && isServiceSwitching) return;
+  const targetTopBefore = compact ? targetItem.getBoundingClientRect().top : 0;
 
   const currentActive = document.querySelector('.service-accordion-item.is-active');
 
   if (typeof gsap !== 'undefined') {
     const tl = gsap.timeline();
+
+    if (compact) {
+      isServiceSwitching = true;
+      tl.eventCallback('onComplete', releaseServiceSwitchLock);
+      // Dự phòng: luôn mở khóa kể cả khi timeline bị tạm dừng (tab ẩn…)
+      clearTimeout(serviceSwitchTimer);
+      serviceSwitchTimer = setTimeout(releaseServiceSwitchLock, 800);
+    }
 
     if (currentActive) {
       const prevId = currentActive.dataset.serviceId;
@@ -298,6 +346,8 @@ function switchServiceAccordion(targetItem) {
       } else if (serviceId === '3') {
         playService3Loupe();
       }
+
+      if (compact) alignServiceItemInView(targetItem, targetTopBefore);
     });
   } else {
     if (currentActive) {
@@ -312,6 +362,8 @@ function switchServiceAccordion(targetItem) {
     if (serviceId === '1') playService1Sweep();
     else if (serviceId === '2') playService2CameraTour();
     else if (serviceId === '3') playService3Loupe();
+
+    if (compact) alignServiceItemInView(targetItem, targetTopBefore);
   }
 }
 
