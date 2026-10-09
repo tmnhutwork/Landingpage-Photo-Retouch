@@ -20,7 +20,137 @@ document.addEventListener('DOMContentLoaded', () => {
   initServiceCircleCursor();
   initAudienceConcepts();
   initMobileNav();
+  initOffscreenSections();
 });
+
+/* ==========================================================================
+   SECTION NGOÀI MÀN HÌNH (chỉ thiết bị cảm ứng): content-visibility: auto cho các section lớn sau hero
+   Trình duyệt bỏ qua style/layout/paint của section ở xa màn hình, nên mỗi khung hình (vòng xoắn hero, tween GSAP)
+   chỉ xử lý phần gần màn hình. Chiều cao giữ chỗ (contain-intrinsic-size) luôn bằng đúng kích thước thật:
+   đo sau load + font, ResizeObserver cập nhật mỗi khi section đang hiển thị đổi cỡ (accordion Services, FAQ…),
+   đo lại toàn bộ khi viewport đổi kích thước thật (xoay máy) → chiều cao trang, vị trí ScrollTrigger, anchor không đổi.
+   Desktop (chuột) không áp dụng gì. Hero không bao giờ bị bỏ qua.
+   ========================================================================== */
+const OFFSCREEN_SECTION_IDS = ['approach', 'services', 'who-we-worked-with', 'workflow', 'pricing', 'd4-cta', 'd4-faq', 'd4-footer'];
+const OFFSCREEN_TOUCH_QUERY = '(hover: none) and (pointer: coarse)';
+
+function initOffscreenSections() {
+  if (!('contentVisibility' in document.documentElement.style) || !('ResizeObserver' in window)) return;
+  const sections = OFFSCREEN_SECTION_IDS.map(id => document.getElementById(id)).filter(Boolean);
+  if (!sections.length) return;
+
+  const touchQuery = window.matchMedia(OFFSCREEN_TOUCH_QUERY);
+  const sizes = new Map();
+  let active = false;
+  let lastWidth = 0;
+  let lastHeight = 0;
+  let resizeTimer = null;
+
+  // contain-intrinsic-size tính theo content-box (padding/border cộng thêm bên ngoài)
+  const setPlaceholder = (section, width, height) => {
+    const prev = sizes.get(section);
+    if (prev && Math.abs(prev.width - width) < 0.01 && Math.abs(prev.height - height) < 0.01) return;
+    sizes.set(section, { width, height });
+    section.style.containIntrinsicSize = `${width}px ${height}px`;
+  };
+
+  // Section đang hiển thị báo kích thước thật; section đang bị bỏ qua báo đúng chiều cao giữ chỗ (không đổi gì)
+  const observer = new ResizeObserver(entries => {
+    if (!active) return;
+    entries.forEach(entry => {
+      const box = entry.contentBoxSize && entry.contentBoxSize[0];
+      setPlaceholder(
+        entry.target,
+        box ? box.inlineSize : entry.contentRect.width,
+        box ? box.blockSize : entry.contentRect.height
+      );
+    });
+  });
+
+  // Hiện tạm mọi section (cùng contain như lúc content-visibility: auto đang hiển thị) để đo kích thước thật
+  const measureAll = () => {
+    if (!active) return;
+    sections.forEach(s => { s.style.contentVisibility = 'visible'; });
+    const measured = sections.map(s => {
+      const cs = getComputedStyle(s);
+      const rect = s.getBoundingClientRect();
+      return {
+        width: rect.width - parseFloat(cs.paddingLeft) - parseFloat(cs.paddingRight) - parseFloat(cs.borderLeftWidth) - parseFloat(cs.borderRightWidth),
+        height: rect.height - parseFloat(cs.paddingTop) - parseFloat(cs.paddingBottom) - parseFloat(cs.borderTopWidth) - parseFloat(cs.borderBottomWidth)
+      };
+    });
+    sections.forEach((s, i) => {
+      setPlaceholder(s, measured[i].width, measured[i].height);
+      s.style.contentVisibility = 'auto';
+    });
+  };
+
+  // Viewport đổi kích thước thật (xoay máy, chia đôi màn hình): section đang bị bỏ qua còn giữ kích thước cũ → hiện tạm
+  // tất cả ngay (ScrollTrigger refresh luôn thấy kích thước thật), đo lại khi resize dừng. Chiều cao lấy theo
+  // documentElement.clientHeight: không đổi khi thanh địa chỉ mobile thu/giãn (vh cũng không đổi) → cuộn trang không đo lại.
+  const onResize = () => {
+    const width = window.innerWidth;
+    const height = document.documentElement.clientHeight;
+    if (width === lastWidth && height === lastHeight) return;
+    lastWidth = width;
+    lastHeight = height;
+    sections.forEach(s => { s.style.contentVisibility = 'visible'; });
+    clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(measureAll, 200);
+  };
+
+  const enable = () => {
+    if (active) return;
+    active = true;
+    lastWidth = window.innerWidth;
+    lastHeight = document.documentElement.clientHeight;
+    sections.forEach(s => { s.style.contain = 'layout style paint'; });
+    measureAll();
+    sections.forEach(s => observer.observe(s));
+    window.addEventListener('resize', onResize, { passive: true });
+  };
+
+  const disable = () => {
+    if (!active) return;
+    active = false;
+    clearTimeout(resizeTimer);
+    observer.disconnect();
+    window.removeEventListener('resize', onResize);
+    sizes.clear();
+    sections.forEach(s => {
+      s.style.removeProperty('content-visibility');
+      s.style.removeProperty('contain-intrinsic-size');
+      s.style.removeProperty('contain');
+    });
+  };
+
+  // ScrollTrigger luôn đo trên bố cục gốc (bỏ contain, mọi section hiển thị) → start/end giống hệt khi không áp dụng
+  // (contain giữ margin cuối của nội dung bên trong section, vd. 35px dưới Services). Đo xong thì bật lại và đo lại.
+  if (typeof ScrollTrigger !== 'undefined') {
+    ScrollTrigger.addEventListener('refreshInit', () => {
+      if (!active) return;
+      sections.forEach(s => {
+        s.style.removeProperty('content-visibility');
+        s.style.removeProperty('contain');
+      });
+    });
+    ScrollTrigger.addEventListener('refresh', () => {
+      if (!active) return;
+      sections.forEach(s => { s.style.contain = 'layout style paint'; });
+      measureAll();
+    });
+  }
+
+  const sync = () => (touchQuery.matches ? enable() : disable());
+  const loaded = new Promise(resolve => {
+    if (document.readyState === 'complete') resolve();
+    else window.addEventListener('load', resolve, { once: true });
+  });
+  Promise.all([loaded, document.fonts ? document.fonts.ready : null]).then(() => {
+    sync();
+    if (touchQuery.addEventListener) touchQuery.addEventListener('change', sync);
+  });
+}
 
 /* ==========================================================================
    SERVICES BEFORE/AFTER SLIDER ENGINE
@@ -108,10 +238,61 @@ function attachSliderDrag(container, divider) {
     } catch (_) {}
   };
 
+  // Chạm (điện thoại / tablet): ảnh có touch-action: pan-y (style.css, pointer: coarse) nên vuốt dọc bắt đầu trên ảnh
+  // vẫn cuộn trang (trình duyệt nhận cử chỉ và gửi pointercancel → không đụng thanh chia). Chỉ bắt đầu kéo khi ngón tay
+  // đi ngang rõ ràng; chạm nhẹ (tap) nhảy thanh chia tới chỗ chạm lúc nhấc tay. Nút tròn giữ touch-action: none nên
+  // kéo ngay như cũ. Chuột / bút giữ nguyên hành vi cũ (nhảy ngay khi nhấn rồi kéo).
+  const TOUCH_DRAG_SLOP = 6; // px đi ngang (và lớn hơn quãng đi dọc) trước khi tính là kéo
+  const TOUCH_TAP_SLOP = 10; // px rung tay tối đa vẫn tính là tap
+  const coarsePointerQuery = window.matchMedia('(pointer: coarse)');
+  let pendingTouch = null;
+
+  const clearPendingTouch = () => {
+    pendingTouch = null;
+    window.removeEventListener('pointermove', onPendingTouchMove);
+    window.removeEventListener('pointerup', onPendingTouchUp);
+    window.removeEventListener('pointercancel', clearPendingTouch);
+  };
+
+  const onPendingTouchMove = (e) => {
+    if (!pendingTouch || e.pointerId !== pendingTouch.id) return;
+    const dx = Math.abs(e.clientX - pendingTouch.x);
+    const dy = Math.abs(e.clientY - pendingTouch.y);
+    if (dx > TOUCH_TAP_SLOP || dy > TOUCH_TAP_SLOP) pendingTouch.moved = true;
+    if (dx > TOUCH_DRAG_SLOP && dx > dy) {
+      clearPendingTouch();
+      startDrag(e);
+    }
+  };
+
+  const onPendingTouchUp = (e) => {
+    if (!pendingTouch || e.pointerId !== pendingTouch.id) return;
+    const isTap = !pendingTouch.moved;
+    clearPendingTouch();
+    if (!isTap) return;
+    stopEntranceAnimations();
+    setPercentage(getPercentageFromClientX(e.clientX));
+  };
+
   const onPointerDown = (e) => {
     // Only drag on primary button (0 for mouse, or touch/pen)
     if (e.button !== undefined && e.button !== 0) return;
 
+    const onHandle = e.target && e.target.closest && e.target.closest('.model-handle-circle');
+    if (e.pointerType === 'touch' && coarsePointerQuery.matches && !onHandle) {
+      if (isDragging) return; // ngón thứ hai trong lúc đang kéo: bỏ qua
+      clearPendingTouch();
+      pendingTouch = { id: e.pointerId, x: e.clientX, y: e.clientY, moved: false };
+      window.addEventListener('pointermove', onPendingTouchMove, { passive: false });
+      window.addEventListener('pointerup', onPendingTouchUp);
+      window.addEventListener('pointercancel', clearPendingTouch);
+      return;
+    }
+
+    startDrag(e);
+  };
+
+  const startDrag = (e) => {
     e.preventDefault();
     stopEntranceAnimations();
 

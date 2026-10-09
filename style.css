@@ -1556,6 +1556,14 @@ p, li, .service-description, .cosmos-discipline-desc,
   --slider-pos: 50%;
 }
 
+/* Màn hình cảm ứng: vuốt dọc bắt đầu trên ảnh vẫn cuộn trang; script.js chỉ kéo thanh chia khi ngón tay đi ngang.
+   Nút tròn (.model-handle-circle) giữ touch-action: none nên kéo ngay. Chuột / desktop không đổi. */
+@media (pointer: coarse) {
+  .service-model-visual {
+    touch-action: pan-y;
+  }
+}
+
 .service-model-visual.is-dragging {
   cursor: ew-resize;
 }
