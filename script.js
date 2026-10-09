@@ -4,6 +4,15 @@
  * Interactive Service Accordion & Comparison Sliders handled below.
  */
 
+// Gom các lần resize liên tiếp (thanh URL mobile thu/giãn khi cuộn) thành một lần tính lại
+function debounce(fn, wait) {
+  let timer = null;
+  return function (...args) {
+    clearTimeout(timer);
+    timer = setTimeout(() => fn.apply(this, args), wait);
+  };
+}
+
 document.addEventListener('DOMContentLoaded', () => {
   initAllServiceSliders();
   initServiceAccordion();
@@ -723,7 +732,7 @@ function initAudienceConcepts() {
   }
 
   window.addEventListener('scroll', handleCosmosScroll, { passive: true });
-  window.addEventListener('resize', onResize, { passive: true });
+  window.addEventListener('resize', debounce(onResize, 150), { passive: true });
 
   // Initial step & metrics setup
   updateStickyMetrics();
@@ -742,6 +751,33 @@ function initMobileNav() {
   const ctaPill = document.querySelector('.mobile-nav-cta-pill');
   if (!toggleBtn || !navPanel) return;
 
+  // Khóa cuộn kiểu an toàn cho iOS: body.overflow = hidden không có tác dụng vì html đang overflow-x: clip,
+  // nên cố định body tại vị trí hiện tại và trả về đúng chỗ khi đóng menu
+  let lockedScrollY = 0;
+  let isPageLocked = false;
+
+  function lockPageScroll() {
+    if (isPageLocked) return;
+    isPageLocked = true;
+    lockedScrollY = window.scrollY;
+    document.body.style.position = 'fixed';
+    document.body.style.top = `-${lockedScrollY}px`;
+    document.body.style.left = '0';
+    document.body.style.right = '0';
+    document.body.style.width = '100%';
+  }
+
+  function unlockPageScroll() {
+    if (!isPageLocked) return;
+    isPageLocked = false;
+    document.body.style.position = '';
+    document.body.style.top = '';
+    document.body.style.left = '';
+    document.body.style.right = '';
+    document.body.style.width = '';
+    window.scrollTo({ top: lockedScrollY, behavior: 'instant' });
+  }
+
   function toggleMenu(open) {
     const isOpen = open !== undefined ? open : !toggleBtn.classList.contains('is-open');
     toggleBtn.classList.toggle('is-open', isOpen);
@@ -752,9 +788,9 @@ function initMobileNav() {
 
     // Lock background page scroll on mobile while menu is open
     if (isOpen) {
-      document.body.style.overflow = 'hidden';
+      lockPageScroll();
     } else {
-      document.body.style.overflow = '';
+      unlockPageScroll();
     }
   }
 
@@ -822,7 +858,7 @@ function initMobileNav() {
 
   // Close when window resized to desktop
   window.addEventListener('resize', () => {
-    if (window.innerWidth > 768 && toggleBtn.classList.contains('is-open')) {
+    if (window.innerWidth > 1024 && toggleBtn.classList.contains('is-open')) {
       toggleMenu(false);
     }
   });

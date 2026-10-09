@@ -33,6 +33,8 @@
 
 html {
   scroll-behavior: smooth;
+  /* Chừa chỗ cho header sticky khi nhảy tới anchor (#services, #d4-faq…) */
+  scroll-padding-top: var(--header-height, 90px);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
@@ -168,11 +170,14 @@ p, li, .service-description, .cosmos-discipline-desc,
   font-weight: 500;
   color: var(--color-brown);
   opacity: 0.75;
+  white-space: nowrap;
   transition: opacity 0.2s ease;
 }
 
-.hdr-link:hover {
-  opacity: 1;
+@media (hover: hover) and (pointer: fine) {
+  .hdr-link:hover {
+    opacity: 1;
+  }
 }
 
 .header-actions-right {
@@ -197,8 +202,10 @@ p, li, .service-description, .cosmos-discipline-desc,
   transition: background-color 0.2s ease;
 }
 
-.btn-trial-header:hover {
-  background-color: #222222;
+@media (hover: hover) and (pointer: fine) {
+  .btn-trial-header:hover {
+    background-color: #222222;
+  }
 }
 
 /* Mobile Toggle, Divider & Panel (Hidden by default on Desktop) */
@@ -214,13 +221,19 @@ p, li, .service-description, .cosmos-discipline-desc,
   display: none;
 }
 
-@media (max-width: 1024px) {
+/* Lề 36px kéo tới 1100px: ở 1025–1100px menu desktop cần thêm chỗ, lề 70px làm logo dính "Services" */
+@media (max-width: 1100px) {
   .header-inner {
     padding: 0 36px;
   }
 }
 
-@media (max-width: 768px) {
+/* Header mobile + hamburger từ <= 1024px: menu desktop cần ~950px nên dải 769–1024px bị dính chữ, gãy dòng */
+@media (max-width: 1024px) {
+  html {
+    scroll-padding-top: var(--header-mobile-height, 60px);
+  }
+
   body {
     padding-top: var(--header-mobile-height, 60px);
   }
@@ -285,6 +298,26 @@ p, li, .service-description, .cosmos-discipline-desc,
   .btn-trial-header .icon-arrow {
     width: 12px;
     height: 12px;
+  }
+
+  /* Vùng chạm >= 44px bằng lớp vô hình trùm ra ngoài, giữ nguyên kích thước nhìn thấy */
+  .btn-trial-header,
+  .btn-mobile-menu-toggle {
+    position: relative;
+  }
+
+  .btn-trial-header::after,
+  .btn-mobile-menu-toggle::after {
+    content: "";
+    position: absolute;
+  }
+
+  .btn-trial-header::after {
+    inset: -9px -4px;
+  }
+
+  .btn-mobile-menu-toggle::after {
+    inset: -10px;
   }
 
   /* Vertical Divider Line between CTA and Toggle Icon (Ref Image #2) */
@@ -361,8 +394,8 @@ p, li, .service-description, .cosmos-discipline-desc,
     right: 0;
     bottom: 0;
     width: 100%;
-    height: calc(100dvh - var(--header-mobile-height, 60px));
-    height: calc(100vh - var(--header-mobile-height, 60px));
+    /* Không đặt height: top + bottom: 0 tự khớp đúng phần màn hình đang thấy (kể cả khi thanh URL iOS hiện),
+       100vh trước đây đẩy nút CTA cuối menu xuống sau thanh công cụ Safari */
     overflow: hidden; /* Hard clipping boundary: strictly prevents any content from passing into header area */
     visibility: hidden;
     pointer-events: none;
@@ -386,6 +419,7 @@ p, li, .service-description, .cosmos-discipline-desc,
     box-sizing: border-box;
     padding: 16px 24px calc(28px + env(safe-area-inset-bottom, 16px));
     overflow-y: auto;
+    overscroll-behavior: contain;
     -webkit-overflow-scrolling: touch;
     transform: translate3d(0, -100%, 0);
     will-change: transform;
@@ -568,9 +602,11 @@ p, li, .service-description, .cosmos-discipline-desc,
   color: var(--color-orange);
 }
 
-.concept-tab-btn:hover {
-  background: rgba(255, 255, 255, 0.15);
-  color: #FFFFFF;
+@media (hover: hover) and (pointer: fine) {
+  .concept-tab-btn:hover {
+    background: rgba(255, 255, 255, 0.15);
+    color: #FFFFFF;
+  }
 }
 
 .concept-tab-btn.active {
@@ -653,9 +689,11 @@ p, li, .service-description, .cosmos-discipline-desc,
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
 }
 
-.btn-trial-main:hover {
-  background-color: #242424;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.16);
+@media (hover: hover) and (pointer: fine) {
+  .btn-trial-main:hover {
+    background-color: #242424;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.16);
+  }
 }
 
 .btn-explore {
@@ -669,8 +707,10 @@ p, li, .service-description, .cosmos-discipline-desc,
   transition: opacity 0.2s ease;
 }
 
-.btn-explore:hover {
-  opacity: 0.75;
+@media (hover: hover) and (pointer: fine) {
+  .btn-explore:hover {
+    opacity: 0.75;
+  }
 }
 
 .btn-explore-line {
@@ -682,8 +722,10 @@ p, li, .service-description, .cosmos-discipline-desc,
   transition: transform 0.2s ease, opacity 0.2s ease;
 }
 
-.btn-explore:hover .btn-explore-line {
-  transform: scaleX(1.08);
+@media (hover: hover) and (pointer: fine) {
+  .btn-explore:hover .btn-explore-line {
+    transform: scaleX(1.08);
+  }
 }
 
 .visual-interactive-hint {
@@ -782,9 +824,11 @@ p, li, .service-description, .cosmos-discipline-desc,
   transition: all 0.2s ease;
 }
 
-.cat-pill:hover {
-  color: var(--color-brown);
-  background: rgba(43, 32, 23, 0.05);
+@media (hover: hover) and (pointer: fine) {
+  .cat-pill:hover {
+    color: var(--color-brown);
+    background: rgba(43, 32, 23, 0.05);
+  }
 }
 
 .cat-pill.active {
@@ -882,8 +926,10 @@ p, li, .service-description, .cosmos-discipline-desc,
   transition: transform 0.15s ease;
 }
 
-.inspector-canvas:hover .canvas-handle-pill {
-  transform: scale(1.1);
+@media (hover: hover) and (pointer: fine) {
+  .inspector-canvas:hover .canvas-handle-pill {
+    transform: scale(1.1);
+  }
 }
 
 .canvas-side-label {
@@ -1349,8 +1395,10 @@ p, li, .service-description, .cosmos-discipline-desc,
   opacity: 1;
 }
 
-.client-logo-wrap:hover {
-  opacity: 1;
+@media (hover: hover) and (pointer: fine) {
+  .client-logo-wrap:hover {
+    opacity: 1;
+  }
 }
 
 .client-svg,
@@ -1444,8 +1492,10 @@ p, li, .service-description, .cosmos-discipline-desc,
   transition: transform 0.2s ease;
 }
 
-.video-preview-wrapper:hover .video-play-center-btn {
-  transform: translate(-50%, -50%) scale(1.1);
+@media (hover: hover) and (pointer: fine) {
+  .video-preview-wrapper:hover .video-play-center-btn {
+    transform: translate(-50%, -50%) scale(1.1);
+  }
 }
 
 /* Services */
@@ -1600,10 +1650,16 @@ body.is-slider-resizing {
   transition: transform 0.16s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.16s ease;
 }
 
-.model-handle-circle:hover,
 .service-model-visual.is-dragging .model-handle-circle {
   transform: translate(-50%, -50%) scale(1.1);
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.45), 0 0 0 1px rgba(0, 0, 0, 0.12);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .model-handle-circle:hover {
+    transform: translate(-50%, -50%) scale(1.1);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.45), 0 0 0 1px rgba(0, 0, 0, 0.12);
+  }
 }
 
 .model-handle-circle:active {
@@ -2048,10 +2104,12 @@ body.is-slider-resizing {
   background: transparent !important;
   box-shadow: none !important;
 }
-.service-collapsed-row:hover {
-  background-color: transparent !important;
-  background: transparent !important;
-  box-shadow: none !important;
+@media (hover: hover) and (pointer: fine) {
+  .service-collapsed-row:hover {
+    background-color: transparent !important;
+    background: transparent !important;
+    box-shadow: none !important;
+  }
 }
 
 .collapsed-left-col {
@@ -2080,8 +2138,10 @@ body.is-slider-resizing {
   transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-.service-collapsed-row:hover .simple-thumb-img {
-  transform: scale(1.04);
+@media (hover: hover) and (pointer: fine) {
+  .service-collapsed-row:hover .simple-thumb-img {
+    transform: scale(1.04);
+  }
 }
 
 /* ==========================================================================
@@ -2164,9 +2224,11 @@ body.is-slider-resizing {
   transform: none !important;
 }
 
-.service-collapsed-row:hover .service-simple-title {
-  color: #111111;
-  transform: none !important;
+@media (hover: hover) and (pointer: fine) {
+  .service-collapsed-row:hover .service-simple-title {
+    color: #111111;
+    transform: none !important;
+  }
 }
 
 /* ==========================================================================
@@ -2487,7 +2549,8 @@ body.is-slider-resizing {
     visibility: hidden;
     scroll-snap-align: start;
     scroll-snap-stop: always;
-    top: calc(var(--cosmos-snap-progress) * var(--cosmos-snap-travel) - var(--header-mobile-height, 60px));
+    /* html đã có scroll-padding-top = chiều cao header nên mốc snap không cần trừ thêm header */
+    top: calc(var(--cosmos-snap-progress) * var(--cosmos-snap-travel));
   }
   .cosmos-snap-point--1 { --cosmos-snap-progress: 0; }
   .cosmos-snap-point--2 { --cosmos-snap-progress: 0.3875; }

@@ -61,7 +61,11 @@
     }
 
     updateStableHeight();
-    window.addEventListener('resize', updateStableHeight, { passive: true });
+    let stableHeightTimer = null;
+    window.addEventListener('resize', () => {
+      clearTimeout(stableHeightTimer);
+      stableHeightTimer = setTimeout(updateStableHeight, 150);
+    }, { passive: true });
     if (document.fonts && document.fonts.ready) {
       document.fonts.ready.then(updateStableHeight);
     }
@@ -165,7 +169,11 @@
     }
 
     updateMetrics();
-    window.addEventListener('resize', updateMetrics, { passive: true });
+    let metricsTimer = null;
+    window.addEventListener('resize', () => {
+      clearTimeout(metricsTimer);
+      metricsTimer = setTimeout(updateMetrics, 150);
+    }, { passive: true });
     window.addEventListener('scroll', () => {
       sectionRect = section.getBoundingClientRect();
     }, { passive: true });

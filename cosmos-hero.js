@@ -293,7 +293,12 @@
     window.addEventListener('load', updateGeometry);
 
     // Responsive listeners for resize and device orientation change
-    window.addEventListener('resize', updateGeometry, { passive: true });
+    // (debounced: ResizeObserver below already reacts to real hero size changes immediately)
+    let resizeTimer = null;
+    window.addEventListener('resize', () => {
+      clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(updateGeometry, 150);
+    }, { passive: true });
     window.addEventListener('orientationchange', () => {
       setTimeout(updateGeometry, 80);
     }, { passive: true });

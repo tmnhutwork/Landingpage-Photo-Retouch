@@ -100,9 +100,13 @@
     calculateDotFractions();
 
     window.addEventListener('scroll', handleScroll, { passive: true });
+    let resizeTimer = null;
     window.addEventListener('resize', () => {
-      calculateDotFractions();
-      handleScroll();
+      clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(() => {
+        calculateDotFractions();
+        handleScroll();
+      }, 150);
     }, { passive: true });
 
     // Initial setup on page load
@@ -235,9 +239,13 @@
     }
 
     window.addEventListener('scroll', handleMobileScroll, { passive: true });
+    let mobileResizeTimer = null;
     window.addEventListener('resize', () => {
-      updateMobilePositions();
-      handleMobileScroll();
+      clearTimeout(mobileResizeTimer);
+      mobileResizeTimer = setTimeout(() => {
+        updateMobilePositions();
+        handleMobileScroll();
+      }, 150);
     }, { passive: true });
 
     // Cập nhật vị trí ngay sau khi trình duyệt render

@@ -698,9 +698,17 @@
     }
   }
 
-  // Refresh ScrollTrigger when window resizes
+  // Refresh ScrollTrigger only when the WIDTH changes (rotate / desktop window resize).
+  // Mobile URL bar collapse only changes the height and fires resize continuously while scrolling.
+  let lastRefreshWidth = window.innerWidth;
+  let refreshTimer = null;
   window.addEventListener('resize', () => {
-    ScrollTrigger.refresh();
+    clearTimeout(refreshTimer);
+    refreshTimer = setTimeout(() => {
+      if (window.innerWidth === lastRefreshWidth) return;
+      lastRefreshWidth = window.innerWidth;
+      if (typeof ScrollTrigger !== 'undefined') ScrollTrigger.refresh();
+    }, 200);
   }, { passive: true });
 
 })();

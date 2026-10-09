@@ -183,14 +183,18 @@
   transition: background-color 0.2s ease, box-shadow 0.2s ease;
 }
 
-.d4-actions-row .btn-trial-main:hover {
-  transform: none !important;
-  background-color: #242424;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.16);
+@media (hover: hover) and (pointer: fine) {
+  .d4-actions-row .btn-trial-main:hover {
+    transform: none !important;
+    background-color: #242424;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.16);
+  }
 }
 
-.d4-actions-row .btn-trial-main:hover .icon-arrow {
-  transform: none !important;
+@media (hover: hover) and (pointer: fine) {
+  .d4-actions-row .btn-trial-main:hover .icon-arrow {
+    transform: none !important;
+  }
 }
 
 /* ==========================================================================
@@ -436,8 +440,10 @@
   display: inline-block;
 }
 
-.d4-footer-nav-list li a:hover {
-  color: #0057FF;
+@media (hover: hover) and (pointer: fine) {
+  .d4-footer-nav-list li a:hover {
+    color: #0057FF;
+  }
 }
 
 .d4-contact-group {
@@ -463,8 +469,10 @@
   display: inline-block;
 }
 
-.d4-contact-link:hover {
-  color: #0057FF;
+@media (hover: hover) and (pointer: fine) {
+  .d4-contact-link:hover {
+    color: #0057FF;
+  }
 }
 
 .d4-footer-bottom {
@@ -492,8 +500,10 @@
   transition: color 0.2s ease;
 }
 
-.d4-legal-links a:hover {
-  color: #111111;
+@media (hover: hover) and (pointer: fine) {
+  .d4-legal-links a:hover {
+    color: #111111;
+  }
 }
 
 /* ==========================================================================

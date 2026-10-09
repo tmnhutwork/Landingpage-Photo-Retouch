@@ -12,7 +12,6 @@
   background: #FBFBFB !important;
   color: #111111 !important;
   padding: 80px 0 110px !important;
-  scroll-margin-top: 96px;
   position: relative;
   overflow: hidden;
   border-top: 1px solid rgba(0, 0, 0, 0.05);
@@ -115,9 +114,11 @@
   -webkit-user-select: none;
 }
 
-.theater-cinema-screen:hover {
-  box-shadow: none !important;
-  border-color: rgba(0, 0, 0, 0.16);
+@media (hover: hover) and (pointer: fine) {
+  .theater-cinema-screen:hover {
+    box-shadow: none !important;
+    border-color: rgba(0, 0, 0, 0.16);
+  }
 }
 
 /* Inline HTML5 Video Element */
@@ -205,15 +206,19 @@
   transition: color 0.25s ease;
 }
 
-.theater-cinema-screen:not(.is-playing):hover .theater-play-btn-circle {
-  transform: translate(-50%, -50%) scale(1.12);
-  background: #FFFFFF;
-  color: #111111;
-  box-shadow: 0 14px 40px rgba(0, 0, 0, 0.45);
+@media (hover: hover) and (pointer: fine) {
+  .theater-cinema-screen:not(.is-playing):hover .theater-play-btn-circle {
+    transform: translate(-50%, -50%) scale(1.12);
+    background: #FFFFFF;
+    color: #111111;
+    box-shadow: 0 14px 40px rgba(0, 0, 0, 0.45);
+  }
 }
 
-.theater-cinema-screen:not(.is-playing):hover .theater-play-btn-circle svg {
-  color: #111111;
+@media (hover: hover) and (pointer: fine) {
+  .theater-cinema-screen:not(.is-playing):hover .theater-play-btn-circle svg {
+    color: #111111;
+  }
 }
 
 .theater-cinema-screen.is-playing .theater-play-btn-circle {
@@ -379,10 +384,12 @@
   transition: color 0.2s ease, transform 0.15s ease, background 0.2s ease;
 }
 
-.ctrl-btn:hover {
-  color: #FFFFFF;
-  background: rgba(255, 255, 255, 0.12);
-  transform: scale(1.05);
+@media (hover: hover) and (pointer: fine) {
+  .ctrl-btn:hover {
+    color: #FFFFFF;
+    background: rgba(255, 255, 255, 0.12);
+    transform: scale(1.05);
+  }
 }
 
 .ctrl-btn:active {
@@ -550,10 +557,12 @@
   width: 100%;
 }
 
-.quality-opt:hover,
-.speed-opt:hover {
-  background: rgba(255, 255, 255, 0.12);
-  color: #FFFFFF;
+@media (hover: hover) and (pointer: fine) {
+  .quality-opt:hover,
+  .speed-opt:hover {
+    background: rgba(255, 255, 255, 0.12);
+    color: #FFFFFF;
+  }
 }
 
 .quality-opt.is-active,
@@ -668,9 +677,11 @@
   transition: opacity 0.25s ease, transform 0.25s ease;
 }
 
-.theater-clients-row .client-logo-wrap:hover {
-  opacity: 0.55 !important;
-  transform: translateY(-2px);
+@media (hover: hover) and (pointer: fine) {
+  .theater-clients-row .client-logo-wrap:hover {
+    opacity: 0.55 !important;
+    transform: translateY(-2px);
+  }
 }
 
 .theater-clients-row .client-svg,
@@ -775,5 +786,18 @@
   .theater-clients-row .client-svg,
   .theater-clients-row .client-png {
     height: 24px;
+  }
+}
+
+/* Vùng chạm >= 44px cho nút điều khiển video trên thiết bị cảm ứng (lớp vô hình, không đổi kích thước nhìn thấy) */
+@media (pointer: coarse) {
+  .ctrl-btn {
+    position: relative;
+  }
+
+  .ctrl-btn::after {
+    content: "";
+    position: absolute;
+    inset: -7.5px;
   }
 }

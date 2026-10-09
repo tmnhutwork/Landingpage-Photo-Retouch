@@ -87,10 +87,12 @@
   flex-shrink: 0;
 }
 
-.modal-close-btn:hover {
-  background: rgba(0, 0, 0, 0.12);
-  color: #000000;
-  transform: rotate(90deg);
+@media (hover: hover) and (pointer: fine) {
+  .modal-close-btn:hover {
+    background: rgba(0, 0, 0, 0.12);
+    color: #000000;
+    transform: rotate(90deg);
+  }
 }
 
 /* ── Modal Content Body: 2-Column Grid ────────────────────────────── */
@@ -101,6 +103,7 @@
   gap: 32px;
   align-items: stretch;
   overflow-y: auto;
+  overscroll-behavior: contain;
   flex: 1;
 }
 
@@ -336,8 +339,10 @@
   transition: all 0.2s ease;
 }
 
-.upload-mode-tab:hover {
-  color: #111111;
+@media (hover: hover) and (pointer: fine) {
+  .upload-mode-tab:hover {
+    color: #111111;
+  }
 }
 
 .upload-mode-tab.is-active {
@@ -374,9 +379,11 @@
   justify-content: center;
 }
 
-.trial-dropzone:hover {
-  border-color: #111111;
-  background: #F3F2EE;
+@media (hover: hover) and (pointer: fine) {
+  .trial-dropzone:hover {
+    border-color: #111111;
+    background: #F3F2EE;
+  }
 }
 
 .trial-dropzone.dragover {
@@ -472,8 +479,10 @@
   line-height: 1;
 }
 
-.file-chip-remove:hover {
-  color: #EF4444;
+@media (hover: hover) and (pointer: fine) {
+  .file-chip-remove:hover {
+    color: #EF4444;
+  }
 }
 
 /* ── Mode 2: Cloud Storage Link Input (Exact Equal Height 96px) ───── */
@@ -558,9 +567,11 @@
   gap: 8px;
 }
 
-.btn-trial-submit:hover {
-  background: #2B2017;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+@media (hover: hover) and (pointer: fine) {
+  .btn-trial-submit:hover {
+    background: #2B2017;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+  }
 }
 
 .btn-trial-submit:disabled {
@@ -694,8 +705,10 @@
   transition: background 0.2s ease;
 }
 
-.btn-reset-action:hover {
-  background: #2B2017;
+@media (hover: hover) and (pointer: fine) {
+  .btn-reset-action:hover {
+    background: #2B2017;
+  }
 }
 
 /* ── Responsive Mobile Breakpoints ────────────────────────────────── */
@@ -725,5 +738,20 @@
 
   .upload-slots-row {
     grid-template-columns: 1fr;
+  }
+
+  /* Ô nhập cao >= 44px (dễ chạm) và chữ 16px để iPhone không tự phóng to trang khi chạm vào ô */
+  .trial-field input {
+    min-height: 44px;
+  }
+
+  .trial-field input,
+  .trial-field textarea {
+    font-size: 16px;
+  }
+
+  .trial-field input::placeholder,
+  .trial-field textarea::placeholder {
+    font-size: 14px;
   }
 }

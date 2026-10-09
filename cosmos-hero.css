@@ -104,8 +104,10 @@ textarea {
   transition: transform 0.25s ease;
 }
 
-.logo:hover {
-  transform: rotate(30deg);
+@media (hover: hover) and (pointer: fine) {
+  .logo:hover {
+    transform: rotate(30deg);
+  }
 }
 
 .nav {
@@ -121,9 +123,14 @@ textarea {
   transition: color 0.2s ease;
 }
 
-.nav-link:hover,
 .nav-link.active {
   color: var(--ink);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .nav-link:hover {
+    color: var(--ink);
+  }
 }
 
 /* Search Pill */
@@ -146,10 +153,12 @@ textarea {
   transition: all 0.25s ease;
 }
 
-.search-pill:hover {
-  width: 335px;
-  border-color: rgba(0, 0, 0, 0.16);
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+@media (hover: hover) and (pointer: fine) {
+  .search-pill:hover {
+    width: 335px;
+    border-color: rgba(0, 0, 0, 0.16);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+  }
 }
 
 .search-pill svg {
@@ -189,8 +198,10 @@ textarea {
   transition: color 0.2s ease;
 }
 
-.link-login:hover {
-  color: var(--ink);
+@media (hover: hover) and (pointer: fine) {
+  .link-login:hover {
+    color: var(--ink);
+  }
 }
 
 .btn-signup {
@@ -204,8 +215,10 @@ textarea {
   transition: background 0.2s ease;
 }
 
-.btn-signup:hover {
-  background: #2A2A30;
+@media (hover: hover) and (pointer: fine) {
+  .btn-signup:hover {
+    background: #2A2A30;
+  }
 }
 
 /* ── Hero Container (100% Viewport-Fitted Across All Devices) ─────── */
@@ -436,9 +449,11 @@ textarea {
   cursor: pointer;
 }
 
-.btn-trial-main:hover {
-  background-color: #222222;
-  box-shadow: 0 5px 16px rgba(0, 0, 0, 0.16);
+@media (hover: hover) and (pointer: fine) {
+  .btn-trial-main:hover {
+    background-color: #222222;
+    box-shadow: 0 5px 16px rgba(0, 0, 0, 0.16);
+  }
 }
 
 .btn-explore {
@@ -455,8 +470,10 @@ textarea {
   transition: color 0.2s ease, opacity 0.2s ease;
 }
 
-.btn-explore:hover {
-  opacity: 0.75;
+@media (hover: hover) and (pointer: fine) {
+  .btn-explore:hover {
+    opacity: 0.75;
+  }
 }
 
 .btn-explore-line {
@@ -468,14 +485,18 @@ textarea {
   transition: transform 0.2s ease, opacity 0.2s ease;
 }
 
-.btn-explore:hover .btn-explore-line {
-  transform: scaleX(1.08);
+@media (hover: hover) and (pointer: fine) {
+  .btn-explore:hover .btn-explore-line {
+    transform: scaleX(1.08);
+  }
 }
 
-.btn-outline:hover {
-  background: #FFFFFF;
-  border-color: rgba(0, 0, 0, 0.18);
-  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.06);
+@media (hover: hover) and (pointer: fine) {
+  .btn-outline:hover {
+    background: #FFFFFF;
+    border-color: rgba(0, 0, 0, 0.18);
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.06);
+  }
 }
 
 /* ── Scroll Indicator (Always visible inside bottom viewport) ─────── */
@@ -501,9 +522,11 @@ textarea {
   }
 }
 
-.scroll-indicator:hover {
-  opacity: 1;
-  color: var(--ink);
+@media (hover: hover) and (pointer: fine) {
+  .scroll-indicator:hover {
+    opacity: 1;
+    color: var(--ink);
+  }
 }
 
 @keyframes subtle-bounce {
@@ -566,9 +589,11 @@ textarea {
   transition: transform 0.35s ease, box-shadow 0.35s ease;
 }
 
-.grid-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.08);
+@media (hover: hover) and (pointer: fine) {
+  .grid-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.08);
+  }
 }
 
 .grid-card img {
@@ -643,5 +668,13 @@ textarea {
 
   .explore-section {
     padding: 64px 20px 80px;
+  }
+}
+/* Vùng chạm >= 44px cho mũi tên cuộn trên thiết bị cảm ứng (lớp vô hình quanh icon 18px) */
+@media (pointer: coarse) {
+  .scroll-indicator::after {
+    content: "";
+    position: absolute;
+    inset: -13px;
   }
 }
