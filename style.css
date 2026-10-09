@@ -2188,6 +2188,11 @@ body.is-slider-resizing {
   position: relative;
 }
 
+/* Điểm mốc scroll-snap chỉ dùng trên mobile — desktop ẩn hoàn toàn */
+.cosmos-snap-point {
+  display: none;
+}
+
 .cosmos-sticky-stage {
   position: sticky;
   top: 0;
@@ -2457,7 +2462,38 @@ body.is-slider-resizing {
   .cosmos-scrolly-container {
     height: 350vh;
     position: relative;
+    /* Quãng cuộn của 5 thẻ = chiều cao container - chiều cao khung dính */
+    --cosmos-snap-travel: calc(350vh - 100vh + var(--header-mobile-height, 60px));
   }
+  @supports (height: 100svh) {
+    .cosmos-scrolly-container {
+      --cosmos-snap-travel: calc(350vh - 100svh + var(--header-mobile-height, 60px));
+    }
+  }
+
+  /* Scroll-snap: vuốt mạnh cũng dừng lại ở từng thẻ, không lướt qua hết 5 discipline */
+  html {
+    scroll-snap-type: y proximity;
+  }
+
+  /* Mỗi mốc nằm giữa khoảng tiến độ của một thẻ (khớp ngưỡng 0.30 / 0.475 / 0.65 / 0.825 trong script.js) */
+  .cosmos-snap-point {
+    display: block;
+    position: absolute;
+    left: 0;
+    width: 1px;
+    height: 1px;
+    pointer-events: none;
+    visibility: hidden;
+    scroll-snap-align: start;
+    scroll-snap-stop: always;
+    top: calc(var(--cosmos-snap-progress) * var(--cosmos-snap-travel) - var(--header-mobile-height, 60px));
+  }
+  .cosmos-snap-point--1 { --cosmos-snap-progress: 0; }
+  .cosmos-snap-point--2 { --cosmos-snap-progress: 0.3875; }
+  .cosmos-snap-point--3 { --cosmos-snap-progress: 0.5625; }
+  .cosmos-snap-point--4 { --cosmos-snap-progress: 0.7375; }
+  .cosmos-snap-point--5 { --cosmos-snap-progress: 0.9125; }
 
   /* Nằm ngay chính giữa viewport nhìn thấy được (bên dưới fixed header 60px) */
   .cosmos-sticky-stage {
