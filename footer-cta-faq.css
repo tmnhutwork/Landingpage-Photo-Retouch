@@ -510,11 +510,47 @@
    RESPONSIVE BREAKPOINTS
    ========================================================================== */
 
-@media (max-width: 1024px) {
-  .d4-grid-desktop {
-    grid-template-columns: repeat(6, 1fr);
-    grid-template-rows: repeat(4, 100px);
+/* Tablet / iPad (769px–1200px): keep the DESKTOP 9×4 composition (same cells,
+   same dot grid, same photo & sketch positions) and scale it fluidly with the
+   viewport. Every value equals the desktop value at exactly 1200px, so there is
+   no jump at 1200/1201. Not bounded below: at <=768px the desktop canvas is
+   hidden (display:none) and the mobile 4×5 canvas takes over, so mobile is
+   unaffected, and fractional widths between 768 and 769 still get fluid values. */
+@media (max-width: 1200px) {
+  .d4-cta-container {
+    /* 1 column = (viewport − 2×24px section padding) / 9 → 128px at 1200px */
+    --d4-col-w: calc((100vw - 48px) / 9);
   }
+
+  .d4-grid-desktop {
+    /* 135px at 1200px → 104px at 769px: rows stay tall enough that the
+       headline + button keep clear breathing room from rows 1 and 4 */
+    grid-template-rows: repeat(4, clamp(104px, calc(135px - (1200px - 100vw) * 0.072), 135px));
+  }
+
+  /* Photos: 104px at 1200px (104 / 128 = 0.8125 of a column) */
+  .d4-grid-desktop .d4-cell-media {
+    width: min(104px, calc(var(--d4-col-w) * 0.8125));
+    height: min(104px, calc(var(--d4-col-w) * 0.8125));
+  }
+
+  /* Sketches: 98px at 1200px (98 / 128 = 0.765625 of a column) */
+  .d4-grid-desktop .d4-sketch-art {
+    width: min(98px, calc(var(--d4-col-w) * 0.765625));
+    height: min(98px, calc(var(--d4-col-w) * 0.765625));
+  }
+}
+
+/* Tablet only: like desktop, the headline + button stage stays within the 7
+   middle columns so it never reaches the column-1 / column-9 cells
+   (= 840px at 1200px, identical to desktop). Mobile keeps its own stage. */
+@media (min-width: 769px) and (max-width: 1200px) {
+  .d4-center-stage {
+    max-width: min(840px, calc(var(--d4-col-w) * 7));
+  }
+}
+
+@media (max-width: 1024px) {
   .d4-footer-grid {
     grid-template-columns: 1fr 1fr;
     gap: 30px;
