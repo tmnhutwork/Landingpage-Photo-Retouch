@@ -501,48 +501,6 @@ textarea {
   }
 }
 
-/* ── Scroll Indicator (Always visible inside bottom viewport) ─────── */
-.scroll-indicator {
-  position: absolute;
-  bottom: clamp(14px, 2.8vh, 32px);
-  left: 50%;
-  transform: translateX(-50%);
-  z-index: 40;
-  color: #787680;
-  opacity: 0.75;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  text-decoration: none;
-  transition: opacity 0.2s, transform 0.2s;
-  animation: subtle-bounce 2.6s ease-in-out infinite;
-}
-
-@media (max-height: 540px) {
-  .scroll-indicator {
-    display: none;
-  }
-}
-
-@media (hover: hover) and (pointer: fine) {
-  .scroll-indicator:hover {
-    opacity: 1;
-    color: var(--ink);
-  }
-}
-
-@keyframes subtle-bounce {
-
-  0%,
-  100% {
-    transform: translate(-50%, 0);
-  }
-
-  50% {
-    transform: translate(-50%, 4px);
-  }
-}
-
 /* ── Continuation Section (Natural Scroll & Transition) ────────────── */
 .explore-section {
   position: relative;
@@ -670,13 +628,5 @@ textarea {
 
   .explore-section {
     padding: 64px 20px 80px;
-  }
-}
-/* Vùng chạm >= 44px cho mũi tên cuộn trên thiết bị cảm ứng (lớp vô hình quanh icon 18px) */
-@media (pointer: coarse) {
-  .scroll-indicator::after {
-    content: "";
-    position: absolute;
-    inset: -13px;
   }
 }

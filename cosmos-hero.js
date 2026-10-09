@@ -128,7 +128,7 @@
 
         el.appendChild(img);
         stage.appendChild(el);
-        cards.push({ el, index: i });
+        cards.push({ el, index: i, w: null }); // w = per-card style write cache (render loop), empty for new cards
       }
     }
 
@@ -424,22 +424,37 @@
         const coreFade = clamp(1 - (p.u - 0.78) / 0.22, 0, 1);
         const finalOpacity = Math.min(opacity, coreFade);
 
+        // Write a style property only when its serialized value changed since the last frame
+        // (identical output, far fewer style invalidations). The cache belongs to one card element and
+        // one branch: rebuilt cards start empty and a mobile/desktop switch starts a fresh cache.
+        const st = item.el.style;
+        let w = item.w;
+        if (!w || w.mob !== isMob) w = item.w = { mob: isMob };
+        const zIndex = String(Math.round(100 - p.u * 35));
+
         if (isMob) {
           // MOBILE HIGH PERFORMANCE: Pure GPU transform compositing (zero reflow/relayout), no Gaussian blur filter
-          item.el.style.transform = `translate3d(${x.toFixed(1)}px,${y.toFixed(1)}px,0) translate(-50%,-50%) rotate(${rotation.toFixed(1)}deg) scale(${scale.toFixed(2)})`;
-          item.el.style.opacity = finalOpacity.toFixed(2);
-          item.el.style.zIndex = String(Math.round(100 - p.u * 35));
+          const tf = `translate3d(${x.toFixed(1)}px,${y.toFixed(1)}px,0) translate(-50%,-50%) rotate(${rotation.toFixed(1)}deg) scale(${scale.toFixed(2)})`;
+          const op = finalOpacity.toFixed(2);
+          if (w.tf !== tf) { st.transform = tf; w.tf = tf; }
+          if (w.op !== op) { st.opacity = op; w.op = op; }
+          if (w.z !== zIndex) { st.zIndex = zIndex; w.z = zIndex; }
         } else {
           // DESKTOP: 100% UNTOUCHED ORIGINAL BEHAVIOR & VISUAL FIDELITY
           const innerProgress = clamp((p.u - 0.58) / 0.42, 0, 1);
           const blur = Math.pow(innerProgress, 1.6) * 12.0;
 
-          item.el.style.left = x + 'px';
-          item.el.style.top = y + 'px';
-          item.el.style.opacity = finalOpacity.toFixed(3);
-          item.el.style.filter = blur > 0.08 ? `blur(${blur.toFixed(2)}px)` : 'none';
-          item.el.style.transform = `translate(-50%,-50%) rotate(${rotation.toFixed(2)}deg) scale(${scale.toFixed(3)})`;
-          item.el.style.zIndex = String(Math.round(100 - p.u * 35));
+          const left = x + 'px';
+          const top = y + 'px';
+          const op = finalOpacity.toFixed(3);
+          const filter = blur > 0.08 ? `blur(${blur.toFixed(2)}px)` : 'none';
+          const tf = `translate(-50%,-50%) rotate(${rotation.toFixed(2)}deg) scale(${scale.toFixed(3)})`;
+          if (w.l !== left) { st.left = left; w.l = left; }
+          if (w.t !== top) { st.top = top; w.t = top; }
+          if (w.op !== op) { st.opacity = op; w.op = op; }
+          if (w.f !== filter) { st.filter = filter; w.f = filter; }
+          if (w.tf !== tf) { st.transform = tf; w.tf = tf; }
+          if (w.z !== zIndex) { st.zIndex = zIndex; w.z = zIndex; }
         }
       }
 

@@ -73,7 +73,6 @@
             charSpan.className = 'cosmos-char';
             charSpan.textContent = char;
             charSpan.style.display = 'inline-block';
-            charSpan.style.willChange = 'filter, opacity';
             chars.push(charSpan);
             wordSpan.appendChild(charSpan);
           });
@@ -108,10 +107,11 @@
       chars,
       {
         opacity: 0,
-        filter: 'blur(' + (opts.blur || '7px') + ')',
-        willChange: 'filter, opacity'
+        filter: 'blur(' + (opts.blur || '7px') + ')'
       },
       {
+        // Promote the characters only while they animate (clearProps below removes it again)
+        onStart: () => gsap.set(chars, { willChange: 'filter, opacity' }),
         scrollTrigger: opts.trigger
           ? {
               trigger: opts.trigger,
@@ -158,11 +158,12 @@
     // Initial state: pure stationary blur, zero translation
     gsap.set(chars, {
       opacity: 0,
-      filter: 'blur(' + baseBlur + ')',
-      willChange: 'filter, opacity'
+      filter: 'blur(' + baseBlur + ')'
     });
 
     const tl = gsap.timeline({
+      // Promote the characters only while they animate (each tween's clearProps removes it again)
+      onStart: () => gsap.set(chars, { willChange: 'filter, opacity' }),
       scrollTrigger: opts.trigger
         ? {
             trigger: opts.trigger,
@@ -613,6 +614,12 @@
           ctaMedia,
           { opacity: 0, scale: 0.88, filter: 'blur(8px)' },
           {
+            // will-change only while the entrance plays (removed again by clearProps). Photos keep the
+            // transform hint they already have in CSS; the line-art sketches get no transform hint, so they are
+            // re-rasterized while scaling exactly as before (a transform hint would scale a cached bitmap instead).
+            onStart: () => gsap.set(ctaMedia, {
+              willChange: (_i, el) => (el.classList.contains('d4-cell-media') ? 'transform, filter, opacity' : 'filter, opacity')
+            }),
             scrollTrigger: { trigger: ctaSection, start: 'top 82%', once: true },
             opacity: 1,
             scale: 1,
@@ -621,7 +628,7 @@
             stagger: 0.08,
             delay: 0.15,
             ease: 'power3.out',
-            clearProps: 'filter,transform'
+            clearProps: 'filter,transform,willChange'
           }
         );
       }
@@ -645,6 +652,8 @@
           ctaBtn,
           { y: 24, opacity: 0, filter: 'blur(6px)' },
           {
+            // will-change only while the entrance plays (removed again by clearProps)
+            onStart: () => gsap.set(ctaBtn, { willChange: 'transform, filter, opacity' }),
             scrollTrigger: { trigger: ctaSection, start: 'top 80%', once: true },
             y: 0,
             opacity: 1,
@@ -652,7 +661,7 @@
             duration: 0.75,
             delay: 0.42,
             ease: 'power3.out',
-            clearProps: 'filter,transform'
+            clearProps: 'filter,transform,willChange'
           }
         );
       }
@@ -683,6 +692,8 @@
           faqCards,
           { y: 28, opacity: 0, filter: 'blur(6px)' },
           {
+            // will-change only while the entrance plays (removed again by clearProps)
+            onStart: () => gsap.set(faqCards, { willChange: 'transform, filter, opacity' }),
             scrollTrigger: { trigger: faqSection, start: 'top 80%', once: true },
             y: 0,
             opacity: 1,
@@ -691,7 +702,7 @@
             stagger: 0.07,
             delay: 0.28,
             ease: 'power3.out',
-            clearProps: 'filter,transform'
+            clearProps: 'filter,transform,willChange'
           }
         );
       }
