@@ -226,8 +226,10 @@ textarea {
   position: relative;
   width: 100%;
   height: calc(100vh - var(--header-height, 90px));
-  height: calc(100dvh - var(--header-height, 90px));
-  max-height: calc(100dvh - var(--header-height, 90px));
+  /* svh (chiều cao nhỏ nhất, ổn định): dvh đổi theo thanh địa chỉ iOS khi cuộn, làm hero cao/thấp ~80px
+     và đẩy toàn bộ trang phía dưới nhảy theo. Trên desktop svh = dvh = vh nên không đổi gì */
+  height: calc(100svh - var(--header-height, 90px));
+  max-height: calc(100svh - var(--header-height, 90px));
   min-height: 480px;
   display: flex;
   align-items: center;

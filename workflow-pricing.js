@@ -125,18 +125,33 @@
     if (!vTimeline || vDots.length === 0 || stepCols.length === 0 || !grid) return;
 
     let dotTops = [];
+    let endPoint = 0;
+
+    // Vị trí layout của el so với lưới (offsetTop): không bị lệch bởi transform/animation
+    // (card đang scale 0.98 lúc xuất hiện, cột dịch 3px khi đổi mờ/rõ) như getBoundingClientRect
+    function offsetWithinGrid(el) {
+      let top = 0;
+      let node = el;
+      while (node && node !== grid) {
+        top += node.offsetTop;
+        node = node.offsetParent;
+      }
+      if (node !== grid) {
+        // offsetParent không đi qua lưới: dùng chênh lệch rect làm phương án dự phòng
+        return el.getBoundingClientRect().top - grid.getBoundingClientRect().top;
+      }
+      return top;
+    }
 
     function updateMobilePositions() {
       if (window.innerWidth > 900) return;
-      const gridRect = grid.getBoundingClientRect();
       dotTops = [];
 
       stepCols.forEach((col, idx) => {
         const pill = col.querySelector('.runway-step-pill');
         const target = pill || col;
-        const targetRect = target.getBoundingClientRect();
         // Tâm điểm chính xác của badge số so với đỉnh của lưới
-        const dotCenter = (targetRect.top + targetRect.height / 2) - gridRect.top;
+        const dotCenter = offsetWithinGrid(target) + target.offsetHeight / 2;
         dotTops.push(dotCenter);
         if (vDots[idx]) {
           vDots[idx].style.top = `${dotCenter}px`;
@@ -147,12 +162,10 @@
       // Điểm kết thúc: lướt qua hết toàn bộ nội dung của Bước 04 (xuống tới icon/text SLA của bước 4)
       const lastCol = stepCols[stepCols.length - 1];
       const lastSla = lastCol ? lastCol.querySelector('.runway-step-sla') : null;
-      let endPoint = 0;
       if (lastSla) {
-        const slaRect = lastSla.getBoundingClientRect();
-        endPoint = (slaRect.top + slaRect.height / 2) - gridRect.top;
+        endPoint = offsetWithinGrid(lastSla) + lastSla.offsetHeight / 2;
       } else if (lastCol) {
-        endPoint = lastCol.getBoundingClientRect().bottom - gridRect.top;
+        endPoint = offsetWithinGrid(lastCol) + lastCol.offsetHeight;
       } else {
         endPoint = dotTops[dotTops.length - 1] || 1;
       }
@@ -182,23 +195,13 @@
       // Đường kích hoạt nằm ngay chính giữa màn hình (tầm mắt: 50% viewport height)
       const triggerY = window.innerHeight * 0.5;
 
-      const pills = Array.from(stepCols).map(c => c.querySelector('.runway-step-pill') || c);
-      const pillFirstRect = pills[0].getBoundingClientRect();
-      const pillLastRect = pills[pills.length - 1].getBoundingClientRect();
+      // Chỉ đọc vị trí lưới, còn lại tính từ số đo đã lưu: đầu thanh đen, các chấm và ngưỡng sáng
+      // của từng bước dùng chung một hệ tọa độ nên đầu thanh luôn đứng yên đúng giữa màn hình
+      const gridTop = grid.getBoundingClientRect().top;
 
       // Điểm bắt đầu là tâm badge 01, điểm kết thúc là ngang hàng cuối Bước 04
-      const startY = pillFirstRect.top + pillFirstRect.height / 2;
-      const lastCol = stepCols[stepCols.length - 1];
-      const lastSla = lastCol ? lastCol.querySelector('.runway-step-sla') : null;
-      let endY = 0;
-      if (lastSla) {
-        const slaRect = lastSla.getBoundingClientRect();
-        endY = slaRect.top + slaRect.height / 2;
-      } else if (lastCol) {
-        endY = lastCol.getBoundingClientRect().bottom;
-      } else {
-        endY = pillLastRect.top + pillLastRect.height / 2;
-      }
+      const startY = gridTop + dotTops[0];
+      const endY = gridTop + endPoint;
 
       const span = endY - startY;
 
@@ -226,8 +229,7 @@
 
       // Các bước 02, 03, 04 sáng dần khi badge chạm vào giữa tầm mắt người xem
       for (let i = 1; i < stepCols.length; i++) {
-        const pRect = pills[i].getBoundingClientRect();
-        const pCenter = pRect.top + pRect.height / 2;
+        const pCenter = gridTop + dotTops[i];
         const isReached = pCenter <= triggerY;
 
         stepCols[i].classList.toggle('is-active', isReached);
@@ -238,21 +240,33 @@
       }
     }
 
-    window.addEventListener('scroll', handleMobileScroll, { passive: true });
+    // Gom các sự kiện cuộn vào đúng 1 lần cập nhật mỗi khung hình
+    let scrollRaf = null;
+    window.addEventListener('scroll', () => {
+      if (scrollRaf) return;
+      scrollRaf = requestAnimationFrame(() => {
+        scrollRaf = null;
+        handleMobileScroll();
+      });
+    }, { passive: true });
+
+    function remeasure() {
+      updateMobilePositions();
+      handleMobileScroll();
+    }
+
     let mobileResizeTimer = null;
     window.addEventListener('resize', () => {
       clearTimeout(mobileResizeTimer);
-      mobileResizeTimer = setTimeout(() => {
-        updateMobilePositions();
-        handleMobileScroll();
-      }, 150);
+      mobileResizeTimer = setTimeout(remeasure, 150);
     }, { passive: true });
 
-    // Cập nhật vị trí ngay sau khi trình duyệt render
-    setTimeout(() => {
-      updateMobilePositions();
-      handleMobileScroll();
-    }, 100);
+    // Cập nhật vị trí ngay sau khi trình duyệt render, và đo lại khi font/ảnh tải xong (layout có thể đổi)
+    setTimeout(remeasure, 100);
+    if (document.fonts && document.fonts.ready) {
+      document.fonts.ready.then(remeasure);
+    }
+    window.addEventListener('load', remeasure);
   }
 
   // ── Pricing Switcher: Elevated Cards (Option A) vs Editorial Columns (Option B) ──

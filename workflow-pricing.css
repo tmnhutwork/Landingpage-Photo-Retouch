@@ -1107,7 +1107,9 @@
     transform-origin: top;
     transform: scaleY(0);
     will-change: transform;
-    transition: transform 0.15s ease-out;
+    /* Không transition: JS cập nhật mỗi khung hình nên đầu thanh đứng yên giữa màn hình.
+       transition 0.15s trước đây bị khởi động lại liên tục khi cuộn, làm đầu thanh giật và tụt lại */
+    transition: none;
   }
 
   .runway-v-dot {
