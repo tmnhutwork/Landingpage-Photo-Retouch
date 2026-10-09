@@ -16,6 +16,7 @@ function debounce(fn, wait) {
 document.addEventListener('DOMContentLoaded', () => {
   initAllServiceSliders();
   initServiceAccordion();
+  initZoomTagBrackets();
   initServiceCircleCursor();
   initAudienceConcepts();
   initMobileNav();
@@ -368,6 +369,64 @@ function switchServiceAccordion(targetItem) {
 }
 
 /* ==========================================================================
+   ZOOM CAPTION BRACKETS — ôm sát dòng chữ dài nhất
+   Khi chú thích tự xuống dòng (tablet/mobile), CSS giữ hộp rộng bằng toàn bộ chỗ trống
+   nên ngoặc phải bị đẩy xa chữ. Đo dòng dài nhất rồi gán width cho chữ để khoảng cách
+   ngoặc trái → chữ luôn bằng chữ → ngoặc phải. Desktop (không tự xuống dòng) không bị gán gì.
+   ========================================================================== */
+function initZoomTagBrackets() {
+  const texts = Array.from(document.querySelectorAll('.zoom-tag-text'));
+  if (!texts.length) return;
+
+  const fit = (text) => {
+    text.style.width = '';
+    if (!text.getClientRects().length) return; // dịch vụ đang thu gọn (display: none)
+
+    const range = document.createRange();
+    range.selectNodeContents(text);
+    let left = Infinity;
+    let right = -Infinity;
+    for (const r of range.getClientRects()) {
+      if (r.width > 0) {
+        left = Math.min(left, r.left);
+        right = Math.max(right, r.right);
+      }
+    }
+    if (right <= left) return;
+
+    // Quy đổi về px CSS nếu cha đang có transform scale (hiệu ứng reveal)
+    const boxWidth = parseFloat(getComputedStyle(text).width) || 0;
+    const rectWidth = text.getBoundingClientRect().width;
+    const scale = boxWidth > 0 && rectWidth > 0 ? rectWidth / boxWidth : 1;
+    const widest = (right - left) / scale;
+
+    if (boxWidth - widest > 0.5) {
+      text.style.width = `${Math.ceil(widest * 64) / 64}px`;
+    }
+  };
+  const fitAll = () => texts.forEach(fit);
+
+  if ('ResizeObserver' in window) {
+    // Theo dõi khung zoom card: đổi kích thước khi resize và khi dịch vụ được mở (display: none → hiện)
+    const observer = new ResizeObserver(entries => {
+      entries.forEach(entry => {
+        const text = entry.target.querySelector('.zoom-tag-text');
+        if (text) fit(text);
+      });
+    });
+    texts.forEach(text => observer.observe(text.closest('.service-zoom-card') || text.parentElement));
+  } else {
+    window.addEventListener('resize', debounce(fitAll, 100));
+  }
+
+  if (document.fonts) {
+    document.fonts.ready.then(fitAll);
+    document.fonts.addEventListener('loadingdone', fitAll);
+  }
+  fitAll();
+}
+
+/* ==========================================================================
    ROTATING CIRCULAR CURSOR FOLLOWER
    ========================================================================== */
 function initServiceCircleCursor() {
@@ -460,6 +519,130 @@ function playService1Sweep() {
   .to(posProxy, { val: 50, duration: 0.65, ease: 'power2.out' });
 }
 
+/* ==========================================================================
+   SERVICE 02 / 03 — ĐIỂM NHẤN BÁM THEO ẢNH (không phụ thuộc kích thước khung)
+   Vùng khoanh cổ áo (02) và đường đi kính lúp (03) được canh trên khung desktop 693×403.
+   Tablet co giãn khung (tỉ lệ 693/403), mobile cao cố định 300px, ảnh dùng object-fit: cover
+   nên cùng một chi tiết trên ảnh rơi vào vị trí px khác nhau. Quy đổi: điểm trên khung desktop
+   → điểm trên ảnh gốc → khung hiện tại (tính lại khi chạy hiệu ứng và khi khung đổi kích thước).
+   Khung đúng 693×403 giữ nguyên toạ độ gốc nên desktop không đổi một pixel nào.
+   ========================================================================== */
+const SERVICE_REF_BOX = { width: 693, height: 403 };
+
+function roundServicePx(value) {
+  return Math.round(value * 1000) / 1000;
+}
+
+// Kích thước thật của khung ảnh (null khi dịch vụ đang thu gọn)
+function getServiceBoxSize(slider) {
+  if (!slider || !slider.getClientRects().length) return null;
+  const style = getComputedStyle(slider);
+  const width = parseFloat(style.width);
+  const height = parseFloat(style.height);
+  return width > 0 && height > 0 ? { width, height } : null;
+}
+
+// object-fit: cover + object-position → tỉ lệ phóng và độ lệch của ảnh trong khung
+function getServiceCoverFit(img, box, fallbackSize) {
+  const naturalW = (img && img.naturalWidth) || fallbackSize[0];
+  const naturalH = (img && img.naturalHeight) || fallbackSize[1];
+  const scale = Math.max(box.width / naturalW, box.height / naturalH);
+  const freeX = box.width - naturalW * scale;
+  const freeY = box.height - naturalH * scale;
+  const parts = img ? getComputedStyle(img).objectPosition.trim().split(/\s+/) : [];
+  const offset = (value, free) => {
+    const n = parseFloat(value);
+    if (parts.length !== 2 || isNaN(n)) return free * 0.5;
+    return /%$/.test(value) ? (free * n) / 100 : n;
+  };
+  return { scale, x: offset(parts[0], freeX), y: offset(parts[1], freeY) };
+}
+
+// map(x, y): điểm trên khung desktop → điểm cùng chi tiết ảnh trên khung hiện tại; k = tỉ lệ ảnh so với desktop
+function createServiceFocusMapper(img, fallbackSize, box) {
+  const isRefBox = box.width === SERVICE_REF_BOX.width && box.height === SERVICE_REF_BOX.height;
+  const ref = getServiceCoverFit(img, SERVICE_REF_BOX, fallbackSize);
+  const cur = getServiceCoverFit(img, box, fallbackSize);
+  const k = isRefBox ? 1 : cur.scale / ref.scale;
+  return {
+    k,
+    map: (refX, refY) => (isRefBox
+      ? { x: refX, y: refY }
+      : { x: roundServicePx(cur.x + (refX - ref.x) * k), y: roundServicePx(cur.y + (refY - ref.y) * k) })
+  };
+}
+
+// Khung ảnh đổi kích thước (xoay máy, kéo cửa sổ desktop → tablet → mobile): đặt lại ngay vùng khoanh / kính lúp
+let serviceFocusObserverReady = false;
+function ensureServiceFocusObserver() {
+  if (serviceFocusObserverReady) return;
+  serviceFocusObserverReady = true;
+  const relayout = () => {
+    layoutService2Callout();
+    layoutService3Loupe();
+  };
+  if ('ResizeObserver' in window) {
+    const observer = new ResizeObserver(relayout);
+    ['service-slider-2', 'service-slider-3'].forEach(id => {
+      const slider = document.getElementById(id);
+      if (slider) observer.observe(slider);
+    });
+  } else {
+    window.addEventListener('resize', debounce(relayout, 100));
+  }
+  // Chiều cao thẻ chú thích phụ thuộc phông chữ
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(relayout);
+}
+
+// Service 02: tâm vùng khoanh cổ áo trên khung desktop + hình học vòng khoanh (khớp CSS #callout-neck)
+const SERVICE2_NECK_FOCUS = { x: 346, y: 155 };
+const SERVICE2_IMAGE_SIZE = [1300, 1950];
+const CALLOUT_RING_HALF = { width: 52, height: 36 }; // vòng khoanh 104×72
+const CALLOUT_STEM_SPAN = 34;                        // chấm + đường dẫn + khe trước thẻ (86 − 52)
+const CALLOUT_EDGE_GAP = 8;
+
+function layoutService2Callout() {
+  const slider = document.getElementById('service-slider-2');
+  const callout = document.getElementById('callout-neck');
+  const box = getServiceBoxSize(slider);
+  if (!callout || !box) return;
+
+  const mapper = createServiceFocusMapper(slider.querySelector('.model-img-after'), SERVICE2_IMAGE_SIZE, box);
+  const focus = mapper.map(SERVICE2_NECK_FOCUS.x, SERVICE2_NECK_FOCUS.y);
+  const k = mapper.k;
+  callout.style.left = focus.x + 'px';
+  callout.style.top = focus.y + 'px';
+  // Vòng khoanh co giãn cùng ảnh để ôm đúng vùng cổ áo
+  callout.style.setProperty('--callout-k', String(Math.round(k * 10000) / 10000));
+
+  const badge = callout.querySelector('.callout-badge-card');
+  if (!badge) return;
+  const badgeMaxW = parseFloat(getComputedStyle(badge).maxWidth) || 255;
+  // Desktop: thẻ chú thích bên phải vòng khoanh. Khung hẹp không đủ chỗ → thẻ xếp dưới (hoặc trên) vòng khoanh
+  const sideRight = focus.x + CALLOUT_RING_HALF.width * k + CALLOUT_STEM_SPAN + badgeMaxW;
+  const stacked = sideRight > box.width - 2;
+  callout.classList.toggle('is-stacked', stacked);
+  if (!stacked) {
+    callout.classList.remove('is-above');
+    ['--callout-badge-w', '--callout-badge-x', '--callout-badge-y'].forEach(p => callout.style.removeProperty(p));
+    return;
+  }
+
+  const badgeW = Math.min(badgeMaxW, box.width - CALLOUT_EDGE_GAP * 2);
+  callout.style.setProperty('--callout-badge-w', roundServicePx(badgeW) + 'px');
+  const badgeH = badge.offsetHeight;
+  const reach = CALLOUT_RING_HALF.height * k + CALLOUT_STEM_SPAN;
+  const fitsBelow = focus.y + reach + badgeH <= box.height - CALLOUT_EDGE_GAP;
+  const fitsAbove = focus.y - reach - badgeH >= CALLOUT_EDGE_GAP;
+  const above = !fitsBelow && (fitsAbove || focus.y > box.height / 2);
+  const minX = CALLOUT_EDGE_GAP - focus.x;
+  const maxX = box.width - CALLOUT_EDGE_GAP - badgeW - focus.x;
+  const badgeX = Math.max(minX, Math.min(-badgeW / 2, maxX));
+  callout.classList.toggle('is-above', above);
+  callout.style.setProperty('--callout-badge-x', roundServicePx(badgeX) + 'px');
+  callout.style.setProperty('--callout-badge-y', roundServicePx(above ? -(reach + badgeH) : reach) + 'px');
+}
+
 let service2CameraTl = null;
 
 function cancelService2Camera() {
@@ -475,7 +658,9 @@ function cancelService2Camera() {
 
   if (typeof gsap !== 'undefined') {
     if (stage) gsap.set(stage, { scale: 1, x: 0, y: 0 });
-    if (calloutNeck) gsap.set(calloutNeck, { opacity: 0, scale: 0.9 });
+    // yPercent -50 = translateY(-50%) của CSS. Khai báo rõ (kèm x/y = 0) vì lần đầu GSAP đọc transform
+    // nó có thể đổi -50% thành px cố định khi kích thước lẻ → lệch khi khung đổi kích thước
+    if (calloutNeck) gsap.set(calloutNeck, { opacity: 0, scale: 0.9, x: 0, y: 0, yPercent: -50 });
     if (divider) gsap.set(divider, { opacity: 1, pointerEvents: 'auto' });
   }
   slider.style.setProperty('--slider-pos', '50%');
@@ -492,6 +677,10 @@ function playService2CameraTour() {
 
   if (service2CameraTl) service2CameraTl.kill();
 
+  // Đặt vùng khoanh theo kích thước khung hiện tại (và theo dõi resize trong lúc chạy)
+  ensureServiceFocusObserver();
+  layoutService2Callout();
+
   // Initially:
   // - Stage stays completely normal (scale: 1, x: 0, y: 0) -> NO CLIPPING, NO CUTTING OFF!
   // - Hide divider line
@@ -499,7 +688,7 @@ function playService2CameraTour() {
   if (divider) gsap.set(divider, { opacity: 0, pointerEvents: 'none' });
   slider.style.setProperty('--slider-pos', '0%');
   gsap.set(stage, { scale: 1, x: 0, y: 0 });
-  if (calloutNeck) gsap.set(calloutNeck, { opacity: 0, scale: 0.88 });
+  if (calloutNeck) gsap.set(calloutNeck, { opacity: 0, scale: 0.88, x: 0, y: 0, yPercent: -50 });
 
   service2CameraTl = gsap.timeline({
     delay: 0.2,
@@ -559,6 +748,42 @@ function playService2CameraTour() {
     }, '-=0.35');
 }
 
+// Service 03: kính lúp đi từ khuyên tai trái → phải (toạ độ trên khung desktop 693×403)
+const SERVICE3_LOUPE_FROM = { x: 235, y: 195 };
+const SERVICE3_LOUPE_TO = { x: 325, y: 205 };
+const SERVICE3_IMAGE_SIZE = [5504, 3072];
+const LOUPE_DIAMETER = 176; // đường kính trên desktop (CSS --loupe-d mặc định)
+const LOUPE_MAGNIFY = 1.8;
+let service3LoupeMapper = null;
+const service3LoupeRefPos = { x: SERVICE3_LOUPE_FROM.x, y: SERVICE3_LOUPE_FROM.y };
+
+// Đặt kính lúp tại điểm (toạ độ khung desktop) và đồng bộ ảnh phóng to bên trong ống kính
+function placeService3Loupe(refX, refY) {
+  service3LoupeRefPos.x = refX;
+  service3LoupeRefPos.y = refY;
+  const loupe = document.getElementById('jewelry-loupe');
+  const canvas = document.getElementById('loupe-zoom-canvas');
+  if (!service3LoupeMapper || !loupe || !canvas) return;
+  const p = service3LoupeMapper.map(refX, refY);
+  const halfD = (LOUPE_DIAMETER * service3LoupeMapper.k) / 2;
+  loupe.style.left = p.x + 'px';
+  loupe.style.top = p.y + 'px';
+  canvas.style.transform = `translate(${halfD - p.x * LOUPE_MAGNIFY}px, ${halfD - p.y * LOUPE_MAGNIFY}px) scale(${LOUPE_MAGNIFY})`;
+}
+
+function layoutService3Loupe() {
+  const slider = document.getElementById('service-slider-3');
+  const overlay = document.getElementById('service-3-loupe');
+  const box = getServiceBoxSize(slider);
+  if (!overlay || !box) return;
+  service3LoupeMapper = createServiceFocusMapper(slider.querySelector('.model-img-before'), SERVICE3_IMAGE_SIZE, box);
+  // Ống kính co giãn cùng ảnh (phủ cùng một vùng trang sức); ảnh phóng to trong ống kính = đúng khung ảnh hiện tại
+  overlay.style.setProperty('--loupe-d', roundServicePx(LOUPE_DIAMETER * service3LoupeMapper.k) + 'px');
+  overlay.style.setProperty('--loupe-canvas-w', box.width + 'px');
+  overlay.style.setProperty('--loupe-canvas-h', box.height + 'px');
+  placeService3Loupe(service3LoupeRefPos.x, service3LoupeRefPos.y);
+}
+
 let service3LoupeTl = null;
 
 function cancelService3Loupe() {
@@ -574,7 +799,8 @@ function cancelService3Loupe() {
 
   if (typeof gsap !== 'undefined') {
     if (overlay) gsap.set(overlay, { opacity: 0 });
-    if (loupe) gsap.set(loupe, { scale: 0.7, opacity: 0 });
+    // xPercent/yPercent -50 = translate(-50%, -50%) của CSS (kèm x/y = 0): tâm kính lúp luôn đúng khi đường kính lẻ / đổi kích thước
+    if (loupe) gsap.set(loupe, { scale: 0.7, opacity: 0, x: 0, y: 0, xPercent: -50, yPercent: -50 });
     if (divider) gsap.set(divider, { opacity: 1, pointerEvents: 'auto' });
   }
   slider.style.setProperty('--slider-pos', '50%');
@@ -600,25 +826,17 @@ function playService3Loupe() {
   slider.style.setProperty('--slider-pos', '100%');
   if (divider) divider.style.left = '50%';
 
-  // Loupe magnification factor
-  const M = 1.8;
-  const halfD = 88; // 176px / 2
-
-  // Function to place the loupe and sync the internal magnified canvas
-  const updateLoupePosition = (x, y) => {
-    loupe.style.left = x + 'px';
-    loupe.style.top = y + 'px';
-    const canvasX = halfD - x * M;
-    const canvasY = halfD - y * M;
-    canvas.style.transform = `translate(${canvasX}px, ${canvasY}px) scale(${M})`;
-  };
-
-  // Start position: Left earring diamond curve
-  const posProxy = { x: 235, y: 195 };
-  updateLoupePosition(posProxy.x, posProxy.y);
+  // Start position: Left earring diamond curve.
+  // Toạ độ tính trên khung desktop rồi quy đổi theo khung hiện tại (layoutService3Loupe / placeService3Loupe),
+  // nên kính lúp và ảnh phóng to luôn trùng đúng chi tiết trang sức ở mọi kích thước, kể cả khi resize giữa chừng.
+  ensureServiceFocusObserver();
+  service3LoupeRefPos.x = SERVICE3_LOUPE_FROM.x;
+  service3LoupeRefPos.y = SERVICE3_LOUPE_FROM.y;
+  layoutService3Loupe();
+  const posProxy = { x: SERVICE3_LOUPE_FROM.x, y: SERVICE3_LOUPE_FROM.y };
 
   gsap.set(overlay, { opacity: 1 });
-  gsap.set(loupe, { scale: 0.4, opacity: 0 });
+  gsap.set(loupe, { scale: 0.4, opacity: 0, x: 0, y: 0, xPercent: -50, yPercent: -50 });
 
   service3LoupeTl = gsap.timeline({
     delay: 0.25,
@@ -653,11 +871,11 @@ function playService3Loupe() {
     .to({}, { duration: 0.25 })
     // Step 2: Loupe glides swiftly across to the Right Earring (0.65s)
     .to(posProxy, {
-      x: 325,
-      y: 205,
+      x: SERVICE3_LOUPE_TO.x,
+      y: SERVICE3_LOUPE_TO.y,
       duration: 0.65,
       ease: 'power2.inOut',
-      onUpdate: () => updateLoupePosition(posProxy.x, posProxy.y)
+      onUpdate: () => placeService3Loupe(posProxy.x, posProxy.y)
     })
     // Brief pause to register mirror gold polish (0.25s)
     .to({}, { duration: 0.25 })

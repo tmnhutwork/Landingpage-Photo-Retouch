@@ -1716,14 +1716,15 @@ body.is-slider-resizing {
   transform-origin: center center;
 }
 
-/* Khoanh vùng: Bounding highlight ring circling reconstructed collar area */
+/* Khoanh vùng: Bounding highlight ring circling reconstructed collar area.
+   --callout-k (script.js) = tỉ lệ ảnh so với khung desktop 693×403 → vòng khoanh ôm đúng cổ áo ở mọi kích thước (desktop = 1) */
 .callout-zone-ring {
   position: absolute;
   left: 0;
   top: 50%;
   transform: translate(-50%, -50%);
-  width: 104px;
-  height: 72px;
+  width: calc(104px * var(--callout-k, 1));
+  height: calc(72px * var(--callout-k, 1));
   border-radius: 20px;
   border: 1.5px solid #FF8A3D;
   background: rgba(255, 138, 61, 0.08);
@@ -1747,7 +1748,7 @@ body.is-slider-resizing {
 
 .callout-indicator {
   position: absolute;
-  left: 52px;
+  left: calc(52px * var(--callout-k, 1));
   top: 50%;
   display: flex;
   align-items: center;
@@ -1778,7 +1779,7 @@ body.is-slider-resizing {
 }
 
 .callout-badge-card {
-  margin-left: 86px;
+  margin-left: calc(52px * var(--callout-k, 1) + 34px);
   background: rgba(22, 17, 13, 0.92);
   backdrop-filter: blur(14px);
   -webkit-backdrop-filter: blur(14px);
@@ -1825,6 +1826,29 @@ body.is-slider-resizing {
   margin: 0;
 }
 
+/* Khung ảnh hẹp (tablet/mobile) không đủ chỗ cho thẻ bên phải: script.js gắn .is-stacked,
+   thẻ xếp dưới vòng khoanh (.is-above: phía trên), đường dẫn quay dọc, thẻ luôn nằm trong khung ảnh.
+   Khối chú thích khi đó rộng/cao 0 → neo đúng tại tâm vùng khoanh. Desktop không dùng các quy tắc này. */
+.camera-callout-item.is-stacked .callout-indicator {
+  left: -5px;
+  top: calc(36px * var(--callout-k, 1));
+  transform: rotate(90deg);
+}
+
+.camera-callout-item.is-stacked.is-above .callout-indicator {
+  top: calc(-36px * var(--callout-k, 1) - 10px);
+  transform: rotate(-90deg);
+}
+
+.camera-callout-item.is-stacked .callout-badge-card {
+  position: absolute;
+  left: var(--callout-badge-x, 0px);
+  top: var(--callout-badge-y, 0px);
+  width: var(--callout-badge-w, 255px);
+  min-width: 0;
+  margin-left: 0;
+}
+
 /* Service 03: Jeweler's Magnifying Loupe */
 .service-loupe-overlay {
   position: absolute;
@@ -1836,10 +1860,11 @@ body.is-slider-resizing {
   opacity: 0;
 }
 
+/* --loupe-d / --loupe-canvas-w / --loupe-canvas-h do script.js đặt theo khung ảnh hiện tại (desktop: 176 / 693 / 403) */
 .jewelry-loupe {
   position: absolute;
-  width: 176px;
-  height: 176px;
+  width: var(--loupe-d, 176px);
+  height: var(--loupe-d, 176px);
   border-radius: 50%;
   pointer-events: none;
   transform: translate(-50%, -50%);
@@ -1860,8 +1885,8 @@ body.is-slider-resizing {
 
 .loupe-zoom-canvas {
   position: absolute;
-  width: 693px;
-  height: 403px;
+  width: var(--loupe-canvas-w, 693px);
+  height: var(--loupe-canvas-h, 403px);
   left: 0;
   top: 0;
   transform-origin: 0 0;
