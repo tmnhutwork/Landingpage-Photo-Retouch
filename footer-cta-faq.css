@@ -640,14 +640,111 @@
     letter-spacing: 0.05em !important;
   }
 
+  /* Footer: ruled cells. Each group sits in its own cell, divided by the footer's hairline;
+     lines run edge to edge. Grid children: 1 brand, 2 navigation, 3 address + website, 4 email. */
+  .d4-footer-section {
+    padding: 0;
+  }
+
   .d4-footer-grid {
-    grid-template-columns: 1fr;
-    gap: 24px;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0;
+    margin-bottom: 0;
   }
+
+  .d4-footer-grid > *,
+  .d4-footer-grid > :nth-child(3) > .d4-contact-group {
+    grid-column: 1 / -1;
+    min-width: 0;
+    margin: 0;
+    padding: 28px 24px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+  }
+
+  /* Address + website column: its two groups become cells of the grid */
+  .d4-footer-grid > :nth-child(3) {
+    display: contents;
+  }
+
+  /* Website | Email side by side */
+  .d4-footer-grid > :nth-child(3) > .d4-contact-group:last-child,
+  .d4-footer-grid > :nth-child(4) {
+    grid-column: auto;
+  }
+
+  .d4-footer-grid > :nth-child(3) > .d4-contact-group:last-child {
+    border-right: 1px solid rgba(0, 0, 0, 0.08);
+  }
+
+  .d4-contact-label {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+
+  /* Navigation label: the 44px link rows carry their own space */
+  .d4-footer-col > .d4-contact-label {
+    margin-bottom: 4px;
+  }
+
+  .d4-footer-nav-list {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-rows: repeat(3, auto);
+    grid-auto-flow: column;
+    gap: 0 16px;
+  }
+
+  .d4-footer-nav-list li a {
+    display: flex;
+    align-items: center;
+    min-height: 44px;
+  }
+
+  .d4-contact-val {
+    overflow-wrap: anywhere;
+  }
+
+  /* At least 44px touch target (21.75px line + 24px) without moving the text */
+  .d4-contact-link {
+    padding-block: 12px;
+    margin-block: -12px;
+  }
+
   .d4-footer-bottom {
-    flex-direction: column;
-    align-items: flex-start;
+    display: block;
+    padding-top: 0;
+    border-top: 0;
+    color: #71717A;
   }
+
+  .d4-legal-links {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0;
+  }
+
+  .d4-legal-links a {
+    display: flex;
+    align-items: center;
+    min-width: 0;
+    min-height: 52px;
+    padding: 0 24px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+    color: #71717A;
+  }
+
+  .d4-legal-links a:nth-child(odd) {
+    border-right: 1px solid rgba(0, 0, 0, 0.08);
+  }
+
+  .d4-footer-bottom > span {
+    display: block;
+    padding: 20px 24px 28px;
+  }
+
   .d4-faq-section {
     padding: 48px 16px 20px;
     min-height: var(--faq-section-min-height, 820px);
@@ -674,6 +771,18 @@
     color: #000000 !important;
     font-family: var(--font-sans, 'Plus Jakarta Sans', sans-serif) !important;
     font-weight: 400 !important;
+  }
+}
+
+/* Narrow phones: the page's 16px mobile gutter gives the Website | Email cells room for the email
+   (one line down to about 340px; narrower, it breaks instead of overflowing) */
+@media (max-width: 380px) {
+  .d4-footer-grid > *,
+  .d4-footer-grid > :nth-child(3) > .d4-contact-group,
+  .d4-legal-links a,
+  .d4-footer-bottom > span {
+    padding-left: 16px;
+    padding-right: 16px;
   }
 }
 

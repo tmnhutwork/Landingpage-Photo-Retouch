@@ -42,11 +42,11 @@
       });
 
       // Exactly 1 question open at a time: list needs baseHeight + maxSingleAnswer
+      // Mobile has no floor: the space kept below the cards is only the tallest answer
       const isMobile = window.innerWidth <= 640;
       const minDesktop = 565;
-      const minMobile = 680;
       const calculatedListHeight = Math.ceil(baseHeight + maxSingleAnswer + 4);
-      const lockedListHeight = Math.max(isMobile ? minMobile : minDesktop, calculatedListHeight);
+      const lockedListHeight = isMobile ? calculatedListHeight : Math.max(minDesktop, calculatedListHeight);
 
       list.style.minHeight = lockedListHeight + 'px';
       list.style.setProperty('--faq-list-min-height', lockedListHeight + 'px');
