@@ -106,7 +106,8 @@
       document.body.style.overflow = 'hidden';
       // Trap focus or focus first input
       setTimeout(() => {
-        const firstInput = trialForm ? trialForm.querySelector('input:not([type="hidden"])') : null;
+        // First visible field; the honeypot input sits earlier in the form and must never take focus
+        const firstInput = trialForm ? trialForm.querySelector('.trial-form-grid input:not([type="hidden"])') : null;
         if (firstInput) firstInput.focus();
       }, 150);
     }
@@ -396,7 +397,11 @@
 
         if (!trialForm.checkValidity()) {
           trialForm.reportValidity();
-          setFormMessage('Please enter your name and a valid work email.', 'error');
+          // Name the field that is actually wrong: the cloud link can be the only invalid one
+          const firstInvalid = trialForm.querySelector(':invalid');
+          setFormMessage(firstInvalid === cloudLinkInput
+            ? 'Please paste a valid Google Drive, Dropbox, or WeTransfer link.'
+            : 'Please enter your name and a valid work email.', 'error');
           return;
         }
 

@@ -718,10 +718,17 @@
     border-radius: 24px;
   }
 
+  /* minmax(0, 1fr): the column never grows past the dialog, so the form card is not clipped */
   .trial-modal-body {
-    grid-template-columns: 1fr;
+    grid-template-columns: minmax(0, 1fr);
     gap: 20px;
     padding: 10px 20px 24px;
+  }
+
+  /* The plan pills move under the label when both do not fit on one line */
+  .tier-selector-row {
+    flex-wrap: wrap;
+    gap: 10px 12px;
   }
 
   .trial-modal-topbar {
@@ -753,5 +760,26 @@
   .trial-field input::placeholder,
   .trial-field textarea::placeholder {
     font-size: 14px;
+  }
+}
+
+/* Small phones: Name and Work Email stack, so their placeholders are not cut off */
+@media (max-width: 480px) {
+  .trial-form-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  /* Plan pills share the row width so all three fit down to 320px */
+  .tier-options-group {
+    width: 100%;
+  }
+
+  .tier-btn {
+    flex: 1;
+    padding: 4px 6px;
+  }
+
+  .trial-field.col-full {
+    grid-column: 1 / -1;
   }
 }
