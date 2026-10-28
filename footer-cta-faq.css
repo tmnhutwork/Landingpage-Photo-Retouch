@@ -175,7 +175,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 10px;
+  gap: 12px;
   flex-wrap: wrap;
 }
 
@@ -870,10 +870,10 @@
     justify-content: center !important;
   }
 
-  .d4-actions-row .btn-trial-main {
+  .d4-actions-row .btn-trial-main,
+  .d4-actions-row .btn-about-nesso {
     padding: 13px 22px !important;
     font-size: 12px !important;
-    letter-spacing: 0.05em !important;
   }
 
   /* Footer: ruled cells. Each group sits in its own cell, divided by the footer's hairline;
@@ -1007,6 +1007,21 @@
     color: #000000 !important;
     font-family: var(--font-sans, 'Plus Jakarta Sans', sans-serif) !important;
     font-weight: 400 !important;
+  }
+}
+
+/* Mobile: the centre stage is narrower than the two pills side by side, so the trial CTA and
+   About Nesso stack, both as wide as the wider one */
+@media (max-width: 768px) {
+  .d4-actions-row {
+    flex-direction: column;
+    align-items: stretch !important;
+    width: fit-content;
+    margin-inline: auto;
+  }
+
+  .d4-actions-row > a {
+    justify-content: center;
   }
 }
 

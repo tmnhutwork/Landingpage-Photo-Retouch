@@ -833,8 +833,8 @@
   padding: 14px 24px;
   border-radius: 9999px;
   font-size: 14px;
-  font-weight: 600;
-  letter-spacing: 0.02em;
+  font-weight: 500;
+  letter-spacing: normal;
   text-decoration: none;
   cursor: pointer;
   transition: all 0.22s ease;
@@ -850,6 +850,15 @@
     border-color: #282828;
     box-shadow: 0 6px 18px rgba(0, 0, 0, 0.15);
   }
+}
+
+/* About Nesso trong thẻ giá: thẻ không đủ rộng cho 2 nút cạnh nhau nên xếp ngay dưới nút CTA,
+   cùng chiều rộng và chiều cao (padding thêm 1px bù cho viền 1px của nút CTA) */
+.price-card .btn-about-nesso {
+  width: 100%;
+  padding: 15px 25px;
+  margin: 4px 0 8px;
+  font-size: 14px;
 }
 
 .price-currency-note {

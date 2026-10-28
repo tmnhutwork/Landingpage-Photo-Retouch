@@ -189,15 +189,14 @@ p, li, .service-description, .cosmos-discipline-desc,
 .btn-trial-header {
   display: inline-flex;
   align-items: center;
-  gap: 10px;
+  gap: 4px;
   padding: 12px 22px;
   background-color: #111111;
   color: var(--color-white);
   border-radius: 9999px;
-  font-size: 13.5px;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.03em;
+  font-size: 15px; /* bằng cỡ chữ menu .hdr-link */
+  font-weight: 500;
+  letter-spacing: normal;
   white-space: nowrap;
   transition: background-color 0.2s ease;
 }
@@ -206,6 +205,12 @@ p, li, .service-description, .cosmos-discipline-desc,
   .btn-trial-header:hover {
     background-color: #222222;
   }
+}
+
+/* About Nesso trên thanh điều hướng: đứng bên trái nút CTA, cùng cỡ với nút CTA */
+.header-actions-right .btn-about-nesso {
+  padding: 12px 22px;
+  font-size: 15px;
 }
 
 /* Mobile Toggle, Divider & Panel (Hidden by default on Desktop) */
@@ -225,6 +230,23 @@ p, li, .service-description, .cosmos-discipline-desc,
 @media (max-width: 1100px) {
   .header-inner {
     padding: 0 36px;
+  }
+}
+
+/* 1025–1200px (iPad ngang): thêm nút About Nesso làm hàng header dài thêm ~140px, logo dính menu và nút.
+   Thu khe menu, logo và lề trong 2 nút để còn >= 20px mỗi bên. */
+@media (min-width: 1025px) and (max-width: 1200px) {
+  .header-nav-links {
+    gap: 20px;
+  }
+
+  .logo-img {
+    height: 32px;
+  }
+
+  .btn-trial-header,
+  .header-actions-right .btn-about-nesso {
+    padding: 12px 16px;
   }
 }
 
@@ -259,6 +281,7 @@ p, li, .service-description, .cosmos-discipline-desc,
 
   /* Hide top CTA button and divider when mobile menu is active */
   .figma-header.menu-open .btn-trial-header,
+  .figma-header.menu-open .btn-about-nesso,
   .figma-header.menu-open .header-mobile-divider {
     display: none !important;
   }
@@ -290,8 +313,7 @@ p, li, .service-description, .cosmos-discipline-desc,
   .btn-trial-header {
     padding: 6px 11px;
     font-size: 10.5px;
-    gap: 5px;
-    letter-spacing: 0.02em;
+    gap: 3px;
     flex-shrink: 0;
   }
 
@@ -300,13 +322,21 @@ p, li, .service-description, .cosmos-discipline-desc,
     height: 12px;
   }
 
+  .header-actions-right .btn-about-nesso {
+    padding: 6px 11px;
+    font-size: 10.5px;
+    flex-shrink: 0;
+  }
+
   /* Vùng chạm >= 44px bằng lớp vô hình trùm ra ngoài, giữ nguyên kích thước nhìn thấy */
   .btn-trial-header,
+  .header-actions-right .btn-about-nesso,
   .btn-mobile-menu-toggle {
     position: relative;
   }
 
   .btn-trial-header::after,
+  .header-actions-right .btn-about-nesso::after,
   .btn-mobile-menu-toggle::after {
     content: "";
     position: absolute;
@@ -314,6 +344,11 @@ p, li, .service-description, .cosmos-discipline-desc,
 
   .btn-trial-header::after {
     inset: -9px -4px;
+  }
+
+  /* Không nới ngang: khe 6px tới nút CTA đã thuộc vùng chạm của nút CTA */
+  .header-actions-right .btn-about-nesso::after {
+    inset: -9px 0;
   }
 
   .btn-mobile-menu-toggle::after {
@@ -462,18 +497,36 @@ p, li, .service-description, .cosmos-discipline-desc,
     opacity: 0.6;
   }
 
+  /* About Nesso bên trái, nút CTA bên phải như thanh header; điện thoại <= 480px xếp chồng */
   .mobile-nav-footer {
+    display: flex;
+    gap: 12px;
     padding-top: 32px;
     padding-bottom: 12px;
     width: 100%;
     opacity: 1;
   }
 
+  .mobile-nav-footer > a {
+    flex: 1 1 0;
+    min-width: 0;
+  }
+
+  /* About Nesso trong menu: cùng chiều rộng và chiều cao với nút CTA */
+  .mobile-nav-footer .btn-about-nesso {
+    width: 100%;
+    height: 52px;
+    padding: 0;
+    font-family: var(--font-sans, 'Plus Jakarta Sans', sans-serif);
+    font-size: 14px;
+    -webkit-tap-highlight-color: transparent;
+  }
+
   .mobile-nav-cta-pill {
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 8px;
+    gap: 4px;
     width: 100%;
     height: 52px;
     background-color: #111111;
@@ -481,9 +534,8 @@ p, li, .service-description, .cosmos-discipline-desc,
     border-radius: 9999px;
     font-family: var(--font-sans, 'Plus Jakarta Sans', sans-serif);
     font-size: 14px;
-    font-weight: 600;
-    letter-spacing: 0.03em;
-    text-transform: uppercase;
+    font-weight: 500;
+    letter-spacing: normal;
     text-decoration: none;
     box-shadow: 0 4px 16px rgba(0, 0, 0, 0.14);
     transition: background-color 0.2s ease, transform 0.15s ease;
@@ -506,7 +558,11 @@ p, li, .service-description, .cosmos-discipline-desc,
   .btn-trial-header {
     padding: 6px 11px;
     font-size: 10.5px;
-    gap: 5px;
+    gap: 3px;
+  }
+  /* Thanh header điện thoại không đủ chỗ cho 2 nút (320px chỉ còn 3px trống): About Nesso nằm trong menu */
+  .header-actions-right .btn-about-nesso {
+    display: none;
   }
   .header-mobile-divider {
     height: 16px;
@@ -518,6 +574,12 @@ p, li, .service-description, .cosmos-discipline-desc,
   }
   .mobile-nav-container {
     padding: 14px 20px calc(24px + env(safe-area-inset-bottom, 16px));
+  }
+  .mobile-nav-footer {
+    flex-direction: column;
+  }
+  .mobile-nav-footer > a {
+    flex: none;
   }
   .mobile-nav-item {
     font-size: 26px;
@@ -676,15 +738,14 @@ p, li, .service-description, .cosmos-discipline-desc,
 .btn-trial-main {
   display: inline-flex;
   align-items: center;
-  gap: 10px;
+  gap: 4px;
   padding: 14px 28px;
   background-color: #111111;
   color: #FFFFFF;
   border-radius: 9999px;
   font-size: 13px;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.03em;
+  font-weight: 500;
+  letter-spacing: normal;
   transition: background-color 0.22s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.22s ease;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
 }
@@ -693,6 +754,33 @@ p, li, .service-description, .cosmos-discipline-desc,
   .btn-trial-main:hover {
     background-color: #242424;
     box-shadow: 0 4px 16px rgba(0, 0, 0, 0.16);
+  }
+}
+
+/* About Nesso: nút viền đứng cạnh mỗi nút CTA, cùng cỡ chữ và chiều cao với nút CTA bên cạnh.
+   Viền vẽ bằng box-shadow inset nên không làm nút cao hơn nút nền đen. */
+.btn-about-nesso {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 14px 28px;
+  background-color: rgba(255, 255, 255, 0.72);
+  color: #111111;
+  border-radius: 9999px;
+  box-shadow: inset 0 0 0 1px #111111;
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: normal;
+  white-space: nowrap;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background-color 0.22s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.22s ease;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .btn-about-nesso:hover {
+    background-color: #FFFFFF;
+    box-shadow: inset 0 0 0 1px #111111, 0 3px 10px rgba(0, 0, 0, 0.06);
   }
 }
 
@@ -2091,9 +2179,22 @@ body.is-slider-resizing {
 .service-cta-row {
   display: flex;
   align-items: center;
-  gap: 24px;
+  gap: 12px;
   flex-wrap: nowrap;
   white-space: nowrap;
+}
+
+/* Cột chữ hẹp hơn 2 nút (~350px) thì xếp chồng 2 nút, rộng bằng nhau, thẳng lề trái */
+@media (max-width: 480px), (min-width: 769px) and (max-width: 1279px) {
+  .service-cta-row {
+    flex-direction: column;
+    align-items: stretch;
+    width: fit-content;
+  }
+
+  .service-cta-row > a {
+    justify-content: center;
+  }
 }
 
 .item-divider-line {
@@ -2931,7 +3032,7 @@ body.is-slider-resizing {
   }
   .service-cta-row {
     flex-wrap: wrap;
-    gap: 16px;
+    gap: 12px;
   }
 
   /* Mobile Collapsed Service Row - Fix missing headlines and 838px overflow */
