@@ -1715,9 +1715,8 @@
           <!-- novalidate: the submit handler checks the fields itself, so its own error message can show -->
           <form id="trialTestForm" class="trial-form-element" novalidate>
             <input type="hidden" id="selectedTierInput" name="tier" value="Simple">
-            <!-- Phone and company are no longer asked for; kept empty so the trial request keeps the same fields -->
+            <!-- Phone is no longer asked for; kept empty so the trial request keeps the same fields -->
             <input type="hidden" name="phone" value="">
-            <input type="hidden" name="company" value="">
             <div class="trial-form-honeypot" aria-hidden="true">
               <label for="trialWebsiteUrl">Website</label>
               <input type="text" id="trialWebsiteUrl" name="website_url" tabindex="-1" autocomplete="off">
@@ -1732,6 +1731,12 @@
               <div class="trial-field">
                 <label for="trialEmail">Work Email *</label>
                 <input type="email" id="trialEmail" name="email" placeholder="sarah@brand.com" required>
+              </div>
+
+              <div class="trial-field col-full">
+                <label for="trialCompany">Company / Studio *</label>
+                <input type="text" id="trialCompany" name="company" placeholder="e.g. Brand Studio"
+                  autocomplete="organization" maxlength="120" required>
               </div>
 
               <div class="trial-field col-full">

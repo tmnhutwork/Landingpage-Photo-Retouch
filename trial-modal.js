@@ -24,6 +24,8 @@
     const submitBtn = document.getElementById('trialSubmitBtn');
     const submitText = document.getElementById('trialSubmitText');
     const formMessage = document.getElementById('trialFormMessage');
+    const emailInput = document.getElementById('trialEmail');
+    const companyInput = document.getElementById('trialCompany');
     
     // Dual-Mode Upload / Cloud Link Tabs
     const tabUploadFiles = document.getElementById('tabUploadFiles');
@@ -49,9 +51,42 @@
 
     let uploadedFiles = []; // stores up to 3 File objects
     let currentMode = 'files'; // 'files' or 'link'
+    let isSubmitting = false;
+    let submissionComplete = false;
     const maxFiles = 3;
     const allowedFileExtensions = new Set(['jpg', 'jpeg', 'tif', 'tiff', 'cr3', 'cr2', 'crw', 'nef', 'arw', 'raf', 'rw2', 'orf', 'dng']);
     const trialEndpoint = `${window.location.origin}/wp-json/nesso-lms/v1/photo-retouch-trial`;
+
+    function trackRetouchEvent(eventName, parameters = {}) {
+      const payload = {
+        type: 'nesso-photo-retouch-analytics',
+        event: eventName,
+        parameters
+      };
+
+      if (window.parent !== window) {
+        window.parent.postMessage(payload, window.location.origin);
+        return;
+      }
+
+      window.dataLayer = window.dataLayer || [];
+      window.dataLayer.push({ event: eventName, ...parameters });
+    }
+
+    function getCtaLocation(element) {
+      const section = element.closest('header, section, footer, [id]');
+      if (!section) return 'standalone';
+      return section.id || section.className || section.tagName.toLowerCase();
+    }
+
+    function getFileSizeBucket(files) {
+      const totalBytes = Array.from(files).reduce((total, file) => total + file.size, 0);
+      const megabytes = totalBytes / (1024 * 1024);
+      if (megabytes <= 5) return '0-5mb';
+      if (megabytes <= 25) return '5-25mb';
+      if (megabytes <= 100) return '25-100mb';
+      return '100mb-plus';
+    }
 
     function setFormMessage(message = '', type = '') {
       if (!formMessage) return;
@@ -70,6 +105,30 @@
       return allowedFileExtensions.has(getFileExtension(file));
     }
 
+    // Work emails only. The WordPress endpoint enforces the same list.
+    const personalEmailDomains = ['gmail.com', 'googlemail.com'];
+    const personalEmailMessage = 'Please use your work email. Personal Gmail addresses are not accepted.';
+    const companyMessage = 'Please enter your company or studio name.';
+
+    function isPersonalEmail(value) {
+      const domain = String(value).trim().toLowerCase().split('@').pop();
+      return personalEmailDomains.includes(domain);
+    }
+
+    // Custom rules join the browser's required/type checks, so checkValidity() covers them.
+    function applyCustomValidity() {
+      if (emailInput) {
+        emailInput.setCustomValidity(isPersonalEmail(emailInput.value) ? personalEmailMessage : '');
+      }
+      if (companyInput) {
+        companyInput.setCustomValidity(companyInput.value.trim() ? '' : companyMessage);
+      }
+    }
+
+    [emailInput, companyInput].forEach((input) => {
+      if (input) input.addEventListener('input', () => input.setCustomValidity(''));
+    });
+
     // ── Open Modal Hook: Connect all Trial Buttons across the page ──
     const triggerSelectors = [
       'a[href="#trial"]',
@@ -82,6 +141,12 @@
     document.querySelectorAll(triggerSelectors.join(', ')).forEach((btn) => {
       btn.addEventListener('click', (e) => {
         e.preventDefault();
+
+        const ctaLabel = (btn.getAttribute('aria-label') || btn.textContent || '').replace(/\s+/g, ' ').trim();
+        trackRetouchEvent('nesso_retouch_cta_click', {
+          cta_label: ctaLabel.slice(0, 100),
+          cta_location: String(getCtaLocation(btn)).slice(0, 100)
+        });
         
         // Detect which plan card was clicked, if any
         const parentCard = btn.closest('.price-card');
@@ -97,13 +162,23 @@
           }
         }
 
-        openModal();
+        openModal('cta');
       });
     });
 
-    function openModal() {
+    document.querySelectorAll('a[href^="mailto:"], a[href^="tel:"]').forEach((link) => {
+      link.addEventListener('click', () => {
+        trackRetouchEvent('nesso_retouch_contact_click', {
+          contact_type: link.href.startsWith('mailto:') ? 'email' : 'phone',
+          cta_location: String(getCtaLocation(link)).slice(0, 100)
+        });
+      });
+    });
+
+    function openModal(source = 'unknown') {
       overlay.classList.add('is-open');
       document.body.style.overflow = 'hidden';
+      trackRetouchEvent('nesso_retouch_trial_modal_open', { source });
       // Trap focus or focus first input
       setTimeout(() => {
         // First visible field; the honeypot input sits earlier in the form and must never take focus
@@ -113,10 +188,12 @@
     }
 
     function closeModal() {
+      const wasSuccess = dialog.classList.contains('is-success');
       overlay.classList.remove('is-open');
       document.body.style.overflow = '';
+      trackRetouchEvent(wasSuccess ? 'nesso_retouch_success_return_home' : 'nesso_retouch_trial_modal_close');
 
-      if (dialog.classList.contains('is-success')) {
+      if (wasSuccess) {
         resetSuccessState();
       }
     }
@@ -150,6 +227,7 @@
       btn.addEventListener('click', () => {
         const tier = btn.getAttribute('data-tier');
         selectTier(tier);
+        trackRetouchEvent('nesso_retouch_plan_selected', { plan_tier: tier });
       });
     });
 
@@ -207,10 +285,16 @@
     }
 
     if (tabUploadFiles) {
-      tabUploadFiles.addEventListener('click', () => setSubmissionMode('files'));
+      tabUploadFiles.addEventListener('click', () => {
+        setSubmissionMode('files');
+        trackRetouchEvent('nesso_retouch_submission_mode_selected', { submission_mode: 'files' });
+      });
     }
     if (tabShareLink) {
-      tabShareLink.addEventListener('click', () => setSubmissionMode('link'));
+      tabShareLink.addEventListener('click', () => {
+        setSubmissionMode('link');
+        trackRetouchEvent('nesso_retouch_submission_mode_selected', { submission_mode: 'link' });
+      });
     }
 
     // ── 3-Image Drag & Drop Upload Management ──
@@ -218,6 +302,7 @@
       dropzone.addEventListener('click', (e) => {
         // Don't trigger if remove button was clicked
         if (e.target.closest('.file-chip-remove')) return;
+        trackRetouchEvent('nesso_retouch_upload_picker_open');
         fileInput.click();
       });
 
@@ -240,16 +325,16 @@
       dropzone.addEventListener('drop', (e) => {
         const dt = e.dataTransfer;
         const files = dt.files;
-        handleFiles(files);
+        handleFiles(files, 'drag_drop');
       });
 
       fileInput.addEventListener('change', () => {
-        handleFiles(fileInput.files);
+        handleFiles(fileInput.files, 'file_picker');
         fileInput.value = ''; // reset so same file can be selected again
       });
     }
 
-    function handleFiles(files) {
+    function handleFiles(files, source = 'unknown') {
       const incoming = Array.from(files);
       const invalidFiles = incoming.filter((file) => !isAllowedFile(file));
       const validFiles = incoming.filter(isAllowedFile);
@@ -258,6 +343,14 @@
 
       uploadedFiles.push(...acceptedFiles);
       renderFiles();
+
+      if (acceptedFiles.length > 0) {
+        trackRetouchEvent('nesso_retouch_files_selected', {
+          file_count: acceptedFiles.length,
+          upload_source: source,
+          file_size_bucket: getFileSizeBucket(acceptedFiles)
+        });
+      }
 
       const notices = [];
       if (invalidFiles.length > 0) {
@@ -373,6 +466,26 @@
       formStage.style.display = 'none';
       dialog.classList.add('is-success');
       successStage.classList.add('is-visible');
+      trackRetouchEvent('nesso_retouch_trial_submit_success', {
+        submission_mode: currentMode,
+        file_count: uploadedFiles.length,
+        plan_tier: hiddenTierInput ? hiddenTierInput.value : ''
+      });
+    }
+
+    function navigateToThankYou(value) {
+      if (typeof value !== 'string' || !value) return;
+      try {
+        const target = new URL(value, window.location.origin);
+        if (target.origin !== window.location.origin || target.pathname !== '/nesso-retouch-thank-you/' || target.search || target.hash) return;
+        if (window.parent !== window) {
+          window.parent.postMessage({ type: 'nesso-photo-retouch-thank-you', url: target.href }, window.location.origin);
+        } else {
+          window.location.assign(target.href);
+        }
+      } catch (_) {
+        // Keep the success message if navigation is unavailable.
+      }
     }
 
     function resetSuccessState() {
@@ -383,6 +496,7 @@
       formStage.style.display = 'block';
       if (trialForm) trialForm.reset();
       uploadedFiles = [];
+      submissionComplete = false;
       setFormMessage('');
       renderFiles();
       selectTier('Simple');
@@ -393,15 +507,23 @@
     if (trialForm) {
       trialForm.addEventListener('submit', async (e) => {
         e.preventDefault();
+        if (isSubmitting || submissionComplete) return;
         setFormMessage('');
 
+        applyCustomValidity();
         if (!trialForm.checkValidity()) {
           trialForm.reportValidity();
-          // Name the field that is actually wrong: the cloud link can be the only invalid one
+          // Name the field that is actually wrong
           const firstInvalid = trialForm.querySelector(':invalid');
-          setFormMessage(firstInvalid === cloudLinkInput
-            ? 'Please paste a valid Google Drive, Dropbox, or WeTransfer link.'
-            : 'Please enter your name and a valid work email.', 'error');
+          let message = 'Please enter your name and a valid work email.';
+          if (firstInvalid === cloudLinkInput) {
+            message = 'Please paste a valid Google Drive, Dropbox, or WeTransfer link.';
+          } else if (firstInvalid === companyInput) {
+            message = companyMessage;
+          } else if (firstInvalid === emailInput && isPersonalEmail(emailInput.value)) {
+            message = personalEmailMessage;
+          }
+          setFormMessage(message, 'error');
           return;
         }
 
@@ -410,12 +532,20 @@
           return;
         }
 
+        isSubmitting = true;
         if (submitBtn) submitBtn.disabled = true;
         if (submitText) {
           submitText.textContent = uploadedFiles.length > 0
             ? 'Uploading 0%...'
             : 'Submitting & Calibrating...';
         }
+
+        trackRetouchEvent('nesso_retouch_trial_submit_started', {
+          submission_mode: currentMode,
+          file_count: uploadedFiles.length,
+          file_size_bucket: getFileSizeBucket(uploadedFiles),
+          plan_tier: hiddenTierInput ? hiddenTierInput.value : ''
+        });
 
         try {
           const response = await submitTrialFormData(buildTrialFormData(), (progress) => {
@@ -430,11 +560,19 @@
             throw new Error(payload.message || 'We could not send your request. Please try again.');
           }
 
+          submissionComplete = true;
           setFormMessage(payload.message || 'Your request was sent.', 'success');
           showSubmissionSuccess();
+          navigateToThankYou(payload.thank_you_url);
         } catch (error) {
+          trackRetouchEvent('nesso_retouch_trial_submit_failed', {
+            submission_mode: currentMode,
+            file_count: uploadedFiles.length,
+            plan_tier: hiddenTierInput ? hiddenTierInput.value : ''
+          });
           setFormMessage(error.message || 'We could not send your request. Please try again.', 'error');
         } finally {
+          isSubmitting = false;
           if (submitBtn) submitBtn.disabled = false;
           if (submitText) {
             submitText.textContent = currentMode === 'link'
