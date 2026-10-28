@@ -493,7 +493,8 @@
 
       successStage.classList.remove('is-visible');
       dialog.classList.remove('is-success');
-      formStage.style.display = 'block';
+      // Back to the stylesheet's display (flex), so the form still fills the card after a reset
+      formStage.style.display = '';
       if (trialForm) trialForm.reset();
       uploadedFiles = [];
       submissionComplete = false;

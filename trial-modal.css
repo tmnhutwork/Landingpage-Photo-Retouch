@@ -306,9 +306,20 @@
   line-height: 1.5;
 }
 
+/* Form lấp hết chiều cao thẻ: phần trống dồn vào ô Upload / Send Link, nút Submit nằm sát đáy.
+   Điện thoại (1 cột) thẻ cao đúng bằng nội dung nên ô vẫn cao 96px như cũ. */
+.trial-form-element {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
 /* ── Dual-Mode Upload / Cloud Link Tabs ───────────────────────────── */
 .trial-upload-section {
-  margin-top: 4px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  /* Không margin-top: trong form flex, margin không gộp với 12px dưới lưới ô nhập (trước đây gộp thành 12px) */
   margin-bottom: 16px;
 }
 
@@ -352,16 +363,19 @@
   box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
 }
 
+/* Tối thiểu 96px, cao thêm theo phần trống của thẻ. Ô bên trong phủ kín panel (position absolute)
+   nên 2 tab luôn cao bằng nhau. */
 .upload-mode-panel {
   display: none;
-  height: 96px;
+  flex: 1 0 96px;
+  position: relative;
 }
 
 .upload-mode-panel.is-active {
   display: block;
 }
 
-/* ── Mode 1: File Dropzone (Exact Equal Height 96px) ──────────────── */
+/* ── Mode 1: File Dropzone (fills the panel, min 96px) ───────────── */
 .trial-dropzone {
   border: 1.5px dashed rgba(0, 0, 0, 0.22);
   border-radius: 14px;
@@ -370,8 +384,8 @@
   background: #FAF9F7;
   cursor: pointer;
   transition: all 0.2s ease;
-  position: relative;
-  height: 96px;
+  position: absolute;
+  inset: 0;
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
@@ -485,7 +499,7 @@
   }
 }
 
-/* ── Mode 2: Cloud Storage Link Input (Exact Equal Height 96px) ───── */
+/* ── Mode 2: Cloud Storage Link Input (fills the panel, min 96px) ─ */
 .cloud-link-box {
   background: #FAF9F7;
   border: 1.5px solid rgba(0, 0, 0, 0.1);
@@ -495,7 +509,8 @@
   flex-direction: column;
   justify-content: center;
   gap: 8px;
-  height: 96px;
+  position: absolute;
+  inset: 0;
   box-sizing: border-box;
 }
 
@@ -597,6 +612,27 @@
   color: #21613a;
 }
 
+/* 2 cột: khi chưa có thông báo thì không giữ chỗ, nút Submit nằm sát đáy thẻ.
+   Vẫn để trong cây trợ năng (ẩn kiểu sr-only, không display: none) để trình đọc màn hình đọc được thông báo. */
+@media (min-width: 901px) {
+  .trial-form-message:empty {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    min-height: 0;
+    margin: 0;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+  }
+
+  /* 28px nhường lại (cao 18px + cách 10px) chuyển vào ô Upload / Send Link, nên modal không đổi cỡ
+     dù thông báo hiện hay ẩn; khi thông báo hiện, ô về tối thiểu 96px */
+  .trial-form-element:has(.trial-form-message:empty) .upload-mode-panel {
+    flex-basis: 124px;
+  }
+}
+
 .trial-form-honeypot {
   position: absolute;
   width: 1px;
@@ -606,18 +642,34 @@
   white-space: nowrap;
 }
 
+/* Cụm ghi chú cuối cột trái, ngăn với 3 bước bằng 1 đường kẻ mảnh */
+.modal-intro-notes {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 24px;
+  padding-top: 16px;
+  border-top: 1px solid rgba(0, 0, 0, 0.08);
+}
+
 .modal-intro-guarantee {
   font-size: 12px;
-  color: #777777;
+  line-height: 1.45;
+  color: #555555; /* như .intro-subline; #777 chỉ đạt ~4.0:1 trên nền #F4F3F0 */
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   gap: 7px;
-  margin-top: 24px;
 }
 
 .modal-intro-guarantee svg {
-  stroke: #777777;
+  stroke: #555555;
   flex-shrink: 0;
+  margin-top: 1px;
+}
+
+.modal-intro-guarantee strong {
+  color: #111111;
+  font-weight: 600;
 }
 
 /* Success State Overlay */
